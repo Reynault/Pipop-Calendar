@@ -60,7 +60,7 @@ Respectivement :
 Le premier est utilisé lors de la commande de compilation de cordova. Il peut être utilisé comme sauvegarde.
 Le second est le dossier utilisé pour les ressources de l'application android elle même. Elle est issue de la de la commande précédente.
 
-<span style='color:red'>ATTENTION : </span> Sauvegarder **régulièrement** bien le dossier 
+<span style='color:red'>ATTENTION : </span> Sauvegardez **régulièrement** le dossier 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*"Pipop-Calendar\Client\PipopCalendar\platforms\android\app\src\main\assets\www"*
 
