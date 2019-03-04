@@ -44,8 +44,9 @@ Le projet et configuré et prêt à être modifié.
 Enjoy!
 
 
+#**NE JAMAIS METTRE A JOUR LE GRADLE**
 
-# INFORMATION
+# INFORMATIONS
 Il existe 2 dossiers dans le projet client. 
 L'un à la racine du projet et l'autre dans le dossier *"android"*
 
@@ -72,3 +73,7 @@ Si une compilation est éffectué avec la commande *cordova build android*, le d
 **sera remplacé par le dossier**  
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*"D:\PPIL\Pipop-Calendar\Client\PipopCalendar\www"* 
+
+
+
+
