@@ -1,0 +1,31 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.fst.pipopcalendar"
+    },
+    "cordova-plugin-console": {
+      "PACKAGE_NAME": "com.fst.pipopcalendar"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.fst.pipopcalendar"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "com.fst.pipopcalendar"
+    },
+    "cordova-plugin-wkwebview-engine": {
+      "PACKAGE_NAME": "com.fst.pipopcalendar"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.fst.pipopcalendar"
+    }
+  }
+}
