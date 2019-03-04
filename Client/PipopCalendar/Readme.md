@@ -44,7 +44,13 @@ Le projet et configuré et prêt à être modifié.
 Enjoy!
 
 
-#**NE JAMAIS METTRE A JOUR LE GRADLE**
+
+
+
+# **NE JAMAIS METTRE A JOUR LE GRADLE**
+
+
+
 
 # INFORMATIONS
 Il existe 2 dossiers dans le projet client. 
