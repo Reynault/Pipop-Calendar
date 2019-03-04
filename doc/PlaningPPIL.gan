@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-03-01" view-index="0" gantt-divider-location="474" resource-divider-location="300" version="2.8.10" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-03-11" view-index="0" gantt-divider-location="474" resource-divider-location="300" version="2.8.6" locale="fr">
     <description/>
     <view zooming-state="default:0" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="283" order="0"/>
-        <field id="tpd4" name="Date de début" width="85" order="1"/>
-        <field id="tpd5" name="Date de fin" width="102" order="2"/>
-        <option id="color.recent"><![CDATA[#ff9966 #006666 #ffcccc #00ff99 #33ffff #f4f4f4 #ffff00 #ff3333]]></option>
+        <field id="tpd3" name="Nom" width="274" order="0"/>
+        <field id="tpd4" name="Date de début" width="82" order="1"/>
+        <field id="tpd5" name="Date de fin" width="99" order="2"/>
+        <option id="color.recent">
+            <![CDATA[#003366 #660000 #660066 #666600 #006666 #006633 #ff0000 #ff9966 #ffcccc #00ff99]]>
+        </option>
     </view>
     <view id="resource-table">
         <field id="0" name="Nom" width="210" order="0"/>
@@ -43,7 +45,7 @@
             <task id="10" name="Mise en place du projet Cordova" color="#ff3333" meeting="false" start="2019-03-04" duration="1" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
             <task id="14" name="Mise en place du dépot git" color="#ff3333" meeting="false" start="2019-03-04" duration="1" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="17" name="Cas utilisations basique" meeting="false" start="2019-03-05" duration="5" complete="0" expand="true">
+        <task id="17" name="Cas utilisations basique" meeting="false" start="2019-03-05" duration="9" complete="0" expand="true">
             <task id="37" name="Compte" color="#000000" meeting="false" start="2019-03-05" duration="2" complete="0" thirdDate="2019-03-05" thirdDate-constraint="0" expand="true">
                 <task id="38" name="Inscription" color="#ffff00" meeting="false" start="2019-03-05" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
                 <task id="39" name="Se connecter" color="#ffff00" meeting="false" start="2019-03-05" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
@@ -52,7 +54,6 @@
             <task id="83" name="Création" color="#000000" meeting="false" start="2019-03-05" duration="2" complete="0" thirdDate="2019-03-05" thirdDate-constraint="0" expand="true">
                 <task id="91" name="Crée un calendrier" color="#00ff99" meeting="false" start="2019-03-05" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true">
                     <depend id="86" type="2" difference="0" hardness="Strong"/>
-                    <depend id="105" type="2" difference="0" hardness="Strong"/>
                 </task>
                 <task id="92" name="Crée un évènement" color="#00ff99" meeting="false" start="2019-03-05" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true">
                     <depend id="85" type="2" difference="0" hardness="Strong"/>
@@ -64,7 +65,6 @@
                     <depend id="84" type="2" difference="0" hardness="Strong"/>
                     <depend id="86" type="2" difference="0" hardness="Strong"/>
                     <depend id="101" type="2" difference="0" hardness="Strong"/>
-                    <depend id="105" type="2" difference="0" hardness="Strong"/>
                 </task>
                 <task id="80" name="Template évènement" color="#33ffff" meeting="false" start="2019-03-05" duration="3" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true">
                     <depend id="84" type="2" difference="0" hardness="Strong"/>
@@ -75,14 +75,95 @@
             </task>
             <task id="84" name="Consultation" color="#000000" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-03-08" thirdDate-constraint="0" expand="true">
                 <task id="85" name="Consulter un évènement" color="#ffcccc" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
-                <task id="86" name="Consulter un calendrier" color="#ffcccc" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
+                <task id="86" name="Consulter un calendrier" color="#ffcccc" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-03-08" thirdDate-constraint="0" expand="true"/>
             </task>
             <task id="101" name="Suppression" color="#000000" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-03-08" thirdDate-constraint="0" expand="true">
-                <task id="103" name="Supprimer un évènement" color="#ff9966" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
-                <task id="105" name="Supprimer un calendrier" color="#ff9966" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
+                <task id="103" name="Supprimer un évènement" color="#ff9966" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true">
+                    <depend id="142" type="2" difference="0" hardness="Strong"/>
+                    <depend id="143" type="2" difference="0" hardness="Strong"/>
+                    <depend id="149" type="2" difference="0" hardness="Strong"/>
+                    <depend id="150" type="2" difference="0" hardness="Strong"/>
+                    <depend id="151" type="2" difference="0" hardness="Strong"/>
+                    <depend id="152" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="105" name="Supprimer un calendrier" color="#ff9966" meeting="false" start="2019-03-08" duration="2" complete="0" thirdDate="2019-03-08" thirdDate-constraint="0" expand="true">
+                    <depend id="142" type="2" difference="0" hardness="Strong"/>
+                    <depend id="143" type="2" difference="0" hardness="Strong"/>
+                    <depend id="149" type="2" difference="0" hardness="Strong"/>
+                    <depend id="150" type="2" difference="0" hardness="Strong"/>
+                    <depend id="165" type="2" difference="0" hardness="Strong"/>
+                </task>
+            </task>
+            <task id="135" name="Modification" color="#000000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
+                <task id="142" name="Modifier un calendrier" color="#8cb6ce" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
+                <task id="143" name="Modifier un événement" color="#8cb6ce" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="148" name="Invitation" meeting="false" start="2019-03-12" duration="4" complete="0" expand="true">
+                <task id="149" name="Rechercher une personne" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
+                <task id="150" name="Ajouter un ami" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
+                <task id="151" name="Inviter un ami événement" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
+                <task id="152" name="Accepter ou refuser invitation" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
+                    <depend id="159" type="2" difference="0" hardness="Strong"/>
+                    <depend id="160" type="2" difference="0" hardness="Strong"/>
+                    <depend id="161" type="2" difference="0" hardness="Strong"/>
+                    <depend id="166" type="2" difference="0" hardness="Strong"/>
+                    <depend id="167" type="2" difference="0" hardness="Strong"/>
+                    <depend id="216" type="2" difference="0" hardness="Strong"/>
+                    <depend id="217" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="165" name="Inviter un groupe dans un calendrier" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
+                    <depend id="166" type="2" difference="0" hardness="Strong"/>
+                    <depend id="167" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="166" name="Inviter un ami dans un calendrier" color="#006633" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
+                <task id="167" name="Inviter un groupe à un événement" color="#006633" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="155" name="Groupe d'amis" meeting="false" start="2019-03-14" duration="2" complete="0" expand="true">
+                <task id="160" name="Créer un groupe d'amis" color="#8cb6ce" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+                <task id="161" name="Modifier un groupe d'amis" color="#8cb6ce" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+                <task id="159" name="Supprimer un groupe d'amis" color="#8cb6ce" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="215" name="Quitter" meeting="false" start="2019-03-14" duration="2" complete="0" expand="true">
+                <task id="216" name="Quitter un calendrier" color="#666600" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
+                <task id="217" name="Quitter un événement" color="#666600" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true">
+                    <depend id="254" type="2" difference="0" hardness="Strong"/>
+                    <depend id="255" type="2" difference="0" hardness="Strong"/>
+                    <depend id="258" type="2" difference="0" hardness="Strong"/>
+                    <depend id="259" type="2" difference="0" hardness="Strong"/>
+                </task>
             </task>
         </task>
-        <task id="117" name="Fin preière itération" color="#8cb6ce" meeting="true" start="2019-03-12" duration="0" complete="0" thirdDate="2019-02-27" thirdDate-constraint="0" expand="true"/>
+        <task id="256" name="Transfert Propriété" meeting="false" start="2019-03-18" duration="2" complete="0" expand="true">
+            <task id="258" name="Transférer la propriété (Calendrier)" color="#660066" meeting="false" start="2019-03-18" duration="2" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+            <task id="259" name="Transférer la propriété (événement)" color="#660066" meeting="false" start="2019-03-18" duration="2" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="253" name="Déléguer des droits" meeting="false" start="2019-03-18" duration="2" complete="0" expand="true">
+            <task id="254" name="Déléguer les privilèges (événements)" color="#660000" meeting="false" start="2019-03-18" duration="2" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+            <task id="255" name="Déléguer les privilèges (calendrier)" color="#660000" meeting="false" start="2019-03-18" duration="2" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true">
+                <depend id="261" type="2" difference="0" hardness="Strong"/>
+                <depend id="262" type="2" difference="0" hardness="Strong"/>
+                <depend id="263" type="2" difference="0" hardness="Strong"/>
+                <depend id="264" type="2" difference="0" hardness="Strong"/>
+                <depend id="265" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="260" name="Autre" meeting="false" start="2019-03-20" duration="2" complete="0" expand="true">
+            <task id="261" name="Demande de modif du créneau" color="#003366" meeting="false" start="2019-03-20" duration="2" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+            <task id="262" name="Chatter dans un événement" color="#003366" meeting="false" start="2019-03-20" duration="2" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+            <task id="263" name="Mot de passe oublié" color="#003366" meeting="false" start="2019-03-20" duration="2" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+            <task id="264" name="Modifier les info personnelles" color="#003366" meeting="false" start="2019-03-20" duration="2" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+            <task id="265" name="Rechercher un événement" color="#003366" meeting="false" start="2019-03-20" duration="2" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true">
+                <depend id="250" type="2" difference="0" hardness="Strong"/>
+                <depend id="251" type="2" difference="0" hardness="Strong"/>
+            </task>
+        </task>
+        <task id="249" name="Importation" meeting="false" start="2019-03-22" duration="2" complete="0" expand="true">
+            <task id="250" name="Importer un calendrier" color="#8cb6ce" meeting="false" start="2019-03-22" duration="2" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
+            <task id="251" name="Exporter un calendrier" color="#8cb6ce" meeting="false" start="2019-03-22" duration="2" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="141" name="Fin première itération" color="#8cb6ce" meeting="true" start="2019-03-12" duration="0" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
+        <task id="118" name="Fin deuxième itération" color="#8cb6ce" meeting="true" start="2019-03-19" duration="0" complete="0" thirdDate="2019-03-19" thirdDate-constraint="0" expand="true"/>
+        <task id="120" name="Fin troisième itération" color="#8cb6ce" meeting="true" start="2019-03-27" duration="0" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="Alexis" function="Default:0" contacts="" phone=""/>
