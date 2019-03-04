@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-03-11" view-index="0" gantt-divider-location="474" resource-divider-location="300" version="2.8.6" locale="fr">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-03-08" view-index="0" gantt-divider-location="474" resource-divider-location="300" version="2.8.6" locale="fr">
     <description/>
     <view zooming-state="default:0" id="gantt-chart">
         <field id="tpd3" name="Nom" width="274" order="0"/>
         <field id="tpd4" name="Date de début" width="82" order="1"/>
         <field id="tpd5" name="Date de fin" width="99" order="2"/>
         <option id="color.recent">
-            <![CDATA[#003366 #660000 #660066 #666600 #006666 #006633 #ff0000 #ff9966 #ffcccc #00ff99]]>
+            <![CDATA[#006633 #ff0000 #003366 #660000 #660066 #666600 #006666 #ff9966 #ffcccc #00ff99]]>
         </option>
     </view>
     <view id="resource-table">
@@ -91,7 +91,7 @@
                     <depend id="143" type="2" difference="0" hardness="Strong"/>
                     <depend id="149" type="2" difference="0" hardness="Strong"/>
                     <depend id="150" type="2" difference="0" hardness="Strong"/>
-                    <depend id="165" type="2" difference="0" hardness="Strong"/>
+                    <depend id="166" type="2" difference="0" hardness="Strong"/>
                 </task>
             </task>
             <task id="135" name="Modification" color="#000000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
@@ -102,20 +102,17 @@
                 <task id="149" name="Rechercher une personne" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
                 <task id="150" name="Ajouter un ami" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
                 <task id="151" name="Inviter un ami événement" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
+                <task id="166" name="Inviter un ami dans un calendrier" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true"/>
                 <task id="152" name="Accepter ou refuser invitation" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
                     <depend id="159" type="2" difference="0" hardness="Strong"/>
                     <depend id="160" type="2" difference="0" hardness="Strong"/>
                     <depend id="161" type="2" difference="0" hardness="Strong"/>
-                    <depend id="166" type="2" difference="0" hardness="Strong"/>
+                    <depend id="165" type="2" difference="0" hardness="Strong"/>
                     <depend id="167" type="2" difference="0" hardness="Strong"/>
                     <depend id="216" type="2" difference="0" hardness="Strong"/>
                     <depend id="217" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="165" name="Inviter un groupe dans un calendrier" color="#ff0000" meeting="false" start="2019-03-12" duration="2" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
-                    <depend id="166" type="2" difference="0" hardness="Strong"/>
-                    <depend id="167" type="2" difference="0" hardness="Strong"/>
-                </task>
-                <task id="166" name="Inviter un ami dans un calendrier" color="#006633" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
+                <task id="165" name="Inviter un groupe dans un calendrier" color="#006633" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
                 <task id="167" name="Inviter un groupe à un événement" color="#006633" meeting="false" start="2019-03-14" duration="2" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
             </task>
             <task id="155" name="Groupe d'amis" meeting="false" start="2019-03-14" duration="2" complete="0" expand="true">
