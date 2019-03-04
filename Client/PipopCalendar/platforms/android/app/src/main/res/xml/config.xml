@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.fst.pipopcalendar" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <name>Pipop Calendar</name>
+    <description>
+        Pipop Calendar est une application de gestion de calendriers sur Android d�velopp�e dans le cadre du projet de l'UE PPIL par des �tudiants de troisi�me ann�e de Licence Informatique de la Fac de sciences et technologies de Nancy.
+
+	Cette application a pour but de fournir � l'utilisateur un moyen de g�rer ses propres calendriers et �v�nements.
+	Il peut g�rer ses emplois du temps et inviter d'autres utilisateurs dans ses propres calendriers/�v�nements.
+    </description>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Pipop Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="market:*" />
+    <preference name="loglevel" value="DEBUG" />
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <allow-navigation href="cdvfile:*" />
+    <feature name="FileTransfer">
+        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+    </feature>
+    <feature name="Toast">
+        <param name="android-package" value="nl.xservices.plugins.Toast" />
+    </feature>
+</widget>
