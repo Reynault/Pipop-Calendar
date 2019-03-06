@@ -1,6 +1,7 @@
 package mycalendar.modele.serveur;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
@@ -25,7 +26,9 @@ public class ApplicationServeur implements Observer {
 
     public void launchServer() throws IOException, InterruptedException{
         Thread thread;
-        listener = new ServerSocket(PORT_NUMBER);
+        // LIGNE A MODIFIER POUR METTRE SUR LE SERVEUR
+        InetAddress inet = InetAddress.getLocalHost();
+        listener = new ServerSocket(PORT_NUMBER, GestionnaireClient.LIMITE_CLIENT, inet);
         System.out.println("The server is running...");
         // Le serveur attend continuellement un client
         while (true) {
@@ -44,9 +47,5 @@ public class ApplicationServeur implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
-    }
-
-    public boolean authentification(String email, String mdp){
-        return false;  //TODO
     }
 }
