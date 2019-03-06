@@ -19,4 +19,8 @@ public class ApplicationServeur implements Observer {
     public void update(Observable o, Object arg) {
 
     }
+
+    public boolean authentification(String email, String mdp){
+        return false;  //TODO
+    }
 }
