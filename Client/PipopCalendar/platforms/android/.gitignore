@@ -12,3 +12,8 @@ gen
 out
 # Gradle builds
 /build
+.gradle/
+.idea/
+CordovaLib/CordovaLib.iml
+CordovaLib/build/
+app/build/
