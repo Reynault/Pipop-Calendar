@@ -56,6 +56,19 @@ public class ApplicationServeur implements Observer {
         }
     }
 
+    /**
+     * Méthode serveur de création d'un évenement. C4est celle-ci appelée par le client
+     * @param id ID de l'événement
+     * @param nomCalendrier nom du calendrier auquel l'événement est associé
+     * @param nom nom de l'événement
+     * @param description description de l'événement
+     * @param image image visuelle de l'événement
+     * @param date date à laquelle l'événement va se dérouler
+     * @param lieu lieu à lequel l'événement va se dérouler
+     * @param auteur créateur de l'événement
+     * @param visible visibilité des événements auprès des autres utilisateurs
+     * @return code d'erreur (0 si tout s'est bien passé, > 0 si une erreur s'est produite)
+     */
     public int creationEvenement(int id, String nomCalendrier, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) {
         int calendrierID = 0;
         try {
@@ -86,6 +99,14 @@ public class ApplicationServeur implements Observer {
         return 0;
     }
 
+    /**
+     * Méthode de vérification de l'existence d'un événement
+     * @param email créateur de l'événement à vérifier
+     * @param calendrierID ID du calendrier à vérifier
+     * @param nom nom de l'événement à vérifier
+     * @return true si l'événement n'existe pas, false sinon
+     * @throws SQLException
+     */
     private boolean verifierEvenement(String email, int calendrierID, String nom) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
@@ -103,6 +124,12 @@ public class ApplicationServeur implements Observer {
         return true;
     }
 
+    /**
+     * Récupère l'ID d'un calendrier associé à son nom
+     * @param nomCalendrier nom du calendrier
+     * @return l'ID du calendrier récupéré (-1 si le calendrier n'existe pas)
+     * @throws SQLException
+     */
     private int getCalendrierID(String nomCalendrier) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
@@ -118,6 +145,20 @@ public class ApplicationServeur implements Observer {
         return -1;
     }
 
+    /**
+     * Méthode de création d'un événement
+     * @param id
+     * @param calendrierID
+     * @param nom
+     * @param description
+     * @param image
+     * @param date
+     * @param lieu
+     * @param auteur
+     * @param visible
+     * @return
+     * @throws ParseException
+     */
     private boolean createEvenement(int id, int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException {
         DateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         Date dateP = df.parse(date);
