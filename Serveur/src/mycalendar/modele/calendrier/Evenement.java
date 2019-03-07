@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Observable;
 
 public abstract class Evenement extends Observable {
@@ -78,6 +77,42 @@ public abstract class Evenement extends Observable {
                 return false;
             }
 
+        }
+        return true;
+    }
+
+    public static Evenement find(int idEv) throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        {
+            String request = "SELECT * FROM Evenement WHERE ide=?;";
+            PreparedStatement prep = connect.prepareStatement(request);
+            prep.setInt(1, idEv);
+            prep.execute();
+            ResultSet rs = prep.getResultSet();
+            if (rs.next()) {
+                if (rs.getBoolean("idc")) {
+                    return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
+                }
+                else {
+                    return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
+                }
+            }
+            return null;
+        }
+    }
+
+    public boolean delete() throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        {
+            String request = "DELETE FROM Evenement WHERE ide=? AND idc=? AND auteur=? AND nomE=?;";
+            PreparedStatement prep = connect.prepareStatement(request);
+            prep.setInt(1, this.idEv);
+            prep.setInt(2, this.calendrierID);
+            prep.setString(3, this.auteur);
+            prep.setString(4, this.nomE);
+            if (prep.executeUpdate() == 0) {
+                return false;
+            }
         }
         return true;
     }
