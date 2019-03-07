@@ -57,11 +57,22 @@ public class ConnexionClient implements Runnable{
             // Redirection vers la bonne requete en fonction de la demande du client
             HashMap<String, String> result = null;
             switch (donnees.get("Request")){
-                //cas demande d'inscription
+                // Authentification
                 case "SignIn":{
-                    result = new HashMap<String, String>();
-                    result.put("Request","SignIn");
-                    result.put("Result","0");
+                    result = ApplicationServeur.getInstance().authentification(
+                            donnees.get("Email"),
+                            donnees.get("Mdp")
+                    );
+                    break;
+                }
+                // Inscription
+                case "SignUp":{
+                    result = ApplicationServeur.getInstance().inscription(
+                            donnees.get("Email"),
+                            donnees.get("Mdp"),
+                            donnees.get("Prenom"),
+                            donnees.get("Nom")
+                    );
                     break;
                 }
                 //cas creation d'evenement
