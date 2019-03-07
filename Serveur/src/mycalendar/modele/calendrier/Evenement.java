@@ -57,7 +57,10 @@ public abstract class Evenement extends Observable {
             prep.setString(7, this.lieu);
             prep.setString(8, this.auteur);
             prep.setBoolean(9, this.visibilite);
-            prep.executeUpdate();
+            if (prep.executeUpdate() == 0) {
+                return false;
+            }
+
         }
         return true;
     }

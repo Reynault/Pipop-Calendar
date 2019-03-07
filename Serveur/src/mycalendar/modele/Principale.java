@@ -19,5 +19,6 @@ public class Principale {
         }finally {
             GestionnaireClient.getInstance().deleteThread();
         }
+
     }
 }
