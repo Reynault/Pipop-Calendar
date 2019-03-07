@@ -23,7 +23,8 @@ public class ClientTest {
                     new InputStreamReader(
                             socket.getInputStream()));
 
-            pred.println("{\"Request\":\"AddEvent\",\"ID\":\"2\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2019\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"cockman\", \"EventVisibility\":\"true\"}");
+            pred.println("{\"Request\":\"AddEvent\",\"ID\":\"1\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2019\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"cockman\", \"EventVisibility\":\"true\"}");
+            //pred.println("{\"Request\":\"DeleteEvent\",\"ID\":\"2\"}");
             String line = bos.readLine();
             System.out.println(line);
             bos.close();

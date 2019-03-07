@@ -78,6 +78,11 @@ public class ConnexionClient implements Runnable{
                     ApplicationServeur.getInstance().creationEvenement(id, calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
                     break;
                 }
+                case "DeleteEvent":{
+                    int idEv = Integer.parseInt(donnees.get("ID"));
+                    ApplicationServeur.getInstance().suppressionEvenement(idEv);
+                    break;
+                }
                 default:{
                     bos.close();
                     socket.close();

@@ -76,7 +76,7 @@ public class ApplicationServeur implements Observer {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        //nomCalendrier spécifié inexistant : son code d'erreur est 2
+        // nomCalendrier spécifié inexistant : son code d'erreur est 2
         if (calendrierID == -1) {
             return 2;
         }
@@ -177,6 +177,28 @@ public class ApplicationServeur implements Observer {
             e1.printStackTrace();
         }
         return true;
+    }
+
+    public int suppressionEvenement(int idEv) {
+        Evenement e = null;
+        try {
+            e = Evenement.find(idEv);
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        if (e == null) {
+            // Evenement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
+            return 1;
+        }
+        try {
+            if (!e.delete()) {
+                // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
+                return 2;
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
