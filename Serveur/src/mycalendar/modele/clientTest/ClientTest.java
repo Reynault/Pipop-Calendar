@@ -22,7 +22,8 @@ public class ClientTest {
                     ),true
             );
 
-            pred.print("{\"description\":\"quarter\"}");
+            pred.println("{\"Request\":\"SignIn\"}");
+            pred.close();
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
