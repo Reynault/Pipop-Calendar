@@ -21,8 +21,13 @@ var app = new Framework7({
     },
     {
       path: '/sign-up/',
-      componentUrl: './pages/sign-up.html',
+      url: './pages/sign-up.html',
       name: 'sign-up',
+    },
+    {
+      path: '/user-home/',
+      componentUrl: './pages/user-home.html',
+      name: 'user-home',
     },
     // Default route, match to all pages (e.g. 404 page)
     {

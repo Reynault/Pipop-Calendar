@@ -1,68 +1,55 @@
-<template>
-  <div class="page" data-name="sign-up">
-    <div class="navbar">
-      <div class="navbar-inner sliding">
-        <div class="left">
-          <a href="#" class="link back">
-            <i class="f7-icons">arrow_left</i>
-            <span class="ios-only">Back</span>
-          </a>
-        </div>
-        <div class="title">Sign up</div>
+<div class="page" data-name="sign-up">
+  <div class="page-content login-screen-content">
+    <div class="login-screen-title arista text-color-lightblue">Sign up to <img src="img/logo.svg" alt="Pipop Calendar"></div>
+    <form>
+      <div class="list">
+        <ul>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">E-mail</div>
+              <div class="item-input-wrap">
+                <input type="email" name="email">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Password</div>
+              <div class="item-input-wrap">
+                <input type="password" name="password">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">First name</div>
+              <div class="item-input-wrap">
+                <input type="email" name="firstname">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Last name</div>
+              <div class="item-input-wrap">
+                <input type="email" name="lastname">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
-    </div>
-    <div class="page-content login-screen-content">
-      <div class="login-screen-title arista text-color-lightblue">Sign up to <img src="img/logo.svg" alt="Pipop Calendar"></div>
-      <form>
-        <div class="list">
-          <ul>
-            <li class="item-content item-input item-input-outline">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">E-mail</div>
-                <div class="item-input-wrap">
-                  <input type="email" name="email">
-                  <span class="input-clear-button"></span>
-                </div>
-              </div>
-            </li>
-            <li class="item-content item-input item-input-outline">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">Password</div>
-                <div class="item-input-wrap">
-                  <input type="password" name="password">
-                  <span class="input-clear-button"></span>
-                </div>
-              </div>
-            </li>
-            <li class="item-content item-input item-input-outline">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">First name</div>
-                <div class="item-input-wrap">
-                  <input type="email" name="firstname">
-                  <span class="input-clear-button"></span>
-                </div>
-              </div>
-            </li>
-            <li class="item-content item-input item-input-outline">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">Last name</div>
-                <div class="item-input-wrap">
-                  <input type="email" name="lastname">
-                  <span class="input-clear-button"></span>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="list">
-          <ul>
-            <li>
-              <a href="#" class="item-link list-button button button-large">Sign Up</a>
-            </li>
-          </ul>
-          <div class="block-footer">Already have an account ? <a class="link back" href="#">Sign in here !</a></div>
-        </div>
-      </form>
-    </div>
+      <div class="list">
+        <ul>
+          <li>
+            <a href="#" class="item-link list-button button button-large">Sign Up</a>
+          </li>
+        </ul>
+        <div class="block-footer">Already have an account ? <a class="link back" href="#">Sign in here !</a></div>
+      </div>
+    </form>
   </div>
-</template>
+</div>
