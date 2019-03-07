@@ -17,6 +17,12 @@ var app = new Framework7({
     {
       path: '/themes/',
       componentUrl: './pages/themes.html',
+      name: 'themes',
+    },
+    {
+      path: '/sign-up/',
+      componentUrl: './pages/sign-up.html',
+      name: 'sign-up',
     },
     // Default route, match to all pages (e.g. 404 page)
     {

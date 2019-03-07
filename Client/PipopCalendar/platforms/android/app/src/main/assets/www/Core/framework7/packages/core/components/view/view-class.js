@@ -21,9 +21,9 @@ class View extends Framework7Class {
 
     // Routes
     if (view.params.routes.length > 0) {
-      view.routesO = view.params.routes;
+      view.routes = view.params.routes;
     } else {
-      view.routesO = [].concat(app.routes, view.params.routesAdd);
+      view.routes = [].concat(app.routes, view.params.routesAdd);
     }
 
     // Selector

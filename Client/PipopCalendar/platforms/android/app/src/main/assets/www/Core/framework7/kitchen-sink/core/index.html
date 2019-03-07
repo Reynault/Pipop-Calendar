@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../../packages/core/css/framework7.bundle.min.css">
   <!-- Path to your custom app styles-->
   <link rel="stylesheet" href="css/app.css">
+  <!-- Your app icon -->
   <link rel="apple-touch-icon" href="img/icon.png">
   <link rel="icon" href="img/icon.png">
 </head>
@@ -24,7 +25,7 @@
     <!-- Your main view, should have "view-main" class -->
     <div class="view view-main">
       <!-- Initial Page, "data-name" contains page name -->
-      <div data-name="home" class="page">
+      <div class="page" data-name="home">
         <!-- Left panel -->
         <div class="panel panel-left panel-cover">
           <div class="page">
@@ -84,7 +85,9 @@
         </div>
         <!-- Scrollable page content -->
         <div class="page-content login-screen-content">
-          <div class="login-screen-title"><img src="img/logo.svg" alt="Pipop Calendar"></div>
+          <div class="login-screen-title">
+            <img src="img/logo.svg" alt="Pipop Calendar">
+          </div>
           <!-- Login form -->
           <form>
             <div class="list">
@@ -115,6 +118,7 @@
                   <a href="#" class="item-link list-button button button-large">Sign in</a>
                 </li>
               </ul>
+              <div class="block-footer">Don't have an account ? <a class="link" href="/sign-up/">Sign up here !</a></div>
             </div>
           </form>
         </div>
