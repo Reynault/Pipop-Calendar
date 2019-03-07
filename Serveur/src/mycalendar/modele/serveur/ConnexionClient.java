@@ -1,5 +1,6 @@
 package mycalendar.modele.serveur;
 
+import javafx.beans.binding.BooleanBinding;
 import mycalendar.modele.exceptions.BadRequestExeption;
 import mycalendar.modele.exceptions.NoRequestException;
 
@@ -64,7 +65,17 @@ public class ConnexionClient implements Runnable{
                     result.put("Result","0");
                     break;
                 }
-                case "CreateEvent":{
+                case "AddEvent":{
+                    int id = Integer.parseInt(donnees.get("ID"));
+                    String calendarName = donnees.get("CalendarName");
+                    String eventName = donnees.get("EventName");
+                    String eventDescription = donnees.get("EventDescription");
+                    String eventPicture = donnees.get("EventPicture");
+                    String eventDate = donnees.get("EventDate");
+                    String eventLocation = donnees.get("EventLocation");
+                    String eventAuthor = donnees.get("EventAuthor");
+                    boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
+                    ApplicationServeur.getInstance().creationEvenement(id, calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
                     break;
                 }
                 default:{
