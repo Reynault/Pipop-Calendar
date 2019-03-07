@@ -147,29 +147,27 @@ public class ApplicationServeur implements Observer {
 
     /**
      * Méthode de création d'un événement
-     * @param id
-     * @param calendrierID
-     * @param nom
-     * @param description
-     * @param image
-     * @param date
-     * @param lieu
-     * @param auteur
-     * @param visible
-     * @return
+     * @param id ID de l'événement
+     * @param calendrierID ID du calendrier associé à l'événement
+     * @param nom nom de l'événement
+     * @param description description de l'événement
+     * @param image image de l'événement
+     * @param date date de l'événement
+     * @param lieu lieu de l'événement
+     * @param auteur créateur de l'événement
+     * @param visible visibilité public de l'événement
+     * @return 1 si la création s'est bien passé, 0 sinon
      * @throws ParseException
      */
     private boolean createEvenement(int id, int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException {
         DateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         Date dateP = df.parse(date);
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.setTime(dateP);
         Evenement e;
         if (visible) {
-            e = new EvenementPublic(id, calendrierID, nom, description, image, cal, lieu, auteur);
+            e = new EvenementPublic(id, calendrierID, nom, description, image, dateP, lieu, auteur);
         }
         else {
-            e = new EvenementPrive(id, calendrierID, nom, description, image, cal, lieu, auteur);
+            e = new EvenementPrive(id, calendrierID, nom, description, image, dateP, lieu, auteur);
         }
         try {
             if (!e.save()) {

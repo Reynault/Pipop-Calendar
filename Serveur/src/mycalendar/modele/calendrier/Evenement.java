@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Observable;
 
@@ -17,7 +18,7 @@ public abstract class Evenement extends Observable {
     private String nomE;
     private String description;
     private String image;
-    private GregorianCalendar date;
+    private Date date;
     private String lieu;
     private String auteur;
 
@@ -25,7 +26,18 @@ public abstract class Evenement extends Observable {
 
     private ArrayList<Message> messages;
 
-    public Evenement(int id, int calID, String nom, String description, String image, GregorianCalendar date, String lieu, String auteur) {
+    /**
+     * Constructeur d'un événement
+     * @param id
+     * @param calID
+     * @param nom
+     * @param description
+     * @param image
+     * @param date
+     * @param lieu
+     * @param auteur
+     */
+    public Evenement(int id, int calID, String nom, String description, String image, Date date, String lieu, String auteur) {
         this.idEv = id;
         this.calendrierID = calID;
         this.nomE = nom;
@@ -42,6 +54,11 @@ public abstract class Evenement extends Observable {
         this.notifyObservers();
     }
 
+    /**
+     * Méthode de sauvegarde d'un événement dans la BDD
+     * @return true si la sauvegarde s'est bien passé, false sinon
+     * @throws SQLException
+     */
     public boolean save() throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
@@ -50,8 +67,8 @@ public abstract class Evenement extends Observable {
             prep.setInt(1, this.idEv);
             prep.setInt(2, this.calendrierID);
             prep.setString(3, this.nomE);
-            java.sql.Date d = new java.sql.Date(this.date.getTime().getTime());
-            prep.setDate(4, d);
+            java.sql.Timestamp t = new java.sql.Timestamp(this.date.getTime());
+            prep.setTimestamp(4, t);
             prep.setString(5, this.description);
             prep.setString(6, this.image);
             prep.setString(7, this.lieu);
