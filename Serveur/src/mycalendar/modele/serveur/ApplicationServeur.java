@@ -76,6 +76,7 @@ public class ApplicationServeur implements Observer {
             e.printStackTrace();
         }
         try {
+            // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
             if (!this.createEvenement(id, calendrierID, nom, description, image, date, lieu, auteur, visible)) {
                 return 3;
             }
@@ -85,7 +86,7 @@ public class ApplicationServeur implements Observer {
         return 0;
     }
 
-    public boolean verifierEvenement(String email, int calendrierID, String nom) throws SQLException {
+    private boolean verifierEvenement(String email, int calendrierID, String nom) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
             String request = "SELECT * FROM Evenement WHERE nomE=? AND auteur=? AND idc=?;";
@@ -117,8 +118,8 @@ public class ApplicationServeur implements Observer {
         return -1;
     }
 
-    public boolean createEvenement(int id, int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException {
-        DateFormat df = new SimpleDateFormat("HH mm ss dd MM yyyy");
+    private boolean createEvenement(int id, int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException {
+        DateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         Date dateP = df.parse(date);
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(dateP);
@@ -130,7 +131,9 @@ public class ApplicationServeur implements Observer {
             e = new EvenementPrive(id, calendrierID, nom, description, image, cal, lieu, auteur);
         }
         try {
-            e.save();
+            if (!e.save()) {
+              return false;
+            }
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
