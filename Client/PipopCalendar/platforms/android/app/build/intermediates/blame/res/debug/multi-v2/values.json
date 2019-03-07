@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\PPIL\\Pipop-Calendar\\Client\\PipopCalendar\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "map": [
+                {
+                    "source": "D:\\PPIL\\Pipop-Calendar\\Client\\PipopCalendar\\platforms\\android\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "4,2,3",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "166,55,107",
+                        "endColumns": "63,51,58",
+                        "endOffsets": "225,102,161"
+                    },
+                    "to": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,119,171",
+                        "endColumns": "63,51,58",
+                        "endOffsets": "114,166,225"
+                    }
+                }
+            ]
+        }
+    ]
+}
