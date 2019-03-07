@@ -1,9 +1,13 @@
 package mycalendar.modele.serveur;
 
+import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.utilisateur.Utilisateur;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -47,5 +51,20 @@ public class ApplicationServeur implements Observer {
     @Override
     public void update(Observable o, Object arg) {
 
+    }
+
+    /**
+     * Lorsqu'un utilisateur souhaite se connecter, cette fonction teste s'il est présent dans la base de données.
+     * S'il est déjà présent alors la connexion sera possible.
+     * @param email L'email de l'utilisateur
+     * @param mdp Le mot de passe de l'utilisateur
+     * @return 0 si la connexion a échoué, 1 si c'est réussi
+     * @throws SQLException
+     */
+    public int authentification(String email, String mdp) throws SQLException {
+        int auth;
+        Utilisateur uti = new Utilisateur(email, mdp);
+        auth = uti.verifierConnexion();
+        return auth;
     }
 }
