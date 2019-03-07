@@ -29,6 +29,15 @@ public class ConnexionClient implements Runnable{
             BufferedReader bos = new BufferedReader(
                     new InputStreamReader(
                             socket.getInputStream()));
+
+            PrintWriter pred = new PrintWriter(
+                    new BufferedWriter(
+                            new OutputStreamWriter(
+                                    socket.getOutputStream()
+                            )
+                    ),true
+            );
+
             String ligne;
             ligne = bos.readLine();
 
@@ -47,8 +56,12 @@ public class ConnexionClient implements Runnable{
             }
 
             // Redirection vers la bonne requete en fonction de la demande du client
+            HashMap<String, String> result = null;
             switch (donnees.get("Request")){
                 case "SignIn":{
+                    result = new HashMap<String, String>();
+                    result.put("Request","SignIn");
+                    result.put("Result","0");
                     break;
                 }
                 case "CreateEvent":{
@@ -61,6 +74,8 @@ public class ConnexionClient implements Runnable{
                 }
             }
 
+            // Réponse vers le client
+            pred.println(ParseurJson.getInstance().encode(result));
 
             bos.close();
             socket.close();
