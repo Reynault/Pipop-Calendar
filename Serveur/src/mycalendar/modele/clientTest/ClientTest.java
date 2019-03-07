@@ -1,9 +1,6 @@
 package mycalendar.modele.clientTest;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -22,7 +19,14 @@ public class ClientTest {
                     ),true
             );
 
+            BufferedReader bos = new BufferedReader(
+                    new InputStreamReader(
+                            socket.getInputStream()));
+
             pred.println("{\"Request\":\"SignIn\"}");
+            String line = bos.readLine();
+            System.out.println(line);
+            bos.close();
             pred.close();
         }catch(IOException e){
             System.out.println(e.getMessage());

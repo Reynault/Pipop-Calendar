@@ -12,7 +12,7 @@
 </template>
 <script>
   import { f7App, f7Panel, f7View, f7Statusbar } from 'framework7-vue';
-  import routesO from './routesO';
+  import routes from './routes';
 
   export default {
     components: {
@@ -31,7 +31,7 @@
       return {
         f7Params: {
           theme,
-          routesO,
+          routes,
           id: 'io.framework7.testapp',
         },
       };

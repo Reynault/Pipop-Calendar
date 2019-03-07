@@ -21,3 +21,6 @@ Cette application a pour but de fournir à l'utilisateur un moyen de gérer ses 
   * Wafaa Louarrat
   * Matthieu Olejniczak
   
+## Sources
+
+  * [Trello](https://trello.com/b/JPPgu0Tu/ppil)

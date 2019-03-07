@@ -126,7 +126,7 @@
 # [v3.6.0](https://github.com/framework7io/framework7/compare/v3.5.2...v3.6.0) - December 7, 2018
   * Core
     * Router
-      * New `keepAlive` routesO. When route's page is specified with `keepAlive: true`, then it, instead of removing and destroying component, it will be detached from DOM and attached back when required.
+      * New `keepAlive` routes. When route's page is specified with `keepAlive: true`, then it, instead of removing and destroying component, it will be detached from DOM and attached back when required.
       * New `router.clearPreviousPages()` method that removes all previous (stacked) pages from DOM
     * Accordion
       * New `accordion:beforeopen` event that is triggered right before accordion will be opened. `event.detail.prevent` contains function that will prevent it from opening if called;
@@ -454,7 +454,7 @@
   * Core
     * All new Gauge component with responsive SVG gauges
     * Router
-      * Added `preRoute` support (middleware) that can be configured per route or globally on View/Router init for all routesO
+      * Added `preRoute` support (middleware) that can be configured per route or globally on View/Router init for all routes
     * Smart Select
       * New `change`/`smartSelectChange` events
     * Autocomplete
@@ -689,7 +689,7 @@
     * Now it is possible to use fancy input elements outside of List View, by just wrapping it with `<div class="input">`
   * Router
     * Fixed issue when route context wasn't available in `async` route
-    * Fixed issue when modal HTML element was duplicated in modal routesO
+    * Fixed issue when modal HTML element was duplicated in modal routes
   * Form
     * Fixed issue when `enctype` attribute was ignored on ajax form
   * VI (video intelligence)
@@ -841,7 +841,7 @@
     * New `backdrop` (true/false) parameter to enable/disable Actions backdrop
   * Router
     * New `currentPageEl` router property that points to current page HTMLElement.
-    * Improved routable tabs support for different routesO but with same tab IDs
+    * Improved routable tabs support for different routes but with same tab IDs
     * Improved dynamic navbar transition using CSS page transitions
   * Form Storage
     * Renamed methods:
@@ -890,9 +890,9 @@
   * PhotoBrowser
     * Improved zoom behavior on Androids (due to Swiper update)
   * Router
-    * Added routesO alias support
+    * Added routes alias support
       ```
-      routesO = [
+      routes = [
         {
           path: '/foo/',
           url: 'somepage.html',
@@ -900,9 +900,9 @@
         }
       ]
       ```
-    * Added routesO redirect support
+    * Added routes redirect support
       ```
-      routesO = [
+      routes = [
         {
           path: '/foo/',
           url: 'somepage.html',
@@ -927,11 +927,11 @@
   * Router
     * Added [path-to-regexp](https://github.com/pillarjs/path-to-regexp) for better route matching with support of RegExp in route path
     * Route `name` renamed to `pageName` parameter to specify page's name to load. Route `name` now means name of the route
-    * Added additional routesO arguments to `async` method. Now it is `async(routeTo, routeFrom, resolve, reject)`
+    * Added additional routes arguments to `async` method. Now it is `async(routeTo, routeFrom, resolve, reject)`
     * `pushState` now supports for multiple Views at a time
     * Router component's context now can be extended with `options.context` route parameter
     * Router component now supports inline nested `<template>` that won't be parsed by Template7
-    * Addded support for dynamic routesO
+    * Addded support for dynamic routes
     * Route events, now it is possible to specify `on` object with page events on route object
   * PhotoBrowser
     * Now uses Virtual Slides by default

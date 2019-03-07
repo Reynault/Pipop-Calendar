@@ -29,15 +29,23 @@ public class ConnexionClient implements Runnable{
             BufferedReader bos = new BufferedReader(
                     new InputStreamReader(
                             socket.getInputStream()));
+
+            PrintWriter pred = new PrintWriter(
+                    new BufferedWriter(
+                            new OutputStreamWriter(
+                                    socket.getOutputStream()
+                            )
+                    ),true
+            );
+
             String ligne;
             ligne = bos.readLine();
 
-            System.out.println("Ligne envoyée par le client: " + ligne);
+            System.out.println("Ligne de donnée envoyée par le client: " + ligne);
 
             HashMap<String, String> donnees =  ParseurJson.getInstance().decode(ligne);
 
-            System.out.println("Traite les données avec un switch (En fonction du type de requête, méthode différente" +
-                    " de ApplicationServeur");
+            System.out.println("Traite les données...");
 
             // Verification de la presence d'une requete dans le message envoyer par le client
             if (!donnees.containsKey("Request")){
@@ -47,20 +55,40 @@ public class ConnexionClient implements Runnable{
             }
 
             // Redirection vers la bonne requete en fonction de la demande du client
+            HashMap<String, String> result = null;
             switch (donnees.get("Request")){
+                // Authentification
                 case "SignIn":{
+                    result = ApplicationServeur.getInstance().authentification(
+                            donnees.get("Email"),
+                            donnees.get("Mdp")
+                    );
                     break;
                 }
+                // Inscription
+                case "SignUp":{
+                    result = ApplicationServeur.getInstance().inscription(
+                            donnees.get("Email"),
+                            donnees.get("Mdp"),
+                            donnees.get("Prenom"),
+                            donnees.get("Nom")
+                    );
+                    break;
+                }
+                //cas creation d'evenement
                 case "CreateEvent":{
                     break;
                 }
                 default:{
+                    // La request ne correspond pas a une demande possible faite au serveur
                     bos.close();
                     socket.close();
                     throw new BadRequestExeption(donnees.get("Request"));
                 }
             }
 
+            // Réponse vers le client
+            pred.println(ParseurJson.getInstance().encode(result));
 
             bos.close();
             socket.close();
