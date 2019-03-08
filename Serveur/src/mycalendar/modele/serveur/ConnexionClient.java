@@ -66,7 +66,6 @@ public class ConnexionClient implements Runnable{
                     break;
                 }
                 case "AddEvent":{
-                    int id = Integer.parseInt(donnees.get("ID"));
                     String calendarName = donnees.get("CalendarName");
                     String eventName = donnees.get("EventName");
                     String eventDescription = donnees.get("EventDescription");
@@ -75,7 +74,7 @@ public class ConnexionClient implements Runnable{
                     String eventLocation = donnees.get("EventLocation");
                     String eventAuthor = donnees.get("EventAuthor");
                     boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
-                    ApplicationServeur.getInstance().creationEvenement(id, calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
+                    ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
                     break;
                 }
                 case "DeleteEvent":{

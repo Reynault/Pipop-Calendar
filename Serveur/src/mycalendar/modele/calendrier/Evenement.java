@@ -1,6 +1,7 @@
 package mycalendar.modele.calendrier;
 
 import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -73,7 +74,7 @@ public abstract class Evenement extends Observable {
             prep.setString(7, this.lieu);
             prep.setString(8, this.auteur);
             prep.setBoolean(9, this.visibilite);
-            if (prep.executeUpdate() == 0) {
+            if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
                 return false;
             }
 
@@ -81,6 +82,12 @@ public abstract class Evenement extends Observable {
         return true;
     }
 
+    /**
+     * Méthode permettant de récupérer un événement depuis la BDD et de le retourner sous forme d'objet
+     * @param idEv l'id de lévénement à trouver
+     * @return l'événement avec toutes ses informations
+     * @throws SQLException
+     */
     public static Evenement find(int idEv) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
@@ -101,6 +108,30 @@ public abstract class Evenement extends Observable {
         }
     }
 
+    /**
+     * Récupère l'ID de l'événement le plus élevé
+     * @return
+     * @throws SQLException
+     */
+    public static int getHighestID() throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        {
+            String request = "SELECT MAX(ide) AS max FROM Evenement;";
+            PreparedStatement prep = connect.prepareStatement(request);
+            prep.execute();
+            ResultSet rs = prep.getResultSet();
+            if (rs.next()) {
+                return rs.getInt("max");
+            }
+            return -1;
+        }
+    }
+
+    /**
+     * Méthode de suppression d'un événement dans la BDD
+     * @return false si erreur lors de l'exécution de la requête, true sinon
+     * @throws SQLException
+     */
     public boolean delete() throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
@@ -110,11 +141,32 @@ public abstract class Evenement extends Observable {
             prep.setInt(2, this.calendrierID);
             prep.setString(3, this.auteur);
             prep.setString(4, this.nomE);
-            if (prep.executeUpdate() == 0) {
+            if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Méthode récupérant la liste des participant d'un événement
+     * @return La liste des utilisateurs participant à l'événement
+     * @throws SQLException
+     */
+    public ArrayList<Utilisateur> findInvites() throws SQLException {
+        ArrayList<Utilisateur> alUsrs = new ArrayList<>();
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        {
+            String request = "SELECT Email FROM utilisateur_evenement WHERE ide=?;";
+            PreparedStatement prep = connect.prepareStatement(request);
+            prep.setInt(1, this.idEv);
+            prep.execute();
+            ResultSet rs = prep.getResultSet();
+            while (rs.next()) {
+                alUsrs.add(new Utilisateur(rs.getString("Email")));
+            }
+        }
+        return alUsrs;
     }
 
 
