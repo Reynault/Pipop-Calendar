@@ -17,3 +17,5 @@ out
 /.gradle
 /.idea
 android.iml
+/app/app.iml
+/CordovaLib/CordovaLib.iml
