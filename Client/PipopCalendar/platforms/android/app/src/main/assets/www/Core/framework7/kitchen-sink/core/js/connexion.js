@@ -8,19 +8,18 @@ $(document).ready(function(){
   });
 
   function connexion(email, mdp){
-      console.log("Connexion");
-      var arr = {action:"SignIn", utilisateurId: email, utilisateurMdp: mdp};
-      console.log(JSON.stringify(arr));
+      console.log("Test de connexion");
+      var arr = {"Request":"SignIn","Email":"Oui?"};
+      console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
-          url: '10.0.2.2',
-          type: 'POST',
+          url: 'http://10.0.2.2:3306',
+          type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
           async: false,
-          success: function(data) {
-              console.log(data);
-              console.log("Success!!");
+          success: function(data, textStatus, jqXHR) {
+              alert(data);
           },
           error: function(jqXHR, textStatus, errorThrown) {
               alert('Erreur de communication avec le serveur');
