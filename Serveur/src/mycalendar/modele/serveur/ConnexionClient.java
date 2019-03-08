@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class ConnexionClient implements Runnable{
 
@@ -20,36 +21,35 @@ public class ConnexionClient implements Runnable{
     @Override
     public void run(){
         try {
-            System.out.println("Un client s'est connecté.");
-
-            System.out.println(socket.getInetAddress().toString());
-
-            System.out.println("Récupération de la donnée sous la forme d'une hashmap avec" +
-                    " le parseur json");
-
+            System.out.println("NOUVEAU CLIENT");
+            // Permet de lire les données
             BufferedReader bos = new BufferedReader(
                     new InputStreamReader(
                             socket.getInputStream()));
-
+            // Permet de répondre au client
             PrintWriter pred = new PrintWriter(
                     new BufferedWriter(
                             new OutputStreamWriter(
                                     socket.getOutputStream()
                             )
-                    ),true
+                    ), true
             );
 
-            String ligne;
-            ligne = bos.readLine();
+            // Formatage de la requête
+            String requete = bos.readLine();
 
-            System.out.println("Ligne de donnée envoyée par le client: " + ligne);
+            String httpVersion = requete.split(" ")[2];
 
-            HashMap<String, String> donnees =  ParseurJson.getInstance().decode(ligne);
+            requete = requete.split(" ")[1].
+                    replaceAll("%22", "\"").
+                    replace("/?{", "{");
 
-            System.out.println("Traite les données...");
+            System.out.println("DONNEE RECUE : " + requete);
+            // Décodage de la chaîne JSON
+            HashMap<String, String> donnees = ParseurJson.getInstance().decode(requete);
 
             // Verification de la presence d'une requete dans le message envoyer par le client
-            if (!donnees.containsKey("Request")){
+            if (!donnees.containsKey("Request")) {
                 bos.close();
                 socket.close();
                 throw new NoRequestException();
@@ -106,13 +106,29 @@ public class ConnexionClient implements Runnable{
 
             }
             // Réponse vers le client
-            pred.println(ParseurJson.getInstance().encode(result));
 
+            // Construction
+            String reponse = ParseurJson.getInstance().encode(result);
+
+            System.out.println("DONNEE ENVOYEE : " + reponse);
+
+            StringBuilder httpResponse = new StringBuilder();
+            httpResponse.append(httpVersion+" 200 OK\n");
+            httpResponse.append("Connection: Closed\n");
+            httpResponse.append("Content-Type: json\n\n");
+            httpResponse.append(reponse);
+
+            // Envoi
+            pred.println(httpResponse.toString());
+
+            // Fermeture des objets
+            pred.close();
             bos.close();
             socket.close();
 
-            System.out.println("On ferme le client.");
+            System.out.println("FIN CLIENT");
         }catch (Exception e){
+            System.out.println("ERREUR CLIENT : \r\t");
             System.out.println(e.getMessage());
         }
     }

@@ -9,7 +9,7 @@ public class ClientTest {
         // Création socket
         int port = 3306;
         try {
-            InetAddress ip = InetAddress.getLocalHost();
+            InetAddress ip = InetAddress.getByName("localhost");
             Socket socket = new Socket(ip, port);
             PrintWriter pred = new PrintWriter(
                     new BufferedWriter(
@@ -27,6 +27,11 @@ public class ClientTest {
             pred.println("{\"Request\":\"DeleteEvent\",\"ID\":\"6\"}");
             String line = bos.readLine();
             System.out.println(line);
+            String request = "GET {\"Request\":\"SignIn\"}";
+            System.out.println("DONNEE ENVOYEE :"+request);
+            pred.println(request);
+            String response = bos.readLine();
+            System.out.println("DONNEE RECUES :"+response);
             bos.close();
             pred.close();
         }catch(IOException e){

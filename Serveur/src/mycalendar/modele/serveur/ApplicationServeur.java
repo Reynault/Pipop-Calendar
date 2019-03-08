@@ -11,9 +11,9 @@ import javax.xml.transform.Result;
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.utilisateur.Utilisateur;
 
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
@@ -44,23 +44,22 @@ public class ApplicationServeur implements Observer {
         return instance;
     }
 
-    public void launchServer() throws IOException, InterruptedException{
+    public void launchServer() throws IOException{
         Thread thread;
-        // LIGNE A MODIFIER POUR METTRE SUR LE SERVEUR
-        InetAddress inet = InetAddress.getLocalHost();
+        // Adresse IP
+        InetAddress inet = InetAddress.getByName("localhost");
+        // Mise en place du serveur
         listener = new ServerSocket(PORT_NUMBER, GestionnaireClient.LIMITE_CLIENT, inet);
-        System.out.println("The server is running...");
+        System.out.println("LAUNCH SERVER");
         // Le serveur attend continuellement un client
         while (true) {
             // On accepte d'un client
             socket = listener.accept();
-            System.out.println("On accepte le client.");
             // Création du thread lié au client en cours
             thread = GestionnaireClient.getInstance().creerThread(
                     new ConnexionClient(socket));
             // Lancement du thread
             thread.start();
-            System.out.println("Je continue d'attendre des clients.");
         }
     }
 
