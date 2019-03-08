@@ -45,6 +45,7 @@ public class Utilisateur{
         if(result.next()){
             connexion = true;
         }
+        connect.close();
         return connexion;
     }
 
@@ -97,6 +98,7 @@ public class Utilisateur{
             // Execution de la mise à jour
             retour = prep.executeUpdate();
         }
+        connect.close();
         return retour;
     }
 

@@ -14,7 +14,7 @@ $(document).ready(function(){
       app.preloader.show();
       $.ajax({
           url: 'http://10.0.2.2:3306',
-          type: 'GET',
+          type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
           async: false,

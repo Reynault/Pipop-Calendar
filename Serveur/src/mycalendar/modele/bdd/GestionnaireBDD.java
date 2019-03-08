@@ -24,7 +24,7 @@ public class GestionnaireBDD{
     }
 
     public static synchronized GestionnaireBDD getInstance() throws SQLException{
-        if(instance==null)
+            if(instance==null)
             instance = new GestionnaireBDD();
         return instance;
     }
