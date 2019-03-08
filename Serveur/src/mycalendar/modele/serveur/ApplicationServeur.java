@@ -65,7 +65,7 @@ public class ApplicationServeur implements Observer {
     }
 
     /**
-     * Méthode serveur de création d'un évenement. C4est celle-ci appelée par le client
+     * Méthode serveur de création d'un évenement. C'est celle-ci qui est appelée par le client
      * @param nomCalendrier nom du calendrier auquel l'événement est associé
      * @param nom nom de l'événement
      * @param description description de l'événement
@@ -74,28 +74,34 @@ public class ApplicationServeur implements Observer {
      * @param lieu lieu à lequel l'événement va se dérouler
      * @param auteur créateur de l'événement
      * @param visible visibilité des événements auprès des autres utilisateurs
-     * @return code d'erreur (0 si tout s'est bien passé, > 0 si une erreur s'est produite)
+     * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
-    public int creationEvenement(String nomCalendrier, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) {
+    public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) {
         int calendrierID;
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "AddEvent");
         try {
             calendrierID = Calendrier.getCalendrierID(nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
             // nomCalendrier spécifié inexistant : son code d'erreur est 2
             if (calendrierID == -1) {
-                return 2;
+                res.put("Result", "Calendar doesn't exist");
+                return res;
             }
             if (!this.verifierEvenement(auteur, calendrierID, nom)) { // On vérifie que l'événement n'existe pas déjà
                 // Données invalides : l'événement existe déjà ; son code d'erreur associé est 1
-                return 1;
+                res.put("Result", "Event already exists");
+                return res;
             }
             if (!this.createEvenement(calendrierID, nom, description, image, date, lieu, auteur, visible)) { // On crée l'événement
                 // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
-                return 3;
+                res.put("Result", "Couldn't insert new event into database");
+                return res;
             }
         } catch (ParseException | SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        res.put("Result", "Success");
+        return res;
     }
 
     /**
@@ -150,28 +156,33 @@ public class ApplicationServeur implements Observer {
     }
 
     /**
-     * Méthode de suppression d'un événement
+     * Méthode serveur de suppression d'un événement appelée par le client
      * @param idEv l'ID de l'événement à supprimer
-     * @return 1 si l'ID spécifié n'a pas d'événements associé, 2 si erreur de cohérence dans la BDD, 0 lors d'une suppression avec succès
+     * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
-    public int suppressionEvenement(int idEv) {
+    public HashMap<String, String>  suppressionEvenement(int idEv) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "DeleteEvent");
         try {
             Evenement e = null;
             e = Evenement.find(idEv);
             if (e == null) {
                 // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
-                return 1;
+                res.put("Result","Event not found");
+                return res;
             }
             ArrayList<Utilisateur> alUsrs = e.findInvites(); // Récupération de la liste des participants de l'événement
             this.envoiNotifications(alUsrs); // Notification des utilisateurs
             if (!e.delete()) {
                 // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
-                return 2;
+                res.put("Result","Couldn't delete event from database");
+                return res;
             }
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
-        return 0;
+        res.put("Result","Success");
+        return res;
     }
 
     //TODO coder cette méthode quand les notifications seront faites
@@ -230,13 +241,13 @@ public class ApplicationServeur implements Observer {
             case 0:
             {
                 // Utilisateur déjà existant
-                res.put("Result","Username already exist");
+                res.put("Result","Username already exists");
                 break;
             }
             case 2:
             {
                 // Cas dans lequel une des données est trop longue
-                res.put("Result","Données trop longues");
+                res.put("Result","Data length too big");
                 break;
             }
         }

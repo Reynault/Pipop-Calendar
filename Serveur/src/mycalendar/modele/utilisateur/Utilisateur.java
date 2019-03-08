@@ -14,10 +14,6 @@ public class Utilisateur{
 
     private String email, nom, tmp_password, password, prenom;
 
-    public Utilisateur(String email) {
-        this.email = email;
-    }
-
     /**
      * Constructeur à quatre paramètres
      * @param email l'email

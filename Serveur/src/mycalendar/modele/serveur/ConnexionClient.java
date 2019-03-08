@@ -57,16 +57,16 @@ public class ConnexionClient implements Runnable{
 
             // Redirection vers la bonne requete en fonction de la demande du client
             HashMap<String, String> result = null;
-            switch (donnees.get("Request")){
+            switch (donnees.get("Request")) {
                 // Authentification
-                case "SignIn":{
+                case "SignIn": {
                     result = ApplicationServeur.getInstance().authentification(
                             donnees.get("Email"),
                             donnees.get("Mdp")
                     );
                     break;
                 }
-                case "AddEvent":{
+                case "AddEvent": {
                     String calendarName = donnees.get("CalendarName");
                     String eventName = donnees.get("EventName");
                     String eventDescription = donnees.get("EventDescription");
@@ -75,34 +75,36 @@ public class ConnexionClient implements Runnable{
                     String eventLocation = donnees.get("EventLocation");
                     String eventAuthor = donnees.get("EventAuthor");
                     boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
-                    ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
+                    result = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
                     break;
                 }
-                case "DeleteEvent":{
+                case "DeleteEvent": {
                     int idEv = Integer.parseInt(donnees.get("ID"));
-                    ApplicationServeur.getInstance().suppressionEvenement(idEv);
+                    result = ApplicationServeur.getInstance().suppressionEvenement(idEv);
+                    break;
+                }
                 // Inscription
-                case "SignUp":{
+                case "SignUp": {
                     result = ApplicationServeur.getInstance().inscription(
                             donnees.get("Email"),
                             donnees.get("Mdp"),
                             donnees.get("Prenom"),
-                            donnees.get("Nom")
-                    );
-                    break;
+                                donnees.get("Nom")
+                        );
+                        break;
                 }
                 //cas creation d'evenement
-                case "CreateEvent":{
+                case "CreateEvent": {
                     break;
                 }
-                default:{
+                default: {
                     // La request ne correspond pas a une demande possible faite au serveur
                     bos.close();
                     socket.close();
                     throw new BadRequestExeption(donnees.get("Request"));
                 }
-            }
 
+            }
             // Réponse vers le client
             pred.println(ParseurJson.getInstance().encode(result));
 

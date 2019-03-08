@@ -163,7 +163,12 @@ public abstract class Evenement extends Observable {
             prep.execute();
             ResultSet rs = prep.getResultSet();
             while (rs.next()) {
-                alUsrs.add(new Utilisateur(rs.getString("Email")));
+                request = "SELECT Email, nom, mdp, prenom FROM Utilisateur WHERE Email=?;";
+                prep = connect.prepareStatement(request);
+                prep.setString(1, rs.getString("Email"));
+                prep.execute();
+                ResultSet rsd = prep.getResultSet();
+                alUsrs.add(new Utilisateur(rsd.getString("Email"), rsd.getString("nom"), rsd.getString("mdp"), rsd.getString("prenom")));
             }
         }
         return alUsrs;
