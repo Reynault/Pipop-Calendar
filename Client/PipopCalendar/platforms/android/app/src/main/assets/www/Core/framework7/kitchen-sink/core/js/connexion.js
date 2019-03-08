@@ -4,13 +4,14 @@ $(document).ready(function(){
   $("#connexionBouton").click(function(e){
     e.preventDefault();
     //alert("Click!");
-    premiereConnexion();
+    connexion($("#emailInput").val(), $("#mdpInput").val());
   });
 
-  function premiereConnexion(){
+  function connexion(email, mdp){
       console.log("Test de connexion");
       var arr = {"Request":"SignIn","Email":"Oui?"};
       console.log("JSON : "+JSON.stringify(arr));
+      app.preloader.show();
       $.ajax({
           url: 'http://10.0.2.2:3306',
           type: 'GET',
@@ -21,14 +22,12 @@ $(document).ready(function(){
               alert(data);
           },
           error: function(jqXHR, textStatus, errorThrown) {
-              alert('An error occurred... Look at the console (F12 or Ctrl+Shift+I, Console tab) for more information!');
+              alert('Erreur de communication avec le serveur');
                console.log("ERREUR : "+jqXHR);
               console.log("ERREUR : "+textStatus);
                console.log("ERREUR : "+errorThrown);
           }
       });
-      //location.replace("https://www.google.fr");
   }
-
 
 });
