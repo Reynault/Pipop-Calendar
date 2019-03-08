@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../../packages/core/css/framework7.bundle.min.css">
   <!-- Path to your custom app styles-->
   <link rel="stylesheet" href="css/app.css">
+  <!-- Your app icon -->
   <link rel="apple-touch-icon" href="img/icon.png">
   <link rel="icon" href="img/icon.png">
 </head>
@@ -24,67 +25,55 @@
     <!-- Your main view, should have "view-main" class -->
     <div class="view view-main">
       <!-- Initial Page, "data-name" contains page name -->
-      <div data-name="home" class="page">
-        <!-- Left panel -->
-        <div class="panel panel-left panel-cover">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-inner sliding">
-                <div class="title">Navigation</div>
-              </div>
-            </div>
-            <div class="page-content">
-              <div class="list links-list no-hairlines">
-                <ul>
-                  <li>
-                    <a href="#">Link Item 1</a>
-                  </li>
-                  <li>
-                    <a href="#">Link Item 1</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Right panel -->
-        <div class="panel panel-right panel-cover">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-inner sliding">
-                <div class="title">Settings</div>
-              </div>
-            </div>
-            <div class="page-content">
-              <div class="list links-list no-hairlines">
-                <ul>
-                  <li>
-                    <a href="/themes/" class="panel-close">Theme</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Top Navbar -->
-        <div class="navbar no-shadow">
-          <div class="navbar-inner">
-            <div class="left">
-              <a href="#" class="link icon-only panel-open" data-panel="left">
-                  <i class="material-icons">menu</i>
-              </a>
-            </div>
-            <div class="title">Pipop Calendar</div>
-            <div class="right">
-              <a href="#" class="link icon-only panel-open" data-panel="right">
-                  <i class="material-icons">menu</i>
-              </a>
-            </div>
-          </div>
-        </div>
+      <div class="page" data-name="home">
         <!-- Scrollable page content -->
         <div class="page-content login-screen-content">
-          <div class="login-screen-title"><img src="img/logo.svg" alt="Pipop Calendar"></div>
+
+          <!-- Left panel -->
+          <div class="panel panel-left panel-cover">
+            <div class="page">
+              <div class="navbar no-shadow">
+                <div class="navbar-inner sliding">
+                  <div class="title">Navigation</div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="list links-list no-hairlines">
+                  <ul>
+                    <li>
+                      <a href="#">Link Item 1</a>
+                    </li>
+                    <li>
+                      <a href="#">Link Item 1</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Right panel -->
+          <div class="panel panel-right panel-cover">
+            <div class="page">
+              <div class="navbar no-shadow">
+                <div class="navbar-inner sliding">
+                  <div class="title">Settings</div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="list links-list no-hairlines">
+                  <ul>
+                    <li>
+                      <a href="/themes/" class="panel-close">Theme</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="login-screen-title arista text-color-lightblue">Welcome to
+            <img src="img/logo.svg" alt="Pipop Calendar">
+          </div>
           <!-- Login form -->
           <form>
             <div class="list">
@@ -112,9 +101,13 @@
             <div class="list">
               <ul>
                 <li>
-                  <a href="#" class="item-link list-button button button-large">Sign in</a>
+                  <a href="#" id="connexionBouton" class="item-link list-button button button-large">Sign in</a>
                 </li>
               </ul>
+              <div class="block-footer">Don't have an account ? <a class="link" href="/sign-up/">Sign up here !</a></div>
+              <div class="block-footer">
+                <a class="link" href="/user-home/">User home</a>
+              </div>
             </div>
           </form>
         </div>
@@ -123,6 +116,8 @@
   </div>
   <!-- Path to Framework7 Library Bundle JS-->
   <script src="../../packages/core/js/framework7.bundle.min.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/sender.js"></script>
   <!-- Path to your app js-->
   <script src="js/routes.js"></script>
 </body>

@@ -73,20 +73,16 @@
 
 .arista {
   font-family: 'Arista';
-  font-size: 3em;
-  line-height: 1;
-  letter-spacing: normal;
   text-transform: lowercase;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
+}
+
+:root {
+  --f7-login-screen-blocks-max-width: 80%;
 }
 
 .ios {
   --f7-list-margin-vertical: 3px;
 }
-
 .md {
   --f7-list-margin-vertical: 0px;
 }
@@ -98,14 +94,6 @@
 }
 .theme-dark .demo-list-icon {
   background-color: #555;
-}
-.icon-f7 {
-  background: url(../img/f7-icon.png) no-repeat center;
-  background-size: cover;
-}
-.icon-vi {
-  background: url(../img/vi-icon.png) no-repeat center;
-  background-size: cover;
 }
 
 .ios .demo-list-icon, .ios .icon-f7, .ios .icon-vi {
@@ -506,7 +494,7 @@ code {
   text-transform: capitalize;
 }
 .demo-bars-picker {
-  height: 200px;
+  height: 100px;
   border-radius: 10px;
   box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
   cursor: pointer;
