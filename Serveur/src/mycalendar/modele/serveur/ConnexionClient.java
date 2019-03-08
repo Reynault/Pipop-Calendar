@@ -35,11 +35,14 @@ public class ConnexionClient implements Runnable{
             );
 
             // Formatage de la requête
+
             String requete = bos.readLine();
 
-            String httpVersion = requete.split(" ")[2];
+            String[] tab = requete.split(" ");
 
-            requete = requete.split(" ")[1].
+            String httpVersion = tab[tab.length-1];
+
+            requete = requete.substring(4).
                     replaceAll("%22", "\"").
                     replace("/?{", "{");
 
