@@ -12,8 +12,6 @@ public class Principale {
             ApplicationServeur.getInstance().launchServer();
         }catch (ExceptionLimiteAtteinte e) {
             System.out.printf(e.getMessage());
-        }catch (InterruptedException e){
-            System.out.println(e.getMessage());
         }catch(IOException e){
             System.out.printf(e.getMessage());
         }finally {
