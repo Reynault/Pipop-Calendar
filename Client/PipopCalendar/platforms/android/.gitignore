@@ -13,3 +13,7 @@ out
 # Gradle builds
 /build
 /app/build
+/CordovaLib/build
+/.gradle
+/.idea
+android.iml
