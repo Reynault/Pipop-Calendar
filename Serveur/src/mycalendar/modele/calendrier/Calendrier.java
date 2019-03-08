@@ -15,16 +15,24 @@ public class Calendrier {
      * @return l'ID du calendrier récupéré (-1 si le calendrier n'existe pas)
      * @throws SQLException
      */
-    public static int getCalendrierID(String nomCalendrier) throws SQLException {
+    public static int getCalendrierID(String nomUtilisateur, String nomCalendrier) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
-            String request = "SELECT idc FROM Calendrier WHERE nomC=?;";
+            String request = "SELECT idc FROM utilisateur_calendrier WHERE Email=?;";
             PreparedStatement prep = connect.prepareStatement(request);
-            prep.setString(1, nomCalendrier);
+            prep.setString(1, nomUtilisateur);
             prep.execute();
             ResultSet rs = prep.getResultSet();
-            if (rs.next()) {
-                return rs.getInt("idc");
+            while (rs.next()) {
+                request = "SELECT idc FROM Calendrier WHERE idc=? AND nomC=?;";
+                prep = connect.prepareStatement(request);
+                prep.setInt(1, rs.getInt("idc"));
+                prep.setString(2, nomCalendrier);
+                prep.execute();
+                ResultSet rst = prep.getResultSet();
+                if (rst.next()) {
+                    return rst.getInt("idc");
+                }
             }
         }
         return -1;

@@ -23,13 +23,12 @@ public class ClientTest {
                     new InputStreamReader(
                             socket.getInputStream()));
 
-            //pred.println("{\"Request\":\"AddEvent\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super5\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2019\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"cockman\", \"EventVisibility\":\"true\"}");
-            pred.println("{\"Request\":\"DeleteEvent\",\"ID\":\"6\"}");
-            String line = bos.readLine();
-            System.out.println(line);
-            String request = "GET {\"Request\":\"SignIn\"}";
-            System.out.println("DONNEE ENVOYEE :"+request);
+            String request = "GET {\"Request\":\"AddEvent\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super5\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2019\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"pootis@spenser.tf\",\"EventVisibility\":\"true\"}";
+            //String request = "GET {\"Request\":\"DeleteEvent\",\"ID\":\"6\"}";
+            System.out.println("DONNEE ENVOYEE : " + request);
             pred.println(request);
+            //pred.println("{\"Request\":\"DeleteEvent\",\"ID\":\"6\"}");
+            String line = bos.readLine();
             String response = bos.readLine();
             System.out.println("DONNEE RECUES :"+response);
             bos.close();

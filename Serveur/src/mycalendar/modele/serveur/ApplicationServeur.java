@@ -80,7 +80,7 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "AddEvent");
         try {
-            calendrierID = Calendrier.getCalendrierID(nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
+            calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
             // nomCalendrier spécifié inexistant : son code d'erreur est 2
             if (calendrierID == -1) {
                 res.put("Result", "Calendar doesn't exist");
