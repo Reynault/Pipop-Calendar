@@ -14,10 +14,10 @@ $(document).ready(function(){
       app.preloader.show();
       $.ajax({
           url: 'http://10.0.2.2:3306',
-          type: 'POST',
+          type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: false,
+          async: true,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);

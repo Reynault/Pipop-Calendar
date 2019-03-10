@@ -49,9 +49,9 @@ public class ConnexionClient implements Runnable{
 
             if (method.equals("GET")){
                 // Si c'est un get, on récupère les paramètres dans le header
-                requete = requete.substring(4,requete.length()-8).
+                json.append(requete.substring(4,requete.length()-8).
                         replaceAll("%22", "\"").
-                        replace("/?{", "{");
+                        replace("/?{", "{"));
             }else if(method.equals("POST")){
                 // Lecture du body
                 ArrayList<Byte> data = new ArrayList<Byte>();

@@ -16,7 +16,7 @@ $(document).ready(function(){
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: false,
+          async: true,
           success: function(msg) {
               console.log("Success de l'envois du json : "+JSON.stringify(arr));
           },
