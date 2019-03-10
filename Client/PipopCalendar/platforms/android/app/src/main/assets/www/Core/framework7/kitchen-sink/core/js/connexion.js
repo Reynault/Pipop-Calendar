@@ -56,7 +56,7 @@ $(document).ready(function(){
                    }
                   }
                  );//
-                 $("#connexionErrMsg").append("Erreur de connexion. Vérifier vos identifiant-mot de passe");
+                 $("#connexionErrMsg").append("Connexion error. Please, check your login information.");
                  $("#emailInput").css("border","2px solid #ff0000");
                  $("#mdpInput").css("border","2px solid #ff0000");
                 }

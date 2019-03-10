@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-  console.log("Envois de données au serveur");
+  console.log("Envoi de données au serveur");
   $("#inscriptionBouton").click(function(e){
     e.preventDefault();
     inscription($("#emailInscripInput").val(), $("#mdpInscripInput").val(), $("#nomInput").val(), $("#prenomInput").val());
@@ -18,7 +18,7 @@ $(document).ready(function(){
           dataType: 'text',
           async: false,
           success: function(msg) {
-              console.log("Success de l'envois du json : "+JSON.stringify(arr));
+              console.log("Success de l'envoi du json : "+JSON.stringify(arr));
           },
           error: function(jqXHR, textStatus, errorThrown) {
               alert('Erreur de communication avec le serveur');
