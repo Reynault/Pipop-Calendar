@@ -8,7 +8,8 @@ $(document).ready(function(){
   });
 
   function connexion(email, mdp){
-
+      // Il faut crypter les données
+      // Il faut vérifier les données
       var arr = {"Request":"SignIn","Email":email, "Mdp": mdp};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
@@ -23,22 +24,7 @@ $(document).ready(function(){
               var obj = JSON.parse(data);
               console.log("data : "+obj["Result"]);
               if(obj["Result"]==0){
-                window.plugins.toast.showWithOptions(
-                   {
-                     message: "Connexion Réussie",
-                     duration: 1500, // ms
-                     position: "bottom",
-                     addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
-                     styling: {
-                       opacity: 0.75, // 0.0 (transparent) to 1.0 (opaque). Default 0.8
-                       backgroundColor: '#008000', // make sure you use #RRGGBB. Default #333333
-                       textSize: 12, // Default is approx. 13.
-                       cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
-                       horizontalPadding: 22, // iOS default 16, Android default 50
-                       verticalPadding: 20 // iOS default 12, Android default 30
-                     }
-                   }
-                 );
+                window.location = "user-home.html";
               }else{
                 window.plugins.toast.showWithOptions(
                 {
