@@ -9,6 +9,8 @@ $(document).ready(function(){
 
   function inscription(email, mdp, nom, prenom){
       console.log("Inscription");
+      // Ne pas oublier de crypter les données
+      // Ne pas oublier de vérifier les données
       var arr = {"Request":"SignUp", "Email": email, "Mdp": mdp, "Nom": nom, "Prenom": prenom};
       console.log(JSON.stringify(arr));
       $.ajax({
@@ -17,8 +19,31 @@ $(document).ready(function(){
           data: JSON.stringify(arr),
           dataType: 'text',
           async: true,
-          success: function(msg) {
-              console.log("Success de l'envoi du json : "+JSON.stringify(arr));
+          success: function(data, textStatus, jqXHR) {
+              app.preloader.hide();
+              let obj = JSON.parse(data);
+              switch(obj["Result"]){
+                case "0":
+                {
+                  window.location = "user-home.html";
+                  break;
+                }
+                case "1":
+                {
+                  // Message d'erreur : L'utilisateur existe déjà
+                  break;
+                }
+                case "2":
+                {
+                  // Message d'erreur : données trop longues
+                  break;
+                }
+                default:
+                {
+                  // Message d'erreur : autre
+                  break;
+                }
+              }
           },
           error: function(jqXHR, textStatus, errorThrown) {
               alert('Erreur de communication avec le serveur');
@@ -27,7 +52,6 @@ $(document).ready(function(){
               console.log("ERREUR : "+errorThrown);
           }
       });
-      //location.replace("https://www.google.fr");
   }
 
 });
