@@ -9,10 +9,10 @@ $(document).ready(function(){
 
   function inscription(email, mdp, nom, prenom){
       console.log("Inscription");
-      var arr = {action:"SignUp", utilisateurId: email, utilisateurMdp: mdp, utilisateurNom: nom, utilisateurPrenom: prenom};
+      var arr = {"Request":"SignUp", "Email": email, "Mdp": mdp, "Nom": nom, "Prenom": prenom};
       console.log(JSON.stringify(arr));
       $.ajax({
-          url: '10.0.2.2:3306',
+          url: 'http://10.0.2.2:3306',
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
