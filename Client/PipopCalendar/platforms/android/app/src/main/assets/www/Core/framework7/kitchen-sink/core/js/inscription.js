@@ -12,7 +12,7 @@ $(document).ready(function(){
       console.log(JSON.stringify(arr));
       $.ajax({
           url: '10.0.2.2:3306',
-          type: 'GET',
+          type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
           async: false,
