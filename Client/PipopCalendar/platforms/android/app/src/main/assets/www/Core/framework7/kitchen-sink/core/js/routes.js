@@ -1,33 +1,9 @@
-var app = new Framework7({
-  // App root element
-  root: '#app',
-  // App Name
-  name: 'Pipop Calendar',
-  // Enable swipe panel
-  panel: {
-    swipe: 'both',
-  },
-  // Add default routes
+var mainView = app.views.create('.view-main', {
   routes: [
-    {
-      path: '/',
-      url: './index.html',
-      name: 'home',
-    },
     {
       path: '/themes/',
       componentUrl: './pages/themes.html',
       name: 'themes',
-    },
-    {
-      path: '/sign-up/',
-      url: './pages/sign-up.html',
-      name: 'sign-up',
-    },
-    {
-      path: '/user-home/',
-      componentUrl: './pages/user-home.html',
-      name: 'user-home',
     },
     // Default route, match to all pages (e.g. 404 page)
     {
@@ -37,4 +13,47 @@ var app = new Framework7({
   ],
 });
 
-var mainView = app.views.create('.view-main');
+var left = app.panel.create({
+  el: '<div class="panel panel-left panel-cover">' +
+    '<div class="page">' +
+      '<div class="navbar no-shadow">' +
+        '<div class="navbar-inner sliding">' +
+          '<div class="title">Navigation</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="page-content">' +
+        '<div class="list links-list no-hairlines">' +
+          '<ul>' +
+            '<li>' +
+              '<a href="#">Link Item 1</a>' +
+            '</li>' +
+            '<li>' +
+              '<a href="#">Link Item 1</a>' +
+            '</li>' +
+          '</ul>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>',
+});
+
+var right = app.panel.create({
+  el: '<div class="panel panel-right panel-cover">' +
+    '<div class="page">' +
+      '<div class="navbar no-shadow">' +
+        '<div class="navbar-inner sliding">' +
+          '<div class="title">Settings</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="page-content">' +
+        '<div class="list links-list no-hairlines">' +
+          '<ul>' +
+            '<li>' +
+              '<a href="/themes/" class="panel-close">Theme</a>' +
+            '</li>' +
+          '</ul>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>',
+});

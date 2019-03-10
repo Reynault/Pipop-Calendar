@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <!-- Color theme for statusbar -->
+    <meta name="theme-color" content="#AADFF1">
+    <!-- Your app title -->
+    <title>Pipop Calendar</title>
+    <!-- Path to Framework7 Library Bundle CSS -->
+    <link rel="stylesheet" href="../../packages/core/css/framework7.bundle.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/app.css">
+    <!-- Your app icon -->
+    <link rel="apple-touch-icon" href="img/icon.png">
+    <link rel="icon" href="img/icon.png">
+  </head>
+  <body>
+    <!-- App root element -->
+    <div id="app">
+      <!-- Statusbar overlay -->
+      <div class="statusbar"></div>
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- Initial Page, "data-name" contains page name -->
+        <div class="page" data-name="user-home">
+
+          <!-- Top Navbar -->
+          <div class="navbar no-shadow">
+            <div class="navbar-inner">
+              <div class="left">
+                <a href="#" class="link icon-only panel-open" data-panel="left">
+                    <i class="material-icons">menu</i>
+                </a>
+              </div>
+              <div class="title">Pipop Calendar</div>
+              <div class="right">
+                <a href="#" class="link icon-only panel-open" data-panel="right">
+                    <i class="material-icons">menu</i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="page-content">
+
+            <div class="block-title">Default calendar</div>
+            <div class="block block-strong no-padding">
+              <div id="demo-calendar-inline-container"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library Bundle JS-->
+    <script src="../../packages/core/js/framework7.bundle.min.js"></script>
+    <!-- Path to your app js-->
+    <script src="js/app.js"></script>
+    <script src="js/routes.js"></script>
+    <script>
+      var $$ = Dom7;
+      var now = new Date();
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var weekLater = new Date().setDate(today.getDate() + 7);
+      var calendarInline = app.calendar.create({
+        containerEl: '#demo-calendar-inline-container',
+        value: [new Date()],
+        weekHeader: true,
+        events: [
+          {
+            date: today,
+            color: 'blue',
+          },
+          {
+            date: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5),
+            color: 'red',
+          },
+          {
+            from: new Date().setDate(today.getDate() + 4),
+            to: new Date().setDate(today.getDate() + 6),
+            color: '#000',
+          },
+        ],
+        renderToolbar: function () {
+          return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
+            '<div class="toolbar-inner">' +
+              '<div class="calendar-month-selector">' +
+                '<a href="#" class="link icon-only calendar-prev-month-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                '<span class="current-month-value"></span>' +
+                '<a href="#" class="link icon-only calendar-next-month-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+              '</div>' +
+              '<div class="calendar-year-selector">' +
+                '<a href="#" class="link icon-only calendar-prev-year-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                '<span class="current-year-value"></span>' +
+                '<a href="#" class="link icon-only calendar-next-year-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        },
+      });
+    </script>
+  </body>
+</html>
