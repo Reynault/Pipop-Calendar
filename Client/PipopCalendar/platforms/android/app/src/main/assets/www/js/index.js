@@ -20,7 +20,6 @@ var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-        location.replace("Core/framework7/kitchen-sink/core/index.html");
     },
 
     // deviceready Event Handler
@@ -29,6 +28,7 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
+        location.replace("Core/framework7/kitchen-sink/core/index.html");
     },
 
     // Update DOM on a Received Event

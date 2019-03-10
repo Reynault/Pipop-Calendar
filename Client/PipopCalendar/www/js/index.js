@@ -20,6 +20,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        location.replace("Core/framework7/kitchen-sink/core/index.html");
     },
 
     // deviceready Event Handler

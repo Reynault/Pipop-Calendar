@@ -1,11 +1,10 @@
 package mycalendar.modele.serveur;
 
-import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.utilisateur.Utilisateur;
 
-import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -30,23 +29,21 @@ public class ApplicationServeur implements Observer {
         return instance;
     }
 
-    public void launchServer() throws IOException, InterruptedException{
+    public void launchServer() throws IOException{
         Thread thread;
-        // LIGNE A MODIFIER POUR METTRE SUR LE SERVEUR
-        InetAddress inet = InetAddress.getLocalHost();
-        listener = new ServerSocket(PORT_NUMBER, GestionnaireClient.LIMITE_CLIENT, inet);
-        System.out.println("The server is running...");
+        // Adresse IP
+        InetAddress inet = InetAddress.getByName("localhost");
+        // Mise en place du serveur
+        listener = new ServerSocket(PORT_NUMBER, 100, inet);
+        System.out.println("LAUNCH SERVER");
         // Le serveur attend continuellement un client
         while (true) {
             // On accepte d'un client
             socket = listener.accept();
-            System.out.println("On accepte le client.");
             // Création du thread lié au client en cours
-            thread = GestionnaireClient.getInstance().creerThread(
-                    new ConnexionClient(socket));
+            thread = new Thread(new ConnexionClient(socket));
             // Lancement du thread
             thread.start();
-            System.out.println("Je continue d'attendre des clients.");
         }
     }
 
@@ -69,10 +66,10 @@ public class ApplicationServeur implements Observer {
         // Vérification de la connexion
         if(Utilisateur.verifierConnexion(email, mdp)){
             // Récupération des calendriers de l'utilisateur
-
+            res.put("Result","0");
         }else{
             // Utilisateur non trouvé
-            res.put("Result","User not found");
+            res.put("Result","1");
         }
         return res;
     }
@@ -94,19 +91,19 @@ public class ApplicationServeur implements Observer {
             case 1:
             {
                 // Inscription réussie
-                res.put("Result","Success");
+                res.put("Result","0");
                 break;
             }
             case 0:
             {
                 // Utilisateur déjà existant
-                res.put("Result","Username already exist");
+                res.put("Result","1");
                 break;
             }
             case 2:
             {
                 // Cas dans lequel une des données est trop longue
-                res.put("Result","Données trop longues");
+                res.put("Result","2");
                 break;
             }
         }
