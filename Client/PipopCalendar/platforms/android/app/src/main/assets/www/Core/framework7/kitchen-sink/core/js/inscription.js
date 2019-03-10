@@ -11,8 +11,8 @@ $(document).ready(function(){
       var arr = {action:"SignUp", utilisateurId: email, utilisateurMdp: mdp, utilisateurNom: nom, utilisateurPrenom: prenom};
       console.log(JSON.stringify(arr));
       $.ajax({
-          url: '10.0.2.2',
-          type: 'POST',
+          url: '10.0.2.2:3306',
+          type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
           async: false,
