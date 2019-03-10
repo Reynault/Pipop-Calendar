@@ -38,6 +38,8 @@ public class ConnexionClient implements Runnable{
 
             // Formatage de la requête
             String requete = bos.readLine();
+            StringBuilder json = new StringBuilder();
+            String[] lignes;
 
             // Récupération de la version de http
             String[] tab = requete.split(" ");
@@ -65,14 +67,17 @@ public class ConnexionClient implements Runnable{
                 }
                 // puis on les transforme en chaîne de caractères
                 requete = new String(cbo, Charset.defaultCharset());
-                requete = requete.split("\n")[11];
+                lignes = requete.split("\n");
+                for(int i = 11; i < lignes.length; i++){
+                    json.append(lignes[i]);
+                }
             }
 
 
-            System.out.println("DONNEE RECUE : " + requete);
-            System.out.println("FINqsdqds");
+            System.out.println("DONNEE RECUE : " + json.toString());
+
             // Décodage de la chaîne JSON
-            HashMap<String, String> donnees = ParseurJson.getInstance().decode(requete);
+            HashMap<String, String> donnees = ParseurJson.getInstance().decode(json.toString());
 
             // Verification de la presence d'une requete dans le message envoyer par le client
             if (!donnees.containsKey("Request")) {

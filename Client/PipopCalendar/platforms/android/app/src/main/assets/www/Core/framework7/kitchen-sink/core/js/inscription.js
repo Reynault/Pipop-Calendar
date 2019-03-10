@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 
   console.log("Envois de données au serveur");
