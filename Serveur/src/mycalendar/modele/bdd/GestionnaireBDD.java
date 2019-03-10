@@ -7,20 +7,21 @@ import java.util.Properties;
 public class GestionnaireBDD{
     private static GestionnaireBDD instance;
     public static Properties proprietes;
-    private Connection connect;
+    private static Connection connect;
     private static String userName = "pipop";
     private static String password ="calendar";
     private static String serverName = "tomgalanx.ovh";
     private static String portNumber = "3306";
     private static String Name = "pipop";
+    private static String url;
+    private static Properties connectionProps;
 
     public GestionnaireBDD() throws SQLException{
-        Properties connectionProps = new Properties();
+        connectionProps = new Properties();
         connectionProps.put("user", userName);
         connectionProps.put("password", password);
-        String url = "jdbc:mysql://" + serverName + ":";
+        url = "jdbc:mysql://" + serverName + ":";
         url += portNumber + "/" + Name;
-        connect = DriverManager.getConnection(url, connectionProps);
     }
 
     public static synchronized GestionnaireBDD getInstance() throws SQLException{
@@ -31,7 +32,8 @@ public class GestionnaireBDD{
 
     public static Connection getConnection() throws SQLException{
         GestionnaireBDD co= getInstance();
-        return co.connect;
+        connect = DriverManager.getConnection(url, connectionProps);
+        return connect;
     }
 
     public void setNomDB(String nomDb){
