@@ -87,8 +87,15 @@
   --f7-list-margin-vertical: 0px;
 }
 
-#new_calendar {
+#new_calendar i {
   vertical-align: text-bottom;
+}
+
+.square {
+  display: inline-block;
+  width: 150px;
+  text-align: center;
+  border-radius: 10px;
 }
 
 .demo-list-icon, .icon-f7 {

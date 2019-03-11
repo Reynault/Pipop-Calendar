@@ -3,10 +3,6 @@ var app = new Framework7({
   root: '#app',
   // App Name
   name: 'Pipop Calendar',
-  // Enable swipe panel
-  panel: {
-    swipe: 'both',
-  },
   // Add default routes
   routes: [
     {
@@ -26,12 +22,12 @@ var app = new Framework7({
             },
             error:function(msg) {
               console.log("Error chargement script inscription");
-            },
+            }
           })
-        },
-      },
-    },
-  ],
+        }
+      }
+    }
+  ]
 });
 
 var mainView = app.views.create('.view-main');

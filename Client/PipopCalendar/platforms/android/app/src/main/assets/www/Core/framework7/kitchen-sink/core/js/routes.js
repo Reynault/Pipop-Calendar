@@ -3,14 +3,19 @@ var mainView = app.views.create('.view-main', {
     {
       path: '/themes/',
       componentUrl: './pages/themes.html',
-      name: 'themes',
+      name: 'themes'
+    },
+    {
+      path: '/calendar-form/',
+      componentUrl: './pages/calendar-form.html',
+      name: 'calendar-form'
     },
     // Default route, match to all pages (e.g. 404 page)
     {
       path: '(.*)',
-      url: './pages/404.html',
-    },
-  ],
+      url: './pages/404.html'
+    }
+  ]
 });
 
 var left = app.panel.create({
