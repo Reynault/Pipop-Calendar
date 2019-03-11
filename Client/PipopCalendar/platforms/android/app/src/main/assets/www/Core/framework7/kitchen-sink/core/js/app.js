@@ -14,6 +14,17 @@ var app = new Framework7({
           console.log("Chargement formulaire");
           console.log($("#emailInput"));
           $.ajax({
+            url: "js/sha.js",
+            dataType: "script",
+            cache: true,
+            success:function(msg) {
+              console.log("Success!!");
+            },
+            error:function(msg) {
+              console.log("Error chargement script de cryptage");
+            },
+          })
+          $.ajax({
             url: "js/inscription.js",
             dataType: "script",
             cache: true,

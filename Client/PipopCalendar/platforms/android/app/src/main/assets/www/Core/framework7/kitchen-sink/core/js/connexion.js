@@ -10,12 +10,15 @@ $(document).ready(function(){
   function connexion(email, mdp){
       // Il faut crypter les données
       // Il faut vérifier les données
-      var arr = {"Request":"SignIn","Email":email, "Mdp": mdp};
+      var crypMdp =  new jsSHA("SHA-512", "TEXT");
+      crypMdp.update(mdp);
+      var hash = crypMdp.getHash("HEX");
+      var arr = {"Request":"SignIn","Email":email, "Mdp":hash};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
-          url: 'http://10.0.2.2:3306',
-          type: 'GET',
+          url: 'https://10.0.2.2:3306',
+          type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
           async: true,
