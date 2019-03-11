@@ -1,12 +1,15 @@
 package mycalendar.modele.serveur;
 
+import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Observable;
@@ -66,6 +69,14 @@ public class ApplicationServeur implements Observer {
         // Vérification de la connexion
         if(Utilisateur.verifierConnexion(email, mdp)){
             // Récupération des calendriers de l'utilisateur
+			Connection connect = GestionnaireBDD.getInstance().getConnection();
+			String request = "SELECT * FROM utilisateur_calendrier WHERE Email = ? ;";
+			PreparedStatement prep = connect.prepareStatement(request);
+			prep.setString(1, email);
+			ResultSet result = prep.executeQuery();
+			while(result.next()){
+				
+			}
             res.put("Result","0");
         }else{
             // Utilisateur non trouvé
