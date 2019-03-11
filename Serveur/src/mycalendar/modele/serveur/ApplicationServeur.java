@@ -184,6 +184,75 @@ public class ApplicationServeur implements Observer {
         return res;
     }
 
+    /**
+     * Méthode serveur de modification d'un événement appelée par le client
+     * @param idEv l'ID de l'événement à modifier
+     * @param calendrierID l'ID du calendrier de l'événement modifier
+     * @param description la description de l'événement modifier
+     * @param image l'image de l'événement modifier
+     * @param date la date de l'événement modifier
+     * @param lieu le lieu de l'événement modifier
+     * @param auteur l'auteur de l'événement modifier
+     * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
+     */
+    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "ModifyEvent");
+        try {
+            Evenement e = null;
+            e = Evenement.find(idEv);
+            if (e == null) {
+                // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
+                res.put("Result","Event not found");
+                return res;
+            }
+            if (date.before(Calendar.getInstance().getTime())){
+                // Date déjà passée
+                res.put("Result","Date déja passée");
+                return res;
+            }
+            if (!e.modify(calendrierID, nomE, description, image,date, lieu, auteur)) {
+                // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
+                res.put("Result","Couldn't modify event from database");
+                return res;
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        res.put("Result","Success");
+        return res;
+    }
+
+
+    /**
+     * Méthode serveur de consultation d'un évenement. C'est celle-ci qui est appelée par le client
+     * @param idEV ID de l'événement
+     * @return Hashmap indiquant si la requête s'est bien déroulée et les données de l'événement demandé et si non, l'erreur associé
+     */
+    public HashMap<String, String> consultationEvenement(String idEV) {
+        int calendrierID;
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "ConsultEvent");
+        try {
+            //calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
+            // nomCalendrier spécifié inexistant : son code d'erreur est 2
+            Evenement e = Evenement.find(Integer.parseInt(idEV));
+            if (e == null) {
+                res.put("Result", "Event doesn't exist");
+                return res;
+            }
+            else{
+                res.put("Result", "Success");
+                res.putAll(e.consult());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        res.put("Result", "Success");
+        return res;
+    }
+
+
     //TODO coder cette méthode quand les notifications seront faites
     public int envoiNotifications(ArrayList<Utilisateur> utilisateurs) {
 

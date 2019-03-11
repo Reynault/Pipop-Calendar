@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Observable;
 
 public abstract class Evenement extends Observable {
@@ -109,6 +110,21 @@ public abstract class Evenement extends Observable {
     }
 
     /**
+     * Méthode de consultaion d'un événement
+     * @return Une HashMap contenant les données de l'événement
+     */
+    public HashMap<String, String> consult(){
+        HashMap<String, String> res = new HashMap<>();
+        res.put("nomE", nomE);
+        res.put("description", description);
+        res.put("image", image);
+        res.put("date", date.toString());
+        res.put("lieu", lieu);
+        res.put("auteur", auteur);
+        return res;
+    }
+
+    /**
      * Récupère l'ID de l'événement le plus élevé
      * @return
      * @throws SQLException
@@ -146,6 +162,22 @@ public abstract class Evenement extends Observable {
             }
         }
         return true;
+    }
+
+    /**
+     * Méthode de modification d'un événement dans la BDD
+     * @return false si erreur lors de l'exécution de la requête, true sinon
+     * @throws SQLException
+     */
+    public boolean modify(int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) throws SQLException {
+        this.calendrierID=calendrierID;
+        this.nomE=nomE;
+        this.description=description;
+        this.image=image;
+        this.date=date;
+        this.lieu=lieu;
+        this.auteur=auteur;
+        return save();
     }
 
     /**

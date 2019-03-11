@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class ClientTest {
+public class  ClientTest {
     public static void main(String[] args) {
         // Création socket
         int port = 3306;
