@@ -43,10 +43,12 @@ public class ApplicationServeur implements Observer {
         while (true) {
             // On accepte d'un client
             socket = listener.accept();
+            System.out.println("On accepte le client.");
             // Création du thread lié au client en cours
             thread = new Thread(new ConnexionClient(socket));
             // Lancement du thread
             thread.start();
+            System.out.println("Je continue d'attendre des clients.");
         }
     }
 
@@ -75,7 +77,7 @@ public class ApplicationServeur implements Observer {
 			prep.setString(1, email);
 			ResultSet result = prep.executeQuery();
 			while(result.next()){
-				
+
 			}
             res.put("Result","0");
         }else{
