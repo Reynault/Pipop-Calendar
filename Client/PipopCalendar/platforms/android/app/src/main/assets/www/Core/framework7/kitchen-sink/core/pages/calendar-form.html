@@ -1,0 +1,115 @@
+<!--suppress ALL -->
+<template>
+  <div class="page" data-name="calendar-form">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">New calendar (modify calendar)</div>
+      </div>
+    </div>
+    <div class="page-content">
+      <form class="list">
+        <ul>
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">Calendar name</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="name">
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">Description</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="desc">
+                  <span class="input-clear-button"></span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">Color</div>
+                <div class="item-input-wrap">
+                  <input type="text" readonly="readonly" id="demo-picker-device"/>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </form>
+      <div class="block block-strong row">
+        <div class="col"><a class="button convert-form-to-data" href="#">Get Data</a></div>
+        <div class="col"><a class="button fill-form-from-data" href="#">Fill Form</a></div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  return {
+    on: {
+      pageInit: function (e, page) {
+        var self = this;
+        var app = self.$app;
+        // iOS Device picker
+        self.pickerDevice = app.picker.create({
+          inputEl: '#demo-picker-device',
+          cols: [
+            {
+              textAlign: 'left',
+              values: [
+                'red',
+                'green',
+                'blue',
+                'pink',
+                'yellow',
+                'orange',
+                'purple',
+                'deeppurple',
+                'lightblue',
+                'teal',
+                'lime',
+                'deeporange',
+                'gray',
+                'black',
+                'white'
+              ],
+              displayValues: [
+                '<span class="square bg-color-red text-color-white">Red</span>',
+                '<span class="square bg-color-green text-color-white">Green</span>',
+                '<span class="square bg-color-blue text-color-white">Blue</span>',
+                '<span class="square bg-color-pink text-color-white">Pink</span>',
+                '<span class="square bg-color-yellow text-color-white">Yellow</span>',
+                '<span class="square bg-color-orange text-color-white">Orange</span>',
+                '<span class="square bg-color-purple text-color-white">Purple</span>',
+                '<span class="square bg-color-deeppurple text-color-white">Deep purple</span>',
+                '<span class="square bg-color-lightblue text-color-white">Light blue</span>',
+                '<span class="square bg-color-teal text-color-white">Teal</span>',
+                '<span class="square bg-color-lime text-color-white">Lime</span>',
+                '<span class="square bg-color-deeporange text-color-white">Deep orange</span>',
+                '<span class="square bg-color-gray text-color-white">Gray</span>',
+                '<span class="square bg-color-black text-color-white">Black</span>',
+                '<span class="square bg-color-white text-color-black">White</span>',
+              ]
+            }
+          ]
+        });
+      },
+      pageBeforeRemove() {
+        var self = this;
+        self.pickerDevice.destroy();
+      },
+    }
+  }
+</script>
