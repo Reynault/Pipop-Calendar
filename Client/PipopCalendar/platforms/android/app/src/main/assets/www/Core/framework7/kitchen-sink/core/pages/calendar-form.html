@@ -14,45 +14,50 @@
     </div>
     <div class="page-content">
       <form class="list">
-        <ul>
-          <li>
-            <div class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">Calendar name</div>
-                <div class="item-input-wrap">
-                  <input type="text" name="name">
-                  <span class="input-clear-button"></span>
+        <div class="list">
+          <ul>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Calendar name</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="name">
+                    <span class="input-clear-button"></span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <div class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">Description</div>
-                <div class="item-input-wrap">
-                  <input type="text" name="desc">
-                  <span class="input-clear-button"></span>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Description</div>
+                  <div class="item-input-wrap">
+                    <textarea name="desc"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <div class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-floating-label">Color</div>
-                <div class="item-input-wrap">
-                  <input type="text" readonly="readonly" id="demo-picker-device"/>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Color</div>
+                  <div class="item-input-wrap">
+                    <input type="text" readonly="readonly" id="demo-picker-device"/>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="list">
+          <ul>
+            <li>
+              <a href="#" class="item-link list-button button button-large" >Create / Modify</a>
+            </li>
+          </ul>
+        </div>
       </form>
-      <div class="block block-strong row">
-        <div class="col"><a class="button convert-form-to-data" href="#">Get Data</a></div>
-        <div class="col"><a class="button fill-form-from-data" href="#">Fill Form</a></div>
-      </div>
     </div>
   </div>
 </template>
@@ -67,7 +72,7 @@
           inputEl: '#demo-picker-device',
           cols: [
             {
-              textAlign: 'left',
+              textAlign: 'center',
               values: [
                 'red',
                 'green',

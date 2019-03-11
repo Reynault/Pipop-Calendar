@@ -92,8 +92,7 @@
 }
 
 .square {
-  display: inline-block;
-  width: 150px;
+  padding-bottom: 3px!important;
   text-align: center;
   border-radius: 10px;
 }
