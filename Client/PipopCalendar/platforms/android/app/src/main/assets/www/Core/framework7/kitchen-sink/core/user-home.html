@@ -27,45 +27,89 @@
         <!-- Initial Page, "data-name" contains page name -->
         <div class="page" data-name="user-home">
 
+          <!-- Left panel -->
+          <div class="panel panel-left panel-cover">
+            <div class="page">
+              <div class="navbar no-shadow">
+                <div class="navbar-inner sliding">
+                  <div class="title">Settings</div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="list links-list no-hairlines">
+                  <ul>
+                    <li>
+                      <a href="#" class="panel-close">Log out</a>
+                    </li>
+                    <li>
+                      <a href="#" class="panel-close">Profil settings</a>
+                    </li>
+                    <li>
+                      <a href="/themes/" class="panel-close">Theme</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right panel -->
+          <div class="panel panel-right panel-cover">
+            <div class="page">
+              <div class="navbar no-shadow">
+                <div class="navbar-inner sliding">
+                  <div class="title">Social</div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="list links-list no-hairlines">
+                  <ul>
+                    <li>
+                      <a href="#" class="panel-close">Notifications <span class="badge">32</span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="panel-close">Friends</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Top Navbar -->
           <div class="navbar no-shadow">
             <div class="navbar-inner">
               <div class="left">
                 <a href="#" class="link icon-only panel-open" data-panel="left">
-                    <i class="material-icons">menu</i>
+                    <i class="material-icons">settings</i>
                 </a>
               </div>
               <div class="title">Pipop Calendar</div>
               <div class="right">
                 <a href="#" class="link icon-only panel-open" data-panel="right">
-                    <i class="material-icons">menu</i>
+                    <i class="icon f7-icons">persons<span class="badge">32</span></i>
                 </a>
               </div>
             </div>
           </div>
 
+          <div class="fab fab-left-bottom">
+            <a href="/calendar-form/">
+              <i class="icon f7-icons">add</i>
+            </a>
+          </div>
+
           <div class="page-content">
 
-            <div class="list no-hairlines">
-              <ul class="row">
-                <li class="col-50">
-                  <a id="new_calendar" class="item-link list-button button button-outline button-large"><i class="material-icons">add</i></a>
-                </li>
-                <li class="col-50">
-                  <a class="item-link list-button button button-outline button-large">List Button 1</a>
-                </li>
-                <li class="col-50">
-                  <a class="item-link list-button button button-outline button-large">List Button 2</a>
-                </li>
-              </ul>
+            <div class="block">
+              <p class="row">
+                <a href="/calendar-view/" class="col-50 button button-large button-fill color-orange">Calendar name</a>
+                <a href="/calendar-view/" class="col-50 button button-large button-fill color-red">Calendar name</a>
+              </p>
+              <p class="row">
+                <a href="/calendar-view/" class="col-50 button button-large button-fill color-green">Calendar name</a>
+              </p>
             </div>
-
-            <!-- Pour afficher un calendrier (script en bas)
-            <div class="block-title">Default calendar</div>
-            <div class="block block-strong no-padding">
-              <div id="demo-calendar-inline-container"></div>
-            </div>
-            -->
 
           </div>
         </div>
@@ -78,49 +122,5 @@
     <script src="js/chargerCalendrier.js"></script>
     <script src="js/app.js"></script>
     <script src="js/routes.js"></script>
-    <!-- Pour afficher un calendrier
-    <script>
-      var $$ = Dom7;
-      var now = new Date();
-      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      var weekLater = new Date().setDate(today.getDate() + 7);
-      var calendarInline = app.calendar.create({
-        containerEl: '#demo-calendar-inline-container',
-        value: [new Date()],
-        weekHeader: true,
-        events: [
-          {
-            date: today,
-            color: 'blue',
-          },
-          {
-            date: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5),
-            color: 'red',
-          },
-          {
-            from: new Date().setDate(today.getDate() + 4),
-            to: new Date().setDate(today.getDate() + 6),
-            color: '#000',
-          },
-        ],
-        renderToolbar: function () {
-          return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
-            '<div class="toolbar-inner">' +
-              '<div class="calendar-month-selector">' +
-                '<a href="#" class="link icon-only calendar-prev-month-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-                '<span class="current-month-value"></span>' +
-                '<a href="#" class="link icon-only calendar-next-month-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-              '</div>' +
-              '<div class="calendar-year-selector">' +
-                '<a href="#" class="link icon-only calendar-prev-year-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-                '<span class="current-year-value"></span>' +
-                '<a href="#" class="link icon-only calendar-next-year-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
-              '</div>' +
-            '</div>' +
-          '</div>';
-        },
-      });
-    </script>
-    -->
   </body>
 </html>

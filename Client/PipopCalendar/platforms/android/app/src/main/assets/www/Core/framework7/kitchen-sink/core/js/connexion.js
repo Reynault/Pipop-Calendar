@@ -46,8 +46,8 @@ $(document).ready(function(){
                   }
                  );//
                  $("#connexionErrMsg").append("Connexion error. Please, check your login information.");
-                 $("#emailInput").css("border","2px solid #ff0000");
-                 $("#mdpInput").css("border","2px solid #ff0000");
+                 $("#emailInput").parents('li').addClass('item-input-invalid');
+                 $("#mdpInput").parents('li').addClass('item-input-invalid');
                 }
           },
           error: function(jqXHR, textStatus, errorThrown) {
