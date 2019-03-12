@@ -5,19 +5,25 @@
       <div class="navbar-inner sliding">
         <div class="left">
           <a href="#" class="link back">
-            <i class="icon icon-back"></i>
+            <i class="f7-icons">arrow_left</i>
             <span class="ios-only">Back</span>
           </a>
         </div>
         <div class="title">New calendar (modify calendar)</div>
       </div>
     </div>
+    <div class="fab fab-extended fab-left-bottom">
+      <a href="#">
+        <i class="icon f7-icons">download</i>
+        <div class="fab-text">Import</div>
+      </a>
+    </div>
     <div class="page-content">
-      <form class="list">
-        <div class="list">
+      <form>
+        <div class="list no-hairlines">
           <ul>
             <li>
-              <div class="item-content item-input">
+              <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Calendar name</div>
                   <div class="item-input-wrap">
@@ -28,32 +34,54 @@
               </div>
             </li>
             <li>
-              <div class="item-content item-input">
+              <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Description</div>
                   <div class="item-input-wrap">
-                    <textarea name="desc"></textarea>
+                    <textarea class="resizable" name="desc"></textarea>
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
               </div>
             </li>
             <li>
-              <div class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-floating-label">Color</div>
-                  <div class="item-input-wrap">
-                    <input type="text" readonly="readonly" id="demo-picker-device"/>
+              <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
+                <select name="color">
+                  {{#each colors}}
+                    <option value="{{this[0]}}" data-option-class="color-{{this[2]}} bg-color-{{this[0]}} text-color-{{this[2]}}">{{this[1]}}</option>
+                  {{/each}}
+                </select>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title">Color</div>
                   </div>
                 </div>
-              </div>
+              </a>
+            </li>
+            <li class="media-item">
+              <a id="themeSelect" class="item-link smart-select">
+                <select name="theme" multiple>
+                  <option value="cours">Cours</option>
+                  <option value="activite">Activité</option>
+                  <option value="evenement">Evénement</option>
+                  <option value="evenement">Voyage</option>
+                </select>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">Themes</div>
+                    </div>
+                    <div class="item-text"></div>
+                  </div>
+                </div>
+              </a>
             </li>
           </ul>
         </div>
-        <div class="list">
+        <div class="list no-hairlines">
           <ul>
             <li>
-              <a href="#" class="item-link list-button button button-large" >Create / Modify</a>
+              <a href="#" class="item-link list-button button button-outline button-large" >Create / Modify</a>
             </li>
           </ul>
         </div>
@@ -63,57 +91,42 @@
 </template>
 <script>
   return {
+    data: function(){
+      var colors = [
+        ['deeppurple', 'Deep purple', 'white'],
+        ['purple', 'Purple', 'white'],
+        ['pink', 'Pink', 'white'],
+        ['red', 'Red', 'white'],
+        ['deeporange', 'Deep orange', 'white'],
+        ['orange', 'Orange', 'white'],
+        ['yellow', 'Yellow', 'white'],
+        ['lime', 'Lime', 'white'],
+        ['green', 'Green', 'white'],
+        ['teal', 'Teal', 'white'],
+        ['blue', 'Blue', 'white'],
+        ['lightblue', 'Light blue', 'white'],
+        ['white', 'White', 'black'],
+        ['gray', 'Gray', 'white'],
+        ['black', 'Black', 'white'],
+      ];
+      return {
+        colors: colors,
+      };
+    },
     on: {
       pageInit: function (e, page) {
         var self = this;
         var app = self.$app;
-        // iOS Device picker
-        self.pickerDevice = app.picker.create({
-          inputEl: '#demo-picker-device',
-          cols: [
-            {
-              textAlign: 'center',
-              values: [
-                'red',
-                'green',
-                'blue',
-                'pink',
-                'yellow',
-                'orange',
-                'purple',
-                'deeppurple',
-                'lightblue',
-                'teal',
-                'lime',
-                'deeporange',
-                'gray',
-                'black',
-                'white'
-              ],
-              displayValues: [
-                '<span class="square bg-color-red text-color-white">Red</span>',
-                '<span class="square bg-color-green text-color-white">Green</span>',
-                '<span class="square bg-color-blue text-color-white">Blue</span>',
-                '<span class="square bg-color-pink text-color-white">Pink</span>',
-                '<span class="square bg-color-yellow text-color-white">Yellow</span>',
-                '<span class="square bg-color-orange text-color-white">Orange</span>',
-                '<span class="square bg-color-purple text-color-white">Purple</span>',
-                '<span class="square bg-color-deeppurple text-color-white">Deep purple</span>',
-                '<span class="square bg-color-lightblue text-color-white">Light blue</span>',
-                '<span class="square bg-color-teal text-color-white">Teal</span>',
-                '<span class="square bg-color-lime text-color-white">Lime</span>',
-                '<span class="square bg-color-deeporange text-color-white">Deep orange</span>',
-                '<span class="square bg-color-gray text-color-white">Gray</span>',
-                '<span class="square bg-color-black text-color-white">Black</span>',
-                '<span class="square bg-color-white text-color-black">White</span>',
-              ]
-            }
-          ]
+        var themeSelect = app.smartSelect.create({
+          el: '#themeSelect',
+          valueEl: '.item-text',
+          openIn: 'popup',
+          searchbar: true,
+          searchbarPlaceholder: 'Search theme',
         });
       },
       pageBeforeRemove() {
         var self = this;
-        self.pickerDevice.destroy();
       },
     }
   }
