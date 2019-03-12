@@ -7,6 +7,8 @@ import mycalendar.modele.exceptions.NoRequestException;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -36,20 +38,47 @@ public class ConnexionClient implements Runnable{
             );
 
             // Formatage de la requête
-
             String requete = bos.readLine();
+            StringBuilder json = new StringBuilder();
+            String[] lignes;
 
+            // Récupération de la version de http
             String[] tab = requete.split(" ");
-
             String httpVersion = tab[tab.length-1];
+            // Récupération de la méthode
+            String method = tab[0];
 
-            requete = requete.substring(4).
-                    replaceAll("%22", "\"").
-                    replace("/?{", "{");
+            if (method.equals("GET")){
+                // Si c'est un get, on récupère les paramètres dans le header
+                json.append(requete.substring(4,requete.length()-8).
+                        replaceAll("%22", "\"").
+                        replace("/?{", "{"));
+            }else if(method.equals("POST")){
+                // Lecture du body
+                ArrayList<Byte> data = new ArrayList<Byte>();
+                // tant qu'il y en a
+                while(bos.ready()){
+                    // on lie les caractères
+                    data.add((byte)bos.read());
+                }
+                // ensuite, on les place dans un tableau
+                byte[] cbo = new byte[data.size()];
+                for(int i = 0 ; i < data.size(); i++){
+                    cbo[i] = data.get(i);
+                }
+                // puis on les transforme en chaîne de caractères
+                requete = new String(cbo, Charset.defaultCharset());
+                lignes = requete.split("\n");
+                for(int i = 11; i < lignes.length; i++){
+                    json.append(lignes[i]);
+                }
+            }
 
-            System.out.println("DONNEE RECUE : " + requete);
+
+            System.out.println("DONNEE RECUE : " + json.toString());
+
             // Décodage de la chaîne JSON
-            HashMap<String, String> donnees = ParseurJson.getInstance().decode(requete);
+            HashMap<String, String> donnees = ParseurJson.getInstance().decode(json.toString());
 
             // Verification de la presence d'une requete dans le message envoyer par le client
             if (!donnees.containsKey("Request")) {

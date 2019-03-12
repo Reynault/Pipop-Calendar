@@ -1,6 +1,8 @@
 package mycalendar.modele.calendrier;
 
 import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.droits.Admin;
+import mycalendar.modele.droits.Droit;
 import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.sql.Connection;
@@ -26,9 +28,11 @@ public abstract class Evenement extends Observable {
     protected boolean visibilite;
 
     private ArrayList<Message> messages;
+    private ArrayList<Droit> droits;
 
     /**
      * Constructeur d'un événement
+     *
      * @param id
      * @param calID
      * @param nom
@@ -48,6 +52,8 @@ public abstract class Evenement extends Observable {
         this.lieu = lieu;
         this.auteur = auteur;
         this.messages = new ArrayList<>();
+        this.droits = new ArrayList<>();
+        droits.add(new Admin());
     }
 
     public void prevenirVues() {
@@ -57,6 +63,7 @@ public abstract class Evenement extends Observable {
 
     /**
      * Méthode de sauvegarde d'un événement dans la BDD
+     *
      * @return true si la sauvegarde s'est bien passé, false sinon
      * @throws SQLException
      */
@@ -84,48 +91,37 @@ public abstract class Evenement extends Observable {
     }
 
     /**
-     * Méthode permettant de récupérer un événement depuis la BDD et de le retourner sous forme d'objet
-     * @param idEv l'id de lévénement à trouver
-     * @return l'événement avec toutes ses informations
+     * Méthode permettant de récupérer la liste des événements présent dans un calendrier
+     *
+     * @param idc l'id du calendrier
+     * @param Email email de l'auteur
+     * @return liste des événements
      * @throws SQLException
      */
-    public static Evenement find(int idEv) throws SQLException {
+    public static ArrayList<Evenement> find(int idc, String Email) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
+        ArrayList<Evenement> events = new ArrayList<>();
         {
-            String request = "SELECT * FROM Evenement WHERE ide=?;";
+            String request = "SELECT * FROM Evenement WHERE idC=? and auteur = ?;";
             PreparedStatement prep = connect.prepareStatement(request);
-            prep.setInt(1, idEv);
+            prep.setInt(1, idc);
+            prep.setString(2,Email);
             prep.execute();
             ResultSet rs = prep.getResultSet();
             if (rs.next()) {
                 if (rs.getBoolean("idc")) {
-                    return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
-                }
-                else {
-                    return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
+                    events.add(new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur")));
+                } else {
+                    events.add(new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur")));
                 }
             }
-            return null;
         }
-    }
-
-    /**
-     * Méthode de consultaion d'un événement
-     * @return Une HashMap contenant les données de l'événement
-     */
-    public HashMap<String, String> consult(){
-        HashMap<String, String> res = new HashMap<>();
-        res.put("nomE", nomE);
-        res.put("description", description);
-        res.put("image", image);
-        res.put("date", date.toString());
-        res.put("lieu", lieu);
-        res.put("auteur", auteur);
-        return res;
+        return events;
     }
 
     /**
      * Récupère l'ID de l'événement le plus élevé
+     *
      * @return
      * @throws SQLException
      */
@@ -145,6 +141,7 @@ public abstract class Evenement extends Observable {
 
     /**
      * Méthode de suppression d'un événement dans la BDD
+     *
      * @return false si erreur lors de l'exécution de la requête, true sinon
      * @throws SQLException
      */
@@ -165,23 +162,8 @@ public abstract class Evenement extends Observable {
     }
 
     /**
-     * Méthode de modification d'un événement dans la BDD
-     * @return false si erreur lors de l'exécution de la requête, true sinon
-     * @throws SQLException
-     */
-    public boolean modify(int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) throws SQLException {
-        this.calendrierID=calendrierID;
-        this.nomE=nomE;
-        this.description=description;
-        this.image=image;
-        this.date=date;
-        this.lieu=lieu;
-        this.auteur=auteur;
-        return save();
-    }
-
-    /**
      * Méthode récupérant la liste des participant d'un événement
+     *
      * @return La liste des utilisateurs participant à l'événement
      * @throws SQLException
      */
@@ -206,6 +188,49 @@ public abstract class Evenement extends Observable {
         return alUsrs;
     }
 
+    /**
+    * Méthode qui retourne l'id de l'événement
+    * @return id de l'événement
+    */
+    public int getId(){return idEv;}
 
+    /**
+    * Méthode qui retourne un booléen concernant les droits d'administration de l'événement
+    * @return booleen sur le droit d'admin
+    */
+
+    public boolean getAdmin() {
+        return droits.get(0).getDroit();
+    }
+
+    /**
+     * Méthode de consultaion d'un événement
+     * @return Une HashMap contenant les données de l'événement
+     */
+    public HashMap<String, String> consult(){
+        HashMap<String, String> res = new HashMap<>();
+        res.put("nomE", nomE);
+        res.put("description", description);
+        res.put("image", image);
+        res.put("date", date.toString());
+        res.put("lieu", lieu);
+        res.put("auteur", auteur);
+        return res;
+    }
+
+    /**
+     * Méthode de modification d'un événement dans la BDD
+     * @return false si erreur lors de l'exécution de la requête, true sinon
+     * @throws SQLException
+     */
+    public boolean modify(int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) throws SQLException {
+        this.calendrierID=calendrierID;
+        this.nomE=nomE;
+        this.description=description;
+        this.image=image;
+        this.date=date;
+        this.lieu=lieu;
+        this.auteur=auteur;
+        return save();
+    }
 }
-

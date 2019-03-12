@@ -87,6 +87,10 @@
   --f7-list-margin-vertical: 0px;
 }
 
+.button-fill.color-white {
+  color: black;
+}
+
 .demo-list-icon, .icon-f7 {
   background: #ccc;
   display: block;

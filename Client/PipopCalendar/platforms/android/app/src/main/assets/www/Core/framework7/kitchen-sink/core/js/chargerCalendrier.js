@@ -1,19 +1,16 @@
 $(document).ready(function(){
 
-  console.log("Envois de données au serveur");
+  /*console.log("Envois de données au serveur");
   $("#connexionBouton").click(function(e){
     e.preventDefault();
     //alert("Click!");
     connexion($("#emailInput").val(), $("#mdpInput").val());
-  });
+  });*/
 
-  function connexion(email, mdp){
+  function chergerCalendrier(email){
       // Il faut crypter les données
       // Il faut vérifier les données
-      var crypMdp =  new jsSHA("SHA-512", "TEXT");
-      crypMdp.update(mdp);
-      var hash = crypMdp.getHash("HEX");
-      var arr = {"Request":"SignIn","Email":email, "Mdp":hash};
+      var arr = {"Request":"LoadCalendar","Email":email};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -31,7 +28,7 @@ $(document).ready(function(){
               }else{
                 window.plugins.toast.showWithOptions(
                 {
-                   message: "Connexion Echouée",
+                   message: "Chargement Echouée",
                    duration: 1500, // ms
                    position: "bottom",
                    addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
@@ -46,8 +43,8 @@ $(document).ready(function(){
                   }
                  );//
                  $("#connexionErrMsg").append("Connexion error. Please, check your login information.");
-                 $("#emailInput").parents('li').addClass('item-input-invalid');
-                 $("#mdpInput").parents('li').addClass('item-input-invalid');
+                 $("#emailInput").css("border","2px solid #ff0000");
+                 $("#mdpInput").css("border","2px solid #ff0000");
                 }
           },
           error: function(jqXHR, textStatus, errorThrown) {
@@ -86,5 +83,4 @@ $(document).ready(function(){
           }
       });
   }
-
 });

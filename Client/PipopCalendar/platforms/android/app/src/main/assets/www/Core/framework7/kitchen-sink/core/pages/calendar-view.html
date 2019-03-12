@@ -1,0 +1,79 @@
+<template>
+  <div class="page" data-name="calendar-view">
+
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="f7-icons">arrow_left</i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">New calendar (modify calendar)</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <div class="block-title">Calendar name</div>
+      <div class="block block-strong no-padding">
+        <div id="calendar-inline-container"></div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script>
+  return {
+    on: {
+      pageInit: function (e, page) {
+        var self = this;
+        var app = self.$app;
+        var now = new Date();
+        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        var weekLater = new Date().setDate(today.getDate() + 7);
+        var calendarInline = app.calendar.create({
+          containerEl: '#calendar-inline-container',
+          value: [new Date()],
+          weekHeader: true,
+          events: [
+            {
+              date: today,
+              color: 'blue',
+            },
+            {
+              date: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5),
+              color: 'red',
+            },
+            {
+              from: new Date().setDate(today.getDate() + 4),
+              to: new Date().setDate(today.getDate() + 6),
+              color: '#000',
+            },
+          ],
+          renderToolbar: function () {
+            return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
+              '<div class="toolbar-inner">' +
+                '<div class="calendar-month-selector">' +
+                  '<a href="#" class="link icon-only calendar-prev-month-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                  '<span class="current-month-value"></span>' +
+                  '<a href="#" class="link icon-only calendar-next-month-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                '</div>' +
+                '<div class="calendar-year-selector">' +
+                  '<a href="#" class="link icon-only calendar-prev-year-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                  '<span class="current-year-value"></span>' +
+                  '<a href="#" class="link icon-only calendar-next-year-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          },
+        });
+      },
+      pageBeforeRemove() {
+        var self = this;
+        self.calendarInline.destroy();
+      },
+    }
+  };
+</script>

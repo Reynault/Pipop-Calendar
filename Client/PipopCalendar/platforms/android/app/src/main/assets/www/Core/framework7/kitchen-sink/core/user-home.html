@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <!-- Color theme for statusbar -->
+    <meta name="theme-color" content="#AADFF1">
+    <!-- Your app title -->
+    <title>Pipop Calendar</title>
+    <!-- Path to Framework7 Library Bundle CSS -->
+    <link rel="stylesheet" href="../../packages/core/css/framework7.bundle.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/app.css">
+    <!-- Your app icon -->
+    <link rel="apple-touch-icon" href="img/icon.png">
+    <link rel="icon" href="img/icon.png">
+  </head>
+  <body>
+    <!-- App root element -->
+    <div id="app">
+      <!-- Statusbar overlay -->
+      <div class="statusbar"></div>
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- Initial Page, "data-name" contains page name -->
+        <div class="page" data-name="user-home">
+
+          <!-- Left panel -->
+          <div class="panel panel-left panel-cover">
+            <div class="page">
+              <div class="navbar no-shadow">
+                <div class="navbar-inner sliding">
+                  <div class="title">Settings</div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="list links-list no-hairlines">
+                  <ul>
+                    <li>
+                      <a href="#" class="panel-close">Log out</a>
+                    </li>
+                    <li>
+                      <a href="#" class="panel-close">Profil settings</a>
+                    </li>
+                    <li>
+                      <a href="/themes/" class="panel-close">Theme</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right panel -->
+          <div class="panel panel-right panel-cover">
+            <div class="page">
+              <div class="navbar no-shadow">
+                <div class="navbar-inner sliding">
+                  <div class="title">Social</div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="list links-list no-hairlines">
+                  <ul>
+                    <li>
+                      <a href="#" class="panel-close">Notifications <span class="badge">32</span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="panel-close">Friends</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Navbar -->
+          <div class="navbar no-shadow">
+            <div class="navbar-inner">
+              <div class="left">
+                <a href="#" class="link icon-only panel-open" data-panel="left">
+                    <i class="material-icons">settings</i>
+                </a>
+              </div>
+              <div class="title">Pipop Calendar</div>
+              <div class="right">
+                <a href="#" class="link icon-only panel-open" data-panel="right">
+                    <i class="icon f7-icons">persons<span class="badge">32</span></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="fab fab-left-bottom">
+            <a href="/calendar-form/">
+              <i class="icon f7-icons">add</i>
+            </a>
+          </div>
+
+          <div class="page-content">
+
+            <div class="block">
+              <p class="row">
+                <a href="/calendar-view/" class="col-50 button button-large button-fill color-orange">Calendar name</a>
+                <a href="/calendar-view/" class="col-50 button button-large button-fill color-red">Calendar name</a>
+              </p>
+              <p class="row">
+                <a href="/calendar-view/" class="col-50 button button-large button-fill color-green">Calendar name</a>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library Bundle JS-->
+    <script src="../../packages/core/js/framework7.bundle.min.js"></script>
+    <!-- Path to your app js-->
+    <script src="js/jquery.js"></script>
+    <script src="js/chargerCalendrier.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/routes.js"></script>
+  </body>
+</html>
