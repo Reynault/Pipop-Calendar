@@ -1,3 +1,4 @@
+
 <template>
   <div class="page" data-name="calendar-view">
 
@@ -9,7 +10,7 @@
             <span class="ios-only">Back</span>
           </a>
         </div>
-        <div class="title">New calendar (modify calendar)</div>
+        <div class="title">TITRE</div>
       </div>
     </div>
 
@@ -17,9 +18,57 @@
 
       <div class="block-title">Calendar name</div>
       <div class="block block-strong no-padding">
-        <div id="calendar-inline-container"></div>
-      </div>
 
+        <!-- Mois -->
+        <div id="calendar-inline-container"></div>
+
+        <!-- Semaine -->
+        <div class="timeline timeline-horizontal tablet-15">
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>MONDAY</small> 11</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content">
+              <div class="timeline-item-inner">
+                <div class="timeline-item-title">Sécurité</div>
+                <div class="timeline-item-time">8:00</div>
+                <div class="timeline-item-subtitle"><small>AMPHI 15</small></div>
+                <div class="timeline-item-text">Description</div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>TUESDAY</small> 12</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>WEDNESDAY</small> 13</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>THURSDAY</small> 14</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>FRIDAY</small> 15</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>SATURDAY</small> 16</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>SUNDAY</small> 17</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </template>
@@ -30,26 +79,23 @@
       pageInit: function (e, page) {
         var self = this;
         var app = self.$app;
-        var now = new Date();
-        var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        var weekLater = new Date().setDate(today.getDate() + 7);
         var calendarInline = app.calendar.create({
           containerEl: '#calendar-inline-container',
           value: [new Date()],
           weekHeader: true,
           events: [
             {
-              date: today,
+              date: new Date(),
               color: 'blue',
             },
             {
-              date: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5),
+              date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5),
               color: 'red',
             },
             {
-              from: new Date().setDate(today.getDate() + 4),
-              to: new Date().setDate(today.getDate() + 6),
-              color: '#000',
+              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 4),
+              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 6),
+              color: 'black',
             },
           ],
           renderToolbar: function () {
