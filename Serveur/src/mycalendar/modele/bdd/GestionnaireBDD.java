@@ -52,30 +52,20 @@ public class GestionnaireBDD{
     public static String getName(){
         return Name;
     }
-
-    public static void main(String[] args) throws SQLException {
-
+    
+     /**
+     * Vérification de l'existence d'un calendrier
+     * @param idc id du calendrier
+     * @return true si le calendrier existe
+     * @throws SQLException
+     */
+    public static boolean verifierExistenceCalendrier(int idc) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-
-        // creation de la table Personne
-        {
-            String request = "INSERT INTO themes (nom) VALUES (?);";
-            PreparedStatement prep = connect.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
-            prep.setString(1, "Soirées");
-            prep.executeUpdate();
-            System.out.println("3) ajout themes 'Soirées'");
-
-            // recuperation de la derniere ligne ajoutee (auto increment)
-            // recupere le nouvel id
-            int autoInc = -1;
-            ResultSet rs = prep.getGeneratedKeys();
-            if (rs.next()) {
-                autoInc = rs.getInt(1);
-            }
-            System.out.print("  ->  id utilise lors de l'ajout : ");
-            System.out.println(autoInc);
-            System.out.println();
-        }
-
+        String request = "SELECT * FROM Calendrier WHERE idc=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setInt(1, idc);
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        return rs.next();   // true si un résultat a été trouvé, false sinon
     }
 }
