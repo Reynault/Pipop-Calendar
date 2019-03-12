@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <div class="page" data-name="calendar-form">
     <div class="navbar">
@@ -48,7 +47,7 @@
               <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
                 <select name="color">
                   {{#each colors}}
-                    <option value="{{this[0]}}" data-option-class="color-{{this[2]}} bg-color-{{this[0]}} text-color-{{this[2]}}">{{this[1]}}</option>
+                    <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
                   {{/each}}
                 </select>
                 <div class="item-content">
@@ -64,7 +63,7 @@
                   <option value="cours">Cours</option>
                   <option value="activite">Activité</option>
                   <option value="evenement">Evénement</option>
-                  <option value="evenement">Voyage</option>
+                  <option value="voyage">Voyage</option>
                 </select>
                 <div class="item-content">
                   <div class="item-inner">
@@ -93,21 +92,20 @@
   return {
     data: function(){
       var colors = [
-        ['deeppurple', 'Deep purple', 'white'],
-        ['purple', 'Purple', 'white'],
-        ['pink', 'Pink', 'white'],
-        ['red', 'Red', 'white'],
-        ['deeporange', 'Deep orange', 'white'],
-        ['orange', 'Orange', 'white'],
-        ['yellow', 'Yellow', 'white'],
-        ['lime', 'Lime', 'white'],
-        ['green', 'Green', 'white'],
-        ['teal', 'Teal', 'white'],
-        ['blue', 'Blue', 'white'],
-        ['lightblue', 'Light blue', 'white'],
-        ['white', 'White', 'black'],
-        ['gray', 'Gray', 'white'],
-        ['black', 'Black', 'white'],
+        ['deeppurple', 'Deep purple'],
+        ['purple', 'Purple'],
+        ['pink', 'Pink'],
+        ['red', 'Red'],
+        ['deeporange', 'Deep orange'],
+        ['orange', 'Orange'],
+        ['yellow', 'Yellow'],
+        ['lime', 'Lime'],
+        ['green', 'Green'],
+        ['teal', 'Teal'],
+        ['blue', 'Blue'],
+        ['lightblue', 'Light blue'],
+        ['gray', 'Gray'],
+        ['black', 'Black'],
       ];
       return {
         colors: colors,
@@ -124,9 +122,6 @@
           searchbar: true,
           searchbarPlaceholder: 'Search theme',
         });
-      },
-      pageBeforeRemove() {
-        var self = this;
       },
     }
   }

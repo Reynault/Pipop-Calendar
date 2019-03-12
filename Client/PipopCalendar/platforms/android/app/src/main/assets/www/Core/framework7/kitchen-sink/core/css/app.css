@@ -87,14 +87,8 @@
   --f7-list-margin-vertical: 0px;
 }
 
-#new_calendar i {
-  vertical-align: text-bottom;
-}
-
-.square {
-  padding-bottom: 3px!important;
-  text-align: center;
-  border-radius: 10px;
+.button-fill.color-white {
+  color: black;
 }
 
 .demo-list-icon, .icon-f7 {
