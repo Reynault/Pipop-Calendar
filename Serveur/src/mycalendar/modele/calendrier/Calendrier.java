@@ -137,15 +137,16 @@ public class Calendrier {
     public static int getCalendrierID(String nomUtilisateur, String nomCalendrier) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
-            String request = "SELECT idc FROM Calendrier WHERE nomC=?;";
+            String request = "SELECT idc FROM utilisateur_calendrier WHERE email=?;";
             PreparedStatement prep = connect.prepareStatement(request);
             prep.setString(1, nomUtilisateur);
             prep.execute();
             ResultSet rs = prep.getResultSet();
             while (rs.next()) {
-                request = "SELECT idc FROM Calendrier WHERE nomC=?;";
+                request = "SELECT idc FROM Calendrier WHERE idc=? AND nomC=?;";
                 prep = connect.prepareStatement(request);
-                prep.setString(1, nomCalendrier);
+                prep.setInt(1, rs.getInt("idc"));
+                prep.setString(2, nomCalendrier);
                 prep.execute();
                 ResultSet rst = prep.getResultSet();
                 if (rst.next()) {
