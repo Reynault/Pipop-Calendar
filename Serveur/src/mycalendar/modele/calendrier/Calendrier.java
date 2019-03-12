@@ -27,7 +27,7 @@ public class Calendrier {
      * Constructeur d'un calendrier
      * @param nom nom du calendrier
      * @param desc description du calendrier
-     * @param color couleur du calendrier
+     * @param coul couleur du calendrier
      * @param themes themes du calendrier
      */
     public Calendrier(int idCalendar, String nom, String coul, String desc, String themes) throws SQLException{
