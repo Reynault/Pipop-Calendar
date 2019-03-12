@@ -1,5 +1,6 @@
 package mycalendar.modele.serveur;
 
+import javafx.beans.binding.BooleanBinding;
 import mycalendar.modele.exceptions.BadRequestExeption;
 import mycalendar.modele.exceptions.NoRequestException;
 
@@ -97,15 +98,32 @@ public class ConnexionClient implements Runnable{
                     );
                     break;
                 }
+                case "AddEvent": {
+                    String calendarName = donnees.get("CalendarName");
+                    String eventName = donnees.get("EventName");
+                    String eventDescription = donnees.get("EventDescription");
+                    String eventPicture = donnees.get("EventPicture");
+                    String eventDate = donnees.get("EventDate");
+                    String eventLocation = donnees.get("EventLocation");
+                    String eventAuthor = donnees.get("EventAuthor");
+                    boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
+                    result = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
+                    break;
+                }
+                case "DeleteEvent": {
+                    int idEv = Integer.parseInt(donnees.get("ID"));
+                    result = ApplicationServeur.getInstance().suppressionEvenement(idEv);
+                    break;
+                }
                 // Inscription
                 case "SignUp": {
                     result = ApplicationServeur.getInstance().inscription(
                             donnees.get("Email"),
                             donnees.get("Mdp"),
                             donnees.get("Prenom"),
-                            donnees.get("Nom")
-                    );
-                    break;
+                                donnees.get("Nom")
+                        );
+                        break;
                 }
                 //cas creation d'evenement
                 case "CreateEvent": {
@@ -117,8 +135,8 @@ public class ConnexionClient implements Runnable{
                     socket.close();
                     throw new BadRequestExeption(donnees.get("Request"));
                 }
-            }
 
+            }
             // Réponse vers le client
 
             // Construction

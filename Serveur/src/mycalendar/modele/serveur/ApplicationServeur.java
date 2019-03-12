@@ -3,6 +3,15 @@ package mycalendar.modele.serveur;
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.calendrier.Calendrier;
 import mycalendar.modele.calendrier.Evenement;
+import mycalendar.modele.calendrier.EvenementPrive;
+import mycalendar.modele.calendrier.EvenementPublic;
+import mycalendar.modele.utilisateur.Utilisateur;
+
+import javax.xml.transform.Result;
+import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.calendrier.Calendrier;
+import mycalendar.modele.calendrier.Evenement;
 import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.io.IOException;
@@ -10,6 +19,12 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,6 +71,196 @@ public class ApplicationServeur implements Observer {
             System.out.println("Je continue d'attendre des clients.");
         }
 }
+
+    /**
+     * Méthode serveur de création d'un évenement. C'est celle-ci qui est appelée par le client
+     * @param nomCalendrier nom du calendrier auquel l'événement est associé
+     * @param nom nom de l'événement
+     * @param description description de l'événement
+     * @param image image visuelle de l'événement
+     * @param date date à laquelle l'événement va se dérouler
+     * @param lieu lieu à lequel l'événement va se dérouler
+     * @param auteur créateur de l'événement
+     * @param visible visibilité des événements auprès des autres utilisateurs
+     * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
+     */
+    public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) {
+        int calendrierID;
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "AddEvent");
+        try {
+            calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
+            // nomCalendrier spécifié inexistant : son code d'erreur est 2
+            if (calendrierID == -1) {
+                res.put("Result", "Calendar doesn't exist");
+                return res;
+            }
+            if (!this.verifierEvenement(auteur, calendrierID, nom)) { // On vérifie que l'événement n'existe pas déjà
+                // Données invalides : l'événement existe déjà ; son code d'erreur associé est 1
+                res.put("Result", "Event already exists");
+                return res;
+            }
+            if (!this.createEvenement(calendrierID, nom, description, image, date, lieu, auteur, visible)) { // On crée l'événement
+                // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
+                res.put("Result", "Couldn't insert new event into database");
+                return res;
+            }
+        } catch (ParseException | SQLException e) {
+            e.printStackTrace();
+        }
+        res.put("Result", "Success");
+        return res;
+    }
+
+    /**
+     * Méthode de vérification de l'existence d'un événement
+     * @param email créateur de l'événement à vérifier
+     * @param calendrierID ID du calendrier à vérifier
+     * @param nom nom de l'événement à vérifier
+     * @return true si l'événement n'existe pas, false sinon
+     * @throws SQLException
+     */
+    private boolean verifierEvenement(String email, int calendrierID, String nom) throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        {
+            String request = "SELECT * FROM Evenement WHERE nomE=? AND auteur=? AND idc=?;";
+            PreparedStatement prep = connect.prepareStatement(request);
+            prep.setString(1, nom);
+            prep.setString(2, email);
+            prep.setInt(3, calendrierID);
+            prep.execute();
+            ResultSet rs = prep.getResultSet();
+            return !rs.next();
+        }
+    }
+
+    /**
+     * Méthode de création d'un événement
+     * @param calendrierID ID du calendrier associé à l'événement
+     * @param nom nom de l'événement
+     * @param description description de l'événement
+     * @param image image de l'événement
+     * @param date date de l'événement
+     * @param lieu lieu de l'événement
+     * @param auteur créateur de l'événement
+     * @param visible visibilité public de l'événement
+     * @return 1 si la création s'est bien passé, 0 sinon
+     * @throws ParseException
+     */
+    private boolean createEvenement(int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
+        // On parse la date afin d'en créer un objet utilisable
+        DateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        Date dateP = df.parse(date);
+        Evenement e;
+        int id;
+        id = Evenement.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
+        if (visible) {
+            e = new EvenementPublic(id + 1, calendrierID, nom, description, image, dateP, lieu, auteur);
+        }
+        else {
+            e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateP, lieu, auteur);
+        }
+        return e.save();
+    }
+
+    /**
+     * Méthode serveur de suppression d'un événement appelée par le client
+     * @param idEv l'ID de l'événement à supprimer
+     * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
+     */
+    public HashMap<String, String>  suppressionEvenement(int idEv) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "DeleteEvent");
+        try {
+            Evenement e = null;
+            e = Evenement.find(idEv);
+            if (e == null) {
+                // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
+                res.put("Result","Event not found");
+                return res;
+            }
+            ArrayList<Utilisateur> alUsrs = e.findInvites(); // Récupération de la liste des participants de l'événement
+            this.envoiNotifications(alUsrs); // Notification des utilisateurs
+            if (!e.delete()) {
+                // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
+                res.put("Result","Couldn't delete event from database");
+                return res;
+            }
+        } catch (SQLException | ParseException e1) {
+            e1.printStackTrace();
+        }
+        res.put("Result","Success");
+        return res;
+    }
+
+    /**
+     * Méthode serveur de modification d'un événement appelée par le client
+     * @param idEv l'ID de l'événement à modifier
+     * @param calendrierID l'ID du calendrier de l'événement modifier
+     * @param description la description de l'événement modifier
+     * @param image l'image de l'événement modifier
+     * @param date la date de l'événement modifier
+     * @param lieu le lieu de l'événement modifier
+     * @param auteur l'auteur de l'événement modifier
+     * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
+     */
+    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "ModifyEvent");
+        try {
+            Evenement e = null;
+            e = Evenement.find(idEv);
+            if (e == null) {
+                // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
+                res.put("Result","Event not found");
+                return res;
+            }
+            if (date.before(Calendar.getInstance().getTime())){
+                // Date déjà passée
+                res.put("Result","Date déja passée");
+                return res;
+            }
+            if (!e.modify(calendrierID, nomE, description, image,date, lieu, auteur)) {
+                // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
+                res.put("Result","Couldn't modify event from database");
+                return res;
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        res.put("Result","Success");
+        return res;
+    }
+
+
+    /**
+     * Méthode serveur de consultation d'un évenement. C'est celle-ci qui est appelée par le client
+     * @param idEV ID de l'événement
+     * @return Hashmap indiquant si la requête s'est bien déroulée et les données de l'événement demandé et si non, l'erreur associé
+     */
+    public HashMap<String, String> consultationEvenement(String idEV) {
+        int calendrierID;
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "ConsultEvent");
+        try {
+            //calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
+            // nomCalendrier spécifié inexistant : son code d'erreur est 2
+            Evenement e = Evenement.find(Integer.parseInt(idEV));
+            if (e == null) {
+                res.put("Result", "Event doesn't exist");
+                return res;
+            }
+            else{
+                res.put("Result", "Success");
+                res.putAll(e.consult());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        res.put("Result", "Success");
+        return res;
+    }
+
 
     @Override
     public void update(Observable o, Object arg) {
@@ -265,8 +470,8 @@ public class ApplicationServeur implements Observer {
         return cal;
 
     }
-    
-    
+
+
     /**
      * Modification d'un calendrier
      * @param id id du calendrier
@@ -294,7 +499,7 @@ public class ApplicationServeur implements Observer {
         }
         // La calendrier a bien été modifié
         else {
-            envoiNotifications(Calendrier.findInvites(id));
+            //envoiNotifications(Calendrier.findInvites(id));
             res.put("Result", "Success");
         }
         return res;
@@ -326,5 +531,5 @@ public class ApplicationServeur implements Observer {
     public Calendrier getCalendrier(int id) throws SQLException {
         return Calendrier.find(id);
     }
- 
+
 }

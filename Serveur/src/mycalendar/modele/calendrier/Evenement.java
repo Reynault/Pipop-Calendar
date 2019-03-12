@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Observable;
 
 public abstract class Evenement extends Observable {
@@ -115,7 +116,7 @@ public abstract class Evenement extends Observable {
         }
     }
 
-        /**
+    /**
      * Méthode permettant de récupérer la liste des événements présent dans un calendrier
      *
      * @param idc l'id du calendrier
@@ -147,7 +148,7 @@ public abstract class Evenement extends Observable {
     /**
      * Récupère l'ID de l'événement le plus élevé
      *
-     * @return 
+     * @return
      * @throws SQLException
      */
     public static int getHighestID() throws SQLException {
@@ -212,19 +213,51 @@ public abstract class Evenement extends Observable {
         }
         return alUsrs;
     }
-    
+
     /**
     * Méthode qui retourne l'id de l'événement
     * @return id de l'événement
     */
     public int getId(){return idEv;}
-    
+
     /**
     * Méthode qui retourne un booléen concernant les droits d'administration de l'événement
     * @return booleen sur le droit d'admin
     */
 
     public boolean getAdmin() {
-        return droits.get(0).getDroit();
+        //return droits.get(0).getDroit();
+        return false;
+    }
+
+    /**
+     * Méthode de consultaion d'un événement
+     * @return Une HashMap contenant les données de l'événement
+     */
+    public HashMap<String, String> consult(){
+        HashMap<String, String> res = new HashMap<>();
+        res.put("nomE", nomE);
+        res.put("description", description);
+        res.put("image", image);
+        res.put("date", date.toString());
+        res.put("lieu", lieu);
+        res.put("auteur", auteur);
+        return res;
+    }
+
+    /**
+     * Méthode de modification d'un événement dans la BDD
+     * @return false si erreur lors de l'exécution de la requête, true sinon
+     * @throws SQLException
+     */
+    public boolean modify(int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) throws SQLException {
+        this.calendrierID=calendrierID;
+        this.nomE=nomE;
+        this.description=description;
+        this.image=image;
+        this.date=date;
+        this.lieu=lieu;
+        this.auteur=auteur;
+        return save();
     }
 }

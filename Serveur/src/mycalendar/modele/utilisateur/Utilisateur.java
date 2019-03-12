@@ -1,5 +1,4 @@
 package mycalendar.modele.utilisateur;
-
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.calendrier.Calendrier;
 import mycalendar.modele.calendrier.Evenement;
@@ -15,6 +14,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 /**
  * Classe Utilisateur qui représente un utilisateur dans la base de données
  */
+
 public class Utilisateur{
 
     private String email, nom, tmp_password, password, prenom;
@@ -123,7 +123,7 @@ public class Utilisateur{
      * @return email de l'utilisateur
      */
     public String getEmail() {
-        return Email;
+        return email;
     }
 
 }

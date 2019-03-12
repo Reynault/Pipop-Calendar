@@ -7,8 +7,15 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.util.Properties;
 
+import mycalendar.modele.bdd.GestionnaireBDD;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Calendrier {
-    
+
     private int idC;
     private String nomC;
     private ArrayList<Evenement> evenements;
@@ -32,7 +39,7 @@ public class Calendrier {
         this.theme = themes;
     }
 
-    
+
     /**
      * Consultation d'un calendrier
      * @param id id du calendrier
@@ -46,7 +53,7 @@ public class Calendrier {
         prep.execute();
     }
 
-    
+
     /**
      * Modification d'un calendrier
      * @param id id du calendrier
@@ -67,7 +74,7 @@ public class Calendrier {
         return prep.executeUpdate();  // Le nombre de lignes modifiées
     }
 
-    
+
     /**
      * Getter sur l'ID le plus eleve des calendriers
      * @return id le plus eleve des calendriers
@@ -96,16 +103,16 @@ public class Calendrier {
         return this.evenements;
     }
 
-    
+
     /**
      * Getter sur le nom du calendrier
      * @return nom du calendrier
      */
     public String getNomCalendrier(){
-        return this.nomCalendrier;
+        return this.nomC;
     }
 
-    
+
     /**
      * Getter sur l'appartenance d'un evenement au calendrier
      * @return true si l'evenement appartient au calendrier
@@ -120,7 +127,7 @@ public class Calendrier {
         return res;
     }
 
-    
+
     /**
      * Récupère l'ID d'un calendrier associé à son nom
      * @param nomCalendrier nom du calendrier
@@ -149,7 +156,7 @@ public class Calendrier {
         return -1;
     }
 
-    
+
     /**
      * Suppression d'un evenement du calendrier
      * @param e evenement a supprimer
@@ -163,10 +170,10 @@ public class Calendrier {
         }
     }
 
-    
+
     /**
      * Recherche d'un calendrier par son id
-     * @param id id du calendrier
+     * @param idC id du calendrier
      * @return calendrier correspondant
      * @throws SQLException
      */
@@ -185,7 +192,7 @@ public class Calendrier {
         }
     }
 
-    
+
     /**
      * Recherche des calendriers contenant un evenement
      * @param e evenement lie au calendrier
@@ -214,7 +221,7 @@ public class Calendrier {
 
     }
 
-    
+
     /**
      * Methode de sauvegarde d'un evenement dans la BDD
      * @return true si la sauvegarde s'est bien passee, false sinon
@@ -236,13 +243,13 @@ public class Calendrier {
         return true;
     }
 
-    
+
     /**
      * Methode de suppression d'un evenement dans la BDD
      * @return true si la suppression s'est bien passee, false sinon
      * @throws SQLException
      */
-    
+
     public boolean delete() throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
@@ -259,4 +266,5 @@ public class Calendrier {
         }
         return true;
     }
+
 }
