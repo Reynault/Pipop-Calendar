@@ -1,11 +1,16 @@
 package mycalendar.modele.utilisateur;
 
 import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.calendrier.Calendrier;
+import mycalendar.modele.calendrier.Evenement;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Classe Utilisateur qui représente un utilisateur dans la base de données
@@ -102,6 +107,7 @@ public class Utilisateur{
         return retour;
     }
 
+
     /**
      * Méthode save qui permet de sauvegarder un utilisateur
      * dans la base de données
@@ -111,4 +117,13 @@ public class Utilisateur{
         int res = 1;
         return res;
     }
+    
+        /**
+     * Getter sur l'email
+     * @return email de l'utilisateur
+     */
+    public String getEmail() {
+        return Email;
+    }
+
 }
