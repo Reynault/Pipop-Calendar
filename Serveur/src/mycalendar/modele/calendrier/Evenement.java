@@ -91,6 +91,32 @@ public abstract class Evenement extends Observable {
     }
 
     /**
+     * Méthode permettant de récupérer un événement depuis la BDD et de le retourner sous forme d'objet
+     *
+     * @param idEv l'id de lévénement à trouver
+     * @return l'événement avec toutes ses informations
+     * @throws SQLException
+     */
+    public static Evenement find(int idEv) throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        {
+            String request = "SELECT * FROM Evenement WHERE ide=?;";
+            PreparedStatement prep = connect.prepareStatement(request);
+            prep.setInt(1, idEv);
+            prep.execute();
+            ResultSet rs = prep.getResultSet();
+            if (rs.next()) {
+                if (rs.getBoolean("idc")) {
+                    return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
+                } else {
+                    return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
+                }
+            }
+            return null;
+        }
+    }
+
+    /**
      * Méthode permettant de récupérer la liste des événements présent dans un calendrier
      *
      * @param idc l'id du calendrier
@@ -200,7 +226,8 @@ public abstract class Evenement extends Observable {
     */
 
     public boolean getAdmin() {
-        return droits.get(0).getDroit();
+        //return droits.get(0).getDroit();
+        return false;
     }
 
     /**

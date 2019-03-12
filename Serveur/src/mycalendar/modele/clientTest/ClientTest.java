@@ -23,7 +23,7 @@ public class  ClientTest {
                     new InputStreamReader(
                             socket.getInputStream()));
 
-            String request = "GET {\"Request\":\"AddEvent\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super5\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2019\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"pootis@spenser.tf\",\"EventVisibility\":\"true\"}";
+            String request = "GET {\"Request\":\"AddEvent\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2069\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"pootis@spenser.tf\",\"EventVisibility\":\"true\"}";
             // String request = "GET {\"Request\":\"DeleteEvent\",\"ID\":\"1\"}";
             System.out.println("DONNEE ENVOYEE : " + request);
             pred.println(request);

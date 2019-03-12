@@ -109,7 +109,7 @@ public class Calendrier {
      * @return nom du calendrier
      */
     public String getNomCalendrier(){
-        return this.nomCalendrier;
+        return this.nomC;
     }
 
 
@@ -173,7 +173,7 @@ public class Calendrier {
 
     /**
      * Recherche d'un calendrier par son id
-     * @param id id du calendrier
+     * @param idC id du calendrier
      * @return calendrier correspondant
      * @throws SQLException
      */
@@ -265,35 +265,6 @@ public class Calendrier {
             }
         }
         return true;
-    }
-
-    /**
-     * Récupère l'ID d'un calendrier associé à son nom
-     * @param nomCalendrier nom du calendrier
-     * @return l'ID du calendrier récupéré (-1 si le calendrier n'existe pas)
-     * @throws SQLException
-     */
-    public static int getCalendrierID(String nomUtilisateur, String nomCalendrier) throws SQLException {
-        Connection connect = GestionnaireBDD.getInstance().getConnection();
-        {
-            String request = "SELECT idc FROM utilisateur_calendrier WHERE Email=?;";
-            PreparedStatement prep = connect.prepareStatement(request);
-            prep.setString(1, nomUtilisateur);
-            prep.execute();
-            ResultSet rs = prep.getResultSet();
-            while (rs.next()) {
-                request = "SELECT idc FROM Calendrier WHERE idc=? AND nomC=?;";
-                prep = connect.prepareStatement(request);
-                prep.setInt(1, rs.getInt("idc"));
-                prep.setString(2, nomCalendrier);
-                prep.execute();
-                ResultSet rst = prep.getResultSet();
-                if (rst.next()) {
-                    return rst.getInt("idc");
-                }
-            }
-        }
-        return -1;
     }
 
 }

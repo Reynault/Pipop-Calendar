@@ -186,7 +186,7 @@ public class ApplicationServeur implements Observer {
                 res.put("Result","Couldn't delete event from database");
                 return res;
             }
-        } catch (SQLException e1) {
+        } catch (SQLException | ParseException e1) {
             e1.printStackTrace();
         }
         res.put("Result","Success");
@@ -499,7 +499,7 @@ public class ApplicationServeur implements Observer {
         }
         // La calendrier a bien été modifié
         else {
-            envoiNotifications(Calendrier.findInvites(id));
+            //envoiNotifications(Calendrier.findInvites(id));
             res.put("Result", "Success");
         }
         return res;

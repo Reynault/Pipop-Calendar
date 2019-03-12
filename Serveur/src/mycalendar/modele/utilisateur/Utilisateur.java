@@ -123,7 +123,7 @@ public class Utilisateur{
      * @return email de l'utilisateur
      */
     public String getEmail() {
-        return Email;
+        return email;
     }
 
 }
