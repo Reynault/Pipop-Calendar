@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Classe Parseur JSON qui sert de façade sur la librairie GSON qui permet de coder et de décoder

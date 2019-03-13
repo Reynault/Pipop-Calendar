@@ -7,31 +7,40 @@ import java.util.Properties;
 public class GestionnaireBDD{
     private static GestionnaireBDD instance;
     public static Properties proprietes;
-    private Connection connect;
+    private static Connection connect;
     private static String userName = "pipop";
     private static String password ="calendar";
     private static String serverName = "tomgalanx.ovh";
     private static String portNumber = "3306";
     private static String Name = "pipop";
+    private static String url;
+    private static Properties connectionProps;
 
     public GestionnaireBDD() throws SQLException{
-        Properties connectionProps = new Properties();
+        connectionProps = new Properties();
         connectionProps.put("user", userName);
         connectionProps.put("password", password);
-        String url = "jdbc:mysql://" + serverName + ":";
+        url = "jdbc:mysql://" + serverName + ":";
         url += portNumber + "/" + Name;
-        connect = DriverManager.getConnection(url, connectionProps);
     }
 
     public static synchronized GestionnaireBDD getInstance() throws SQLException{
-        if(instance==null)
+            if(instance==null)
             instance = new GestionnaireBDD();
         return instance;
     }
 
     public static Connection getConnection() throws SQLException{
         GestionnaireBDD co= getInstance();
-        return co.connect;
+        return connect;
+    }
+
+    public void createConnection() throws SQLException{
+        connect = DriverManager.getConnection(url, connectionProps);
+    }
+
+    public void closeConnection() throws SQLException{
+        connect.close();
     }
 
     public void setNomDB(String nomDb){
@@ -50,30 +59,20 @@ public class GestionnaireBDD{
     public static String getName(){
         return Name;
     }
-
-    public static void main(String[] args) throws SQLException {
-
+    
+     /**
+     * Vérification de l'existence d'un calendrier
+     * @param idc id du calendrier
+     * @return true si le calendrier existe
+     * @throws SQLException
+     */
+    public static boolean verifierExistenceCalendrier(int idc) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-
-        // creation de la table Personne
-        {
-            String request = "INSERT INTO themes (nom) VALUES (?);";
-            PreparedStatement prep = connect.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
-            prep.setString(1, "Soirées");
-            prep.executeUpdate();
-            System.out.println("3) ajout themes 'Soirées'");
-
-            // recuperation de la derniere ligne ajoutee (auto increment)
-            // recupere le nouvel id
-            int autoInc = -1;
-            ResultSet rs = prep.getGeneratedKeys();
-            if (rs.next()) {
-                autoInc = rs.getInt(1);
-            }
-            System.out.print("  ->  id utilise lors de l'ajout : ");
-            System.out.println(autoInc);
-            System.out.println();
-        }
-
+        String request = "SELECT * FROM Calendrier WHERE idc=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setInt(1, idc);
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        return rs.next();   // true si un résultat a été trouvé, false sinon
     }
 }
