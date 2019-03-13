@@ -123,6 +123,10 @@
           searchbarPlaceholder: 'Search theme',
         });
       },
-    }
+    },
+    pageBeforeRemove() {
+      var self = this;
+      self.themeSelect.destroy();
+    },
   }
 </script>

@@ -45,7 +45,24 @@
             </li>
 
             <li>
-              
+              <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">From</div>
+                  <div class="item-input-wrap">
+                    <input type="text" placeholder="dd/mm/yyyy hh:mm" readonly="readonly" id="dateStart"/>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">To</div>
+                  <div class="item-input-wrap">
+                    <input type="text" placeholder="dd/mm/yyyy hh:mm" readonly="readonly" id="dateEnd"/>
+                  </div>
+                </div>
+              </div>
             </li>
 
             <li>
@@ -80,6 +97,17 @@
                 </div>
               </a>
             </li>
+
+            <li>
+              <label class="item-checkbox item-content">
+                <input type="checkbox"/>
+                <i class="icon icon-checkbox"></i>
+                <div class="item-inner">
+                  <div class="item-title">Public event</div>
+                </div>
+              </label>
+            </li>
+
           </ul>
         </div>
         <div class="list no-hairlines">
@@ -120,6 +148,129 @@
       pageInit: function (e, page) {
         var self = this;
         var app = self.$app;
+        var addZero = function(i){ return i < 10 ? '0' + i : i; }
+        var intArray = function(start, end, zero){
+          var arr = [];
+          for (var i = start; i <= end; i++) {
+            if (zero === true) {
+              arr.push(addZero(i));
+            } else {
+              arr.push(i);
+            }
+          }
+          return arr;
+        };
+        var today = new Date();
+        var dateStart = app.picker.create({
+          inputEl: '#dateStart',
+          rotateEffect: true,
+          value: [
+            today.getDate(),
+            addZero(today.getMonth() + 1),
+            today.getFullYear(),
+            today.getHours(),
+            addZero(today.getMinutes())
+          ],
+          formatValue: function (values, displayValues) {
+            return values[0] + '/' + values[1] + '/' + values[2] + ' ' + values[3] + ':' + values[4];
+          },
+          cols: [
+            // Days
+            {
+              values: (function () {
+                var daysInMonth = new Date(today.getFullYear(), today.getDate() + 1, 0).getDate();
+                return (intArray(1, daysInMonth, true));
+              })(),
+            },
+            // Months
+            {
+              values: intArray(1, 12, true),
+              onChange: function(picker, month){
+                var daysInMonth = new Date(picker.value[2], month, 0).getDate();
+                var day = picker.value[0];
+                if(picker.cols[0].replaceValues){
+                  picker.cols[0].replaceValues(intArray(1, daysInMonth, true));
+                }
+                if (day > daysInMonth) {
+                  picker.cols[0].setValue(daysInMonth);
+                } else {
+                  picker.cols[0].setValue(day);
+                }
+              },
+            },
+            // Years
+            { values: intArray(today.getFullYear() - 1, today.getFullYear() + 20, false), },
+            // Space divider
+            {
+              divider: true,
+              content: '&nbsp;&nbsp;'
+            },
+            // Hours
+            { values: intArray(0, 23, false), },
+            // Divider
+            {
+              divider: true,
+              content: ':'
+            },
+            // Minutes
+            { values: intArray(0, 59, true), }
+          ],
+        });
+        var dateEnd = app.picker.create({
+          inputEl: '#dateEnd',
+          rotateEffect: true,
+          value: [
+            today.getDate(),
+            addZero(today.getMonth() + 1),
+            today.getFullYear(),
+            today.getHours(),
+            addZero(today.getMinutes())
+          ],
+          formatValue: function (values, displayValues) {
+            return values[0] + '/' + values[1] + '/' + values[2] + ' ' + values[3] + ':' + values[4];
+          },
+          cols: [
+            // Days
+            {
+              values: (function () {
+                var daysInMonth = new Date(today.getFullYear(), today.getDate() + 1, 0).getDate();
+                return (intArray(1, daysInMonth, true));
+              })(),
+            },
+            // Months
+            {
+              values: intArray(1, 12, true),
+              onChange: function(picker, month){
+                var daysInMonth = new Date(picker.value[2], month, 0).getDate();
+                var day = picker.value[0];
+                if(picker.cols[0].replaceValues){
+                  picker.cols[0].replaceValues(intArray(1, daysInMonth, true));
+                }
+                if (day > daysInMonth) {
+                  picker.cols[0].setValue(daysInMonth);
+                } else {
+                  picker.cols[0].setValue(day);
+                }
+              },
+            },
+            // Years
+            { values: intArray(today.getFullYear() - 1, today.getFullYear() + 20, false), },
+            // Space divider
+            {
+              divider: true,
+              content: '&nbsp;&nbsp;'
+            },
+            // Hours
+            { values: intArray(0, 23, false), },
+            // Divider
+            {
+              divider: true,
+              content: ':'
+            },
+            // Minutes
+            { values: intArray(0, 59, true), }
+          ],
+        });
         var themeSelect = app.smartSelect.create({
           el: '#themeSelect',
           valueEl: '.item-text',
@@ -128,6 +279,12 @@
           searchbarPlaceholder: 'Search theme',
         });
       },
-    }
+    },
+    pageBeforeRemove() {
+      var self = this;
+      self.dateStart.destroy();
+      self.dateEnd.destroy();
+      self.themeSelect.destroy();
+    },
   }
 </script>
