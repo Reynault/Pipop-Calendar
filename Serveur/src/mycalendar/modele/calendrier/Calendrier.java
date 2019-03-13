@@ -219,7 +219,8 @@ public class Calendrier {
             prep.execute();
             ResultSet rs = prep.getResultSet();
             if (rs.next()) {
-                return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"));
+                return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),"");
+                //TODO : recherche auteur
             }
             return null;
         }
@@ -244,7 +245,8 @@ public class Calendrier {
             ResultSet rs = prep.getResultSet();
             Calendrier c;
             if (rs.next()) {
-                c = new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"));
+                c = new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),"");
+                //TODO : rece=herche auteur
                 if(c.contient(e)){
                     calendars.add(c);
                 }
