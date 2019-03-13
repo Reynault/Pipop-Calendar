@@ -341,9 +341,12 @@ public class ApplicationServeur implements Observer {
         return res;
     }
 
-    public HashMap<String, String> loadCalendars(String email){
+    public HashMap<String, String> loadCalendars(String email) throws SQLException{
         HashMap<String, String> res = new HashMap<String, String>();
-        ArrayList<Calendrier> calendriers;
+        ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
+        for(Calendrier calend : calendriers){
+            
+        }
         return res;
     }
 
@@ -489,7 +492,6 @@ public class ApplicationServeur implements Observer {
     private ArrayList<Calendrier> getCalendars(Evenement e) throws SQLException {
         ArrayList<Calendrier> cal = Calendrier.find(e, e.getId());
         return cal;
-
     }
 
 
