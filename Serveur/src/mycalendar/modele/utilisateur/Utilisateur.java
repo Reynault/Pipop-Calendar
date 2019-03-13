@@ -117,8 +117,14 @@ public class Utilisateur{
         int res = 1;
         return res;
     }
-    
-        /**
+
+    public static ArrayList<Utilisateur> find(String nom, String prenom) {
+        ArrayList<Utilisateur> ul = new ArrayList<>();
+
+        return ul;
+    }
+
+    /**
      * Getter sur l'email
      * @return email de l'utilisateur
      */
@@ -126,4 +132,11 @@ public class Utilisateur{
         return email;
     }
 
+    public String getNom() {
+        return this.nom;
+    }
+
+    public String getPrenom() {
+        return this.prenom;
+    }
 }

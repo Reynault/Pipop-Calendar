@@ -522,6 +522,32 @@ public class ApplicationServeur implements Observer {
         }
     }
 
+    public HashMap<String, String> getUtilisateurs(String nom, String prenom) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "GetUsers");
+        if (nom.equals("") && nom.equals("")) {
+            res.put("Result", "FirstNameAndLastNameNull");
+            return res;
+        }
+        ArrayList<Utilisateur> ul = Utilisateur.find(nom, prenom);
+        if (ul.size() == 0) {
+            res.put("Result", "NoUsersFound");
+        }
+        else {
+            StringBuilder usersList = new StringBuilder();
+            int i = 0;
+            for (Utilisateur u: ul) {
+                usersList.append(u.getNom() + "," + u.getPrenom());
+                if (i < ul.size() - 1) {
+                    usersList.append("|");
+                }
+                i++;
+            }
+            res.put("Result", usersList.toString());
+        }
+        return res;
+    }
+
     /**
      * Getter sur un calendrier
      * @param id id du calendrier
