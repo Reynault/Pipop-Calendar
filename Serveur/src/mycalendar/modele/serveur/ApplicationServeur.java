@@ -349,7 +349,7 @@ public class ApplicationServeur implements Observer {
                 res.put("Result", "Calendar already exists");
                 return res;
             }
-            if (!this.creerCalendrier(nomCalendrier, description, couleur, theme)) { // On crée le calendrier
+            if (!this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur)) { // On crée le calendrier
 
                 res.put("Result", "Couldn't insert new calendar into database");
                 return res;
@@ -389,11 +389,11 @@ public class ApplicationServeur implements Observer {
      * @return 1 si la création s'est bien passé, 0 sinon
      * @throws ParseException, SQLException
      */
-    private boolean creerCalendrier(String nomCalendrier, String description, String couleur, String theme) throws ParseException, SQLException {
+    private boolean creerCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur) throws ParseException, SQLException {
         Calendrier c;
         int id;
         id = Calendrier.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
-        c = new Calendrier(id+1,nomCalendrier, couleur, description, theme);
+        c = new Calendrier(id+1,nomCalendrier, couleur, description, theme, auteur);
         return c.save();
     }
 
