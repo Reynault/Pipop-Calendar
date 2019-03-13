@@ -171,6 +171,36 @@ public class Calendrier {
         }
     }
 
+    
+    /**
+     * Getter sur les membres d'un calendrier
+     * @param id id du calendrier
+     * @return liste des utilisateurs
+     * @throws SQLException
+     */
+    public static ArrayList<Utilisateur> findInvites(int id) throws SQLException {
+        ArrayList<Utilisateur> alu = new ArrayList<>();
+        String email, nom, mdp, prenom;
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        // Sélection des utilisateurs possédant le calendrier
+        System.out.println("findInvites avant");
+        String SQLPrep = "SELECT email FROM utilisateur_calendrier WHERE idc=?;";
+        System.out.println("findInvites après");
+        PreparedStatement prep = connect.prepareStatement(SQLPrep);
+        prep.setInt(1, id);
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        // s'il y a un resultat
+        while(rs.next()){
+            email = rs.getString("Email");
+            nom = rs.getString("nom");
+            mdp = rs.getString("mdp");
+            prenom = rs.getString("prenom");
+            alu.add(new Utilisateur(email, nom, mdp, prenom));    // Création d'Utilisateur à ajouter à la liste
+        }
+        return alu;
+    }
+
 
     /**
      * Recherche d'un calendrier par son id
