@@ -73,8 +73,17 @@ public class ConnexionClient implements Runnable{
                 // puis on les transforme en chaîne de caractères
                 requete = new String(cbo, Charset.defaultCharset());
                 lignes = requete.split("\n");
+                boolean trouve = false;
                 for(int i = 0; i < lignes.length; i++){
-                    json.append(lignes[i]);
+                    if(lignes[i].replace(" ","").isEmpty()){
+                        trouve = true;
+                    }
+                    if(trouve){
+                        json.append(lignes[i]);
+                    }
+                }
+                if(!trouve){
+                    throw new BadRequestExeption("Body non trouvé");
                 }
                 System.out.printf("json :"+json.toString());
             }
