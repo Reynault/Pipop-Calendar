@@ -1,6 +1,7 @@
 package mycalendar.modele.serveur;
 
 import javafx.beans.binding.BooleanBinding;
+import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.exceptions.BadRequestExeption;
 import mycalendar.modele.exceptions.NoRequestException;
 
@@ -24,6 +25,9 @@ public class ConnexionClient implements Runnable{
     public void run(){
         try {
             System.out.println("NOUVEAU CLIENT");
+            // Création de la connexion
+            GestionnaireBDD.getInstance().createConnection();
+
             // Permet de lire les données
             BufferedReader bos = new BufferedReader(
                     new InputStreamReader(
@@ -154,6 +158,7 @@ public class ConnexionClient implements Runnable{
             pred.println(httpResponse.toString());
 
             // Fermeture des objets
+            GestionnaireBDD.getInstance().closeConnection();
             pred.close();
             bos.close();
             socket.close();
