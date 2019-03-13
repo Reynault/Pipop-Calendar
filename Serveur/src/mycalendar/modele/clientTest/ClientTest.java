@@ -28,9 +28,14 @@ public class  ClientTest {
             System.out.println("DONNEE ENVOYEE : " + request);
             pred.println(request);
             //pred.println("{\"Request\":\"DeleteEvent\",\"ID\":\"6\"}");
-            String line = bos.readLine();
-            String response = bos.readLine();
-            System.out.println("DONNEE RECUES :"+response);
+            StringBuilder line = new StringBuilder();
+            line.append("\n\n");
+            String l = bos.readLine();
+            while(l != null){
+                line.append(l+"\n");
+                l = bos.readLine();
+            }
+            System.out.println("DONNEE RECUES :"+line.toString());
             bos.close();
             pred.close();
         }catch(IOException e){
