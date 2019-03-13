@@ -219,8 +219,12 @@ public class Calendrier {
             prep.execute();
             ResultSet rs = prep.getResultSet();
             if (rs.next()) {
-                return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),"");
-                //TODO : recherche auteur
+                request = "SELECT * FROM utilisateur_calendrier WHERE idc=?;";
+                prep.setInt(1, rs.getInt("idc"));
+                ResultSet rst = prep.getResultSet();
+                      if(rst.next()){
+                            return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),rst.getString("Email");
+                                      }
             }
             return null;
         }
@@ -245,8 +249,11 @@ public class Calendrier {
             ResultSet rs = prep.getResultSet();
             Calendrier c;
             if (rs.next()) {
-                c = new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),"");
-                //TODO : rece=herche auteur
+                request = "SELECT * FROM utilisateur_calendrier WHERE idc=?;";
+                prep.setInt(1, rs.getInt("idc"));
+                ResultSet rst = prep.getResultSet();
+                c = new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),rst.getString("Email"));
+                
                 if(c.contient(e)){
                     calendars.add(c);
                 }
