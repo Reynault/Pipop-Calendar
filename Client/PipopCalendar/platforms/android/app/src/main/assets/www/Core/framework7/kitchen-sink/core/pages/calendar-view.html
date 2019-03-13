@@ -1,0 +1,132 @@
+
+<template>
+  <div class="page" data-name="calendar-view">
+
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="f7-icons">arrow_left</i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">TITRE</div>
+      </div>
+    </div>
+
+    <div class="fab fab-extended fab-left-bottom">
+      <a href="/event-form/">
+        <i class="icon f7-icons">add</i>
+        <div class="fab-text">Add event</div>
+      </a>
+    </div>
+
+    <div class="page-content">
+
+      <div class="block-title">Calendar name</div>
+      <div class="block block-strong no-padding">
+
+        <!-- Mois -->
+        <div id="calendar-inline-container"></div>
+
+        <!-- Semaine -->
+        <div class="timeline timeline-horizontal tablet-15">
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>MONDAY</small> 11</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content">
+              <div class="timeline-item-inner">
+                <div class="timeline-item-title">Sécurité</div>
+                <div class="timeline-item-time">8:00</div>
+                <div class="timeline-item-subtitle"><small>AMPHI 15</small></div>
+                <div class="timeline-item-text">Description</div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>TUESDAY</small> 12</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>WEDNESDAY</small> 13</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>THURSDAY</small> 14</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>FRIDAY</small> 15</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>SATURDAY</small> 16</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-item-date"><small>SUNDAY</small> 17</div>
+            <div class="timeline-item-divider"></div>
+            <div class="timeline-item-content"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  return {
+    on: {
+      pageInit: function (e, page) {
+        var self = this;
+        var app = self.$app;
+        var calendarInline = app.calendar.create({
+          containerEl: '#calendar-inline-container',
+          value: [new Date()],
+          weekHeader: true,
+          events: [
+            {
+              date: new Date(),
+              color: 'blue',
+            },
+            {
+              date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5),
+              color: 'red',
+            },
+            {
+              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 4),
+              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 6),
+              color: 'black',
+            },
+          ],
+          renderToolbar: function () {
+            return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
+              '<div class="toolbar-inner">' +
+                '<div class="calendar-month-selector">' +
+                  '<a href="#" class="link icon-only calendar-prev-month-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                  '<span class="current-month-value"></span>' +
+                  '<a href="#" class="link icon-only calendar-next-month-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                '</div>' +
+                '<div class="calendar-year-selector">' +
+                  '<a href="#" class="link icon-only calendar-prev-year-button"><i class="icon icon-prev ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                  '<span class="current-year-value"></span>' +
+                  '<a href="#" class="link icon-only calendar-next-year-button"><i class="icon icon-next ' + (app.theme === 'md' ? 'color-black' : '') + '"></i></a>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          },
+        });
+      },
+      pageBeforeRemove() {
+        var self = this;
+        self.calendarInline.destroy();
+      },
+    }
+  };
+</script>

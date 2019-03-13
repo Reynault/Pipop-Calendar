@@ -85,6 +85,11 @@ public abstract class Evenement extends Observable {
             if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
                 return false;
             }
+            request = "INSERT INTO utilisateur_evenement VALUES (?, ?)";
+            prep = connect.prepareStatement(request);
+            prep.setString(1, this.auteur);
+            prep.setInt(2, this.idEv);
+            prep.executeUpdate();
 
         }
         return true;
@@ -189,7 +194,6 @@ public abstract class Evenement extends Observable {
 
     /**
      * Méthode récupérant la liste des participant d'un événement
-     *
      * @return La liste des utilisateurs participant à l'événement
      * @throws SQLException
      */
@@ -208,7 +212,9 @@ public abstract class Evenement extends Observable {
                 prep.setString(1, rs.getString("Email"));
                 prep.execute();
                 ResultSet rsd = prep.getResultSet();
-                alUsrs.add(new Utilisateur(rsd.getString("Email"), rsd.getString("nom"), rsd.getString("mdp"), rsd.getString("prenom")));
+                while (rsd.next()) {
+                    alUsrs.add(new Utilisateur(rsd.getString("Email"), rsd.getString("nom"), rsd.getString("mdp"), rsd.getString("prenom")));
+                }
             }
         }
         return alUsrs;

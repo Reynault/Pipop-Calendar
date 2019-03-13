@@ -28,7 +28,7 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
-        location.replace("Core/index.html");
+        location.replace("Core/framework7/kitchen-sink/core/index.html");
     },
 
     // Update DOM on a Received Event

@@ -107,6 +107,7 @@ public class Utilisateur{
         return retour;
     }
 
+
     public static ArrayList<Calendrier> findCalendriers(String email) throws SQLException {
         ArrayList<Calendrier> calendriers = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
@@ -129,7 +130,7 @@ public class Utilisateur{
         int res = 1;
         return res;
     }
-    
+
         /**
      * Getter sur l'email
      * @return email de l'utilisateur
