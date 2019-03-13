@@ -9,16 +9,19 @@ $(document).ready(function(){
 
   function inscription(email, mdp, nom, prenom){
       console.log("Inscription");
-      // Ne pas oublier de crypter les données
+      var crypMdp =  new jsSHA("SHA-512", "TEXT");
+      crypMdp.update(mdp);
+      var hash = crypMdp.getHash("HEX");
       // Ne pas oublier de vérifier les données
-      var arr = {"Request":"SignUp", "Email": email, "Mdp": mdp, "Nom": nom, "Prenom": prenom};
+      var arr = {"Request":"SignUp", "Email": email, "Mdp": hash, "Nom": nom, "Prenom": prenom};
       console.log(JSON.stringify(arr));
       $.ajax({
-          url: 'https://10.0.2.2:3306',
+          url: 'http://10.0.2.2:3306',
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: true,
+          timeout: 512,
+          async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               let obj = JSON.parse(data);
@@ -46,7 +49,6 @@ $(document).ready(function(){
               }
           },
           error: function(jqXHR, textStatus, errorThrown) {
-              alert('Erreur de communication avec le serveur');
               console.log("ERREUR : "+jqXHR);
               console.log("ERREUR : "+textStatus);
               console.log("ERREUR : "+errorThrown);
