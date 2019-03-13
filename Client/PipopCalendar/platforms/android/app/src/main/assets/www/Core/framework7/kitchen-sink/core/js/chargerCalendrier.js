@@ -9,8 +9,8 @@ $(document).ready(function(){
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
-          url: 'https://10.0.2.2:3306',
-          type: 'POST',
+          url: 'http://10.0.2.2:3307',
+          type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
           timeout: 512,

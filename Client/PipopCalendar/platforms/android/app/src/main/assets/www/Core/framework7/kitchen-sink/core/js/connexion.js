@@ -6,7 +6,7 @@ $(document).ready(function(){
     //alert("Click!");
     app.input.checkEmptyState("#emailInput");
     app.input.checkEmptyState("mdpInput");
-   /* if(!$("#emailInput").val() &&  !$("#mdpInput").val()){
+    if(!$("#emailInput").val() &&  !$("#mdpInput").val()){
        window.plugins.toast.showWithOptions({
               message: "Informations érronées",
               duration: 1500, // ms
@@ -36,7 +36,8 @@ $(document).ready(function(){
          );
     }else{
       connexion($("#emailInput").val(), $("#mdpInput").val());
-    }*/
+    }
+    e.preventDefault();
   });
 
   function connexion(email, mdp){
@@ -49,8 +50,8 @@ $(document).ready(function(){
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show('multi');
       $.ajax({
-          url: 'http://10.0.2.2:3306',
-          type: 'POST',
+          url: 'http://10.0.2.2:3307',
+          type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
           timeout: 512,
@@ -78,6 +79,7 @@ $(document).ready(function(){
                    }
                   }
                  );//
+                 $("#connexionErrMsg").empty();
                  $("#connexionErrMsg").append("Connexion error. Please, check your login information.");
                  $("#emailInput").parents('li').addClass('item-input-invalid');
                  $("#mdpInput").parents('li').addClass('item-input-invalid');
