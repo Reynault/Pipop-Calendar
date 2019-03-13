@@ -1,23 +1,19 @@
 $(document).ready(function(){
 
-  /*console.log("Envois de données au serveur");
-  $("#connexionBouton").click(function(e){
-    e.preventDefault();
-    //alert("Click!");
-    connexion($("#emailInput").val(), $("#mdpInput").val());
-  });*/
+   chargerCalendrier($("#emailInput").val());
 
-  function chergerCalendrier(email){
+  function chargerCalendrier(email){
       // Il faut crypter les données
       // Il faut vérifier les données
       var arr = {"Request":"LoadCalendar","Email":email};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
-          url: 'https://10.0.2.2:3306',
-          type: 'POST',
+          url: 'http://10.0.2.2:3307',
+          type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
+          timeout: 512,
           async: true,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();

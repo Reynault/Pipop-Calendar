@@ -22,6 +22,7 @@ public class Calendrier {
     private String couleur;
     private StringBuilder description;
     private String theme;
+    private String email;
 
     /**
      * Constructeur d'un calendrier
@@ -30,13 +31,14 @@ public class Calendrier {
      * @param coul couleur du calendrier
      * @param themes themes du calendrier
      */
-    public Calendrier(int idCalendar, String nom, String coul, String desc, String themes) throws SQLException{
+    public Calendrier(int idCalendar, String nom, String coul, String desc, String themes, String auteur) throws SQLException{
         this.idC = idCalendar;
         this.nomC = nom;
         this.evenements = new ArrayList<>();
         this.couleur = coul;
         this.description = new StringBuilder(desc);
         this.theme = themes;
+        this.email = auteur;
     }
 
 
@@ -146,7 +148,7 @@ public class Calendrier {
                 request = "SELECT idc FROM Calendrier WHERE idc=? AND nomC=?;";
                 prep = connect.prepareStatement(request);
                 prep.setInt(1, rs.getInt("idc"));
-                prep.setString(2, nomCalendrier);
+                prep.setString((int)2, nomCalendrier);
                 prep.execute();
                 ResultSet rst = prep.getResultSet();
                 if (rst.next()) {
@@ -217,7 +219,14 @@ public class Calendrier {
             prep.execute();
             ResultSet rs = prep.getResultSet();
             if (rs.next()) {
-                return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"));
+                request = "SELECT * FROM utilisateur_calendrier WHERE idc=?;";
+                prep = connect.prepareStatement(request);
+                prep.setInt(1, rs.getInt("idc"));
+                prep.execute();
+                ResultSet rst = prep.getResultSet();
+                      if(rst.next()){
+                            return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),rst.getString("Email"));
+                                      }
             }
             return null;
         }
@@ -242,7 +251,13 @@ public class Calendrier {
             ResultSet rs = prep.getResultSet();
             Calendrier c;
             if (rs.next()) {
-                c = new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"));
+                request = "SELECT * FROM utilisateur_calendrier WHERE idc=?;";
+                prep = connect.prepareStatement(request);
+                prep.setInt(1, rs.getInt("idc"));
+                prep.execute();
+                ResultSet rst = prep.getResultSet();
+                c = new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),rst.getString("Email"));
+                
                 if(c.contient(e)){
                     calendars.add(c);
                 }
@@ -260,17 +275,24 @@ public class Calendrier {
      */
     public boolean save() throws SQLException{
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-        String request = "INSERT INTO Calendrier (nomC, description, couleur, theme) VALUES (?,?,?,?);";
+        String request = "INSERT INTO Calendrier (idC, nomC, description, couleur, theme) VALUES (?,?,?,?,?);";
         PreparedStatement prep = connect.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
-        prep.setString(1, nomC);
-        prep.setString(2, description.toString());
-        prep.setString(3, couleur);
-        prep.setString(4, theme);
+        prep.setInt(1, idC);
+        prep.setString(2, nomC); 
+        prep.setString(3, description.toString());
+        prep.setString(4, couleur);
+        prep.setString(5, theme);
         prep.executeUpdate();
        // System.out.println(" ajout calendrier ");
         if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
             return false;
         }
+        //ajout dans la table utilisateur_calendrier
+        request = "INSERT INTO utilisateur_calendrier (Email, idc) VALUES (?,?);";
+        prep = connect.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
+        prep.setString(1, email);
+        prep.setInt(2, idC); 
+        prep.executeUpdate();
         return true;
     }
 
