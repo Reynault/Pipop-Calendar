@@ -148,7 +148,7 @@ public class Calendrier {
                 request = "SELECT idc FROM Calendrier WHERE idc=? AND nomC=?;";
                 prep = connect.prepareStatement(request);
                 prep.setInt(1, rs.getInt("idc"));
-                prep.setString(2, nomCalendrier);
+                prep.setString((int)2, nomCalendrier);
                 prep.execute();
                 ResultSet rst = prep.getResultSet();
                 if (rst.next()) {
