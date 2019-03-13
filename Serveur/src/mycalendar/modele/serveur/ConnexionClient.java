@@ -73,9 +73,10 @@ public class ConnexionClient implements Runnable{
                 // puis on les transforme en chaîne de caractères
                 requete = new String(cbo, Charset.defaultCharset());
                 lignes = requete.split("\n");
-                for(int i = 11; i < lignes.length; i++){
+                for(int i = 0; i < lignes.length; i++){
                     json.append(lignes[i]);
                 }
+                System.out.printf("json :"+json.toString());
             }
 
 
@@ -96,7 +97,10 @@ public class ConnexionClient implements Runnable{
             switch (donnees.get("Request")) {
                 // Authentification
                 case "SignIn": {
-                    result = ApplicationServeur.getInstance().authentification(donnees.get("Email"), donnees.get("Mdp"));
+                    result = ApplicationServeur.getInstance().authentification(
+                            donnees.get("Email"),
+                            donnees.get("Mdp")
+                    );
                     break;
                 }
                 case "AddEvent": {
@@ -108,8 +112,7 @@ public class ConnexionClient implements Runnable{
                     String eventLocation = donnees.get("EventLocation");
                     String eventAuthor = donnees.get("EventAuthor");
                     boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
-                    result = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName,
-                            eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
+                    result = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
                     break;
                 }
                 case "DeleteEvent": {
@@ -119,8 +122,12 @@ public class ConnexionClient implements Runnable{
                 }
                 // Inscription
                 case "SignUp": {
-                    result = ApplicationServeur.getInstance().inscription(donnees.get("Email"), donnees.get("Mdp"),
-                            donnees.get("Prenom"), donnees.get("Nom"));
+                    result = ApplicationServeur.getInstance().inscription(
+                            donnees.get("Email"),
+                            donnees.get("Mdp"),
+                            donnees.get("Prenom"),
+                                donnees.get("Nom")
+                        );
                         break;
                 }
                 //cas creation d'evenement
