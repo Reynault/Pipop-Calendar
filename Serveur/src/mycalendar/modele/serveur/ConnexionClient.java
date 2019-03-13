@@ -73,8 +73,14 @@ public class ConnexionClient implements Runnable{
                 // puis on les transforme en chaîne de caractères
                 requete = new String(cbo, Charset.defaultCharset());
                 lignes = requete.split("\n");
+                boolean trouve = false;
                 for(int i = 0; i < lignes.length; i++){
-                    json.append(lignes[i]);
+                    if(lignes[i].equals("")){
+                        trouve = true;
+                    }
+                    if(trouve){
+                        json.append(lignes[i]);
+                    }
                 }
                 System.out.printf("json :"+json.toString());
             }
