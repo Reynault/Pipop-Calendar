@@ -220,7 +220,9 @@ public class Calendrier {
             ResultSet rs = prep.getResultSet();
             if (rs.next()) {
                 request = "SELECT * FROM utilisateur_calendrier WHERE idc=?;";
+                prep = connect.prepareStatement(request);
                 prep.setInt(1, rs.getInt("idc"));
+                prep.execute();
                 ResultSet rst = prep.getResultSet();
                       if(rst.next()){
                             return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),rst.getString("Email"));
@@ -250,7 +252,9 @@ public class Calendrier {
             Calendrier c;
             if (rs.next()) {
                 request = "SELECT * FROM utilisateur_calendrier WHERE idc=?;";
+                prep = connect.prepareStatement(request);
                 prep.setInt(1, rs.getInt("idc"));
+                prep.execute();
                 ResultSet rst = prep.getResultSet();
                 c = new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),rst.getString("Email"));
                 
