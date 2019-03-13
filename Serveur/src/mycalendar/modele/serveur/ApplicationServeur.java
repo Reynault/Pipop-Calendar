@@ -5,21 +5,13 @@ import mycalendar.modele.calendrier.Calendrier;
 import mycalendar.modele.calendrier.Evenement;
 import mycalendar.modele.calendrier.EvenementPrive;
 import mycalendar.modele.calendrier.EvenementPublic;
-import mycalendar.modele.utilisateur.Utilisateur;
-
-import javax.xml.transform.Result;
-import mycalendar.modele.bdd.GestionnaireBDD;
-import mycalendar.modele.bdd.GestionnaireBDD;
-import mycalendar.modele.calendrier.Calendrier;
-import mycalendar.modele.calendrier.Evenement;
+import mycalendar.modele.exceptions.MessageCodeException;
 import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +21,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -92,23 +83,27 @@ public class ApplicationServeur implements Observer {
             calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
             // nomCalendrier spécifié inexistant : son code d'erreur est 2
             if (calendrierID == -1) {
-                res.put("Result", "Calendar doesn't exist");
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
                 return res;
             }
             if (!this.verifierEvenement(auteur, calendrierID, nom)) { // On vérifie que l'événement n'existe pas déjà
                 // Données invalides : l'événement existe déjà ; son code d'erreur associé est 1
-                res.put("Result", "Event already exists");
+                res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+                res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                 return res;
             }
             if (!this.createEvenement(calendrierID, nom, description, image, date, lieu, auteur, visible)) { // On crée l'événement
                 // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
-                res.put("Result", "Couldn't insert new event into database");
+                res.put("Result", MessageCodeException.C_ERROR_BDD);
+                res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
                 return res;
             }
         } catch (ParseException | SQLException e) {
             e.printStackTrace();
         }
-        res.put("Result", "Success");
+        res.put("Result", MessageCodeException.C_SUCCESS);
+        res.put("Message", MessageCodeException.M_SUCCESS);
         return res;
     }
 
@@ -176,20 +171,23 @@ public class ApplicationServeur implements Observer {
             e = Evenement.find(idEv);
             if (e == null) {
                 // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
-                res.put("Result","Event not found");
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
                 return res;
             }
             ArrayList<Utilisateur> alUsrs = e.findInvites(); // Récupération de la liste des participants de l'événement
             this.envoiNotifications(alUsrs); // Notification des utilisateurs
             if (!e.delete()) {
                 // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
-                res.put("Result","Couldn't delete event from database");
+                res.put("Result", MessageCodeException.C_ERROR_BDD);
+                res.put("Message", MessageCodeException.M_EVENT_ERROR_BDD);
                 return res;
             }
         } catch (SQLException | ParseException e1) {
             e1.printStackTrace();
         }
-        res.put("Result","Success");
+        res.put("Result", MessageCodeException.C_SUCCESS);
+        res.put("Message", MessageCodeException.M_SUCCESS);
         return res;
     }
 
@@ -212,23 +210,27 @@ public class ApplicationServeur implements Observer {
             e = Evenement.find(idEv);
             if (e == null) {
                 // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
-                res.put("Result","Event not found");
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
                 return res;
             }
             if (date.before(Calendar.getInstance().getTime())){
                 // Date déjà passée
-                res.put("Result","Date déja passée");
+                res.put("Result", MessageCodeException.C_DATE_ERROR);
+                res.put("Message", MessageCodeException.M_DATE_ERROR);
                 return res;
             }
             if (!e.modify(calendrierID, nomE, description, image,date, lieu, auteur)) {
                 // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
-                res.put("Result","Couldn't modify event from database");
+                res.put("Result", MessageCodeException.C_ERROR_BDD);
+                res.put("Message", MessageCodeException.M_EVENT_ERROR_BDD);
                 return res;
             }
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
-        res.put("Result","Success");
+        res.put("Result", MessageCodeException.C_SUCCESS);
+        res.put("Message", MessageCodeException.M_SUCCESS);
         return res;
     }
 
@@ -247,17 +249,18 @@ public class ApplicationServeur implements Observer {
             // nomCalendrier spécifié inexistant : son code d'erreur est 2
             Evenement e = Evenement.find(Integer.parseInt(idEV));
             if (e == null) {
-                res.put("Result", "Event doesn't exist");
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
                 return res;
             }
             else{
-                res.put("Result", "Success");
+                res.put("Result", MessageCodeException.C_SUCCESS);
+                res.put("Message", MessageCodeException.M_SUCCESS);
                 res.putAll(e.consult());
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        res.put("Result", "Success");
         return res;
     }
 
@@ -289,10 +292,12 @@ public class ApplicationServeur implements Observer {
 			while(result.next()){
 
 			}
-            res.put("Result","0");
+            res.put("Result", MessageCodeException.C_SUCCESS);
+            res.put("Message", MessageCodeException.M_SUCCESS);
         }else{
             // Utilisateur non trouvé
-            res.put("Result","1");
+            res.put("Result", MessageCodeException.C_NOT_FOUND);
+            res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
         }
         return res;
 }
@@ -314,19 +319,22 @@ public class ApplicationServeur implements Observer {
             case 1:
             {
                 // Inscription réussie
-                res.put("Result","0");
+                res.put("Result", MessageCodeException.C_SUCCESS);
+                res.put("Message", MessageCodeException.M_SUCCESS);
                 break;
             }
             case 0:
             {
                 // Utilisateur déjà existant
-                res.put("Result","1");
+                res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+                res.put("Message", MessageCodeException.M_USER_ALREADY_EXIST);
                 break;
             }
             case 2:
             {
                 // Cas dans lequel une des données est trop longue
-                res.put("Result","2");
+                res.put("Result", MessageCodeException.C_SIZE_ERROR);
+                res.put("Message", MessageCodeException.M_SIZE_ERROR);
                 break;
             }
         }
@@ -346,18 +354,21 @@ public class ApplicationServeur implements Observer {
         res.put("Request", "AddCalendar");
         try {
             if (!this.verifierCalendrier(auteur, nomCalendrier)) { // On vérifie que le calendrier n'existe pas déjà
-                res.put("Result", "Calendar already exists");
+                res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+                res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                 return res;
             }
             if (!this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur)) { // On crée le calendrier
 
-                res.put("Result", "Couldn't insert new calendar into database");
+                res.put("Result", MessageCodeException.C_ERROR_BDD);
+                res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
                 return res;
             }
         } catch (ParseException | SQLException e) {
             e.printStackTrace();
         }
-        res.put("Result", "Success");
+        res.put("Result", MessageCodeException.C_SUCCESS);
+        res.put("Message", MessageCodeException.M_SUCCESS);
         return res;
     }
 
@@ -418,7 +429,8 @@ public class ApplicationServeur implements Observer {
                    events = Evenement.find(idC, email);
                    if (events.size() == 0) {
 
-                       res.put("Result", "Events not found");
+                       res.put("Result", MessageCodeException.C_NOT_FOUND);
+                       res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
                        return res;
                    } else {
                        // pour chaque evenement , on recherche les calendriers associés
@@ -438,7 +450,8 @@ public class ApplicationServeur implements Observer {
                    Calendrier c = Calendrier.find(idC);
 
                    if (!c.delete()) {
-                       res.put("Result", "Couldn't delete calendar from database");
+                       res.put("Result", MessageCodeException.C_ERROR_BDD);
+                       res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
                        return res;
                    }
                }
@@ -448,14 +461,16 @@ public class ApplicationServeur implements Observer {
                    Calendrier c = Calendrier.find(idC);
 
                    if (!c.delete()) {
-                       res.put("Result", "Couldn't delete calendar from database");
+                       res.put("Result", MessageCodeException.C_ERROR_BDD);
+                       res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
                        return res;
                    }
                }
            } catch (SQLException e1) {
                e1.printStackTrace();
            }
-           res.put("Result", "Success");
+           res.put("Result", MessageCodeException.C_SUCCESS);
+           res.put("Message", MessageCodeException.M_SUCCESS);
            return res;
     }
 
@@ -485,22 +500,26 @@ public class ApplicationServeur implements Observer {
         res.put("Request", "ModifyCalendar");
         // Le calendrier n'existe pas
         if(!GestionnaireBDD.verifierExistenceCalendrier(id)){
-            res.put("Result", "Calendar not found");
+            res.put("Result", MessageCodeException.C_NOT_FOUND);
+            res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
             return res;
         }
         // Aucune modification effectuée
         else if(Calendrier.modificationCalendrier(id, nom, couleur) == 0) {
-            res.put("Result", "Calendar didn't change");
+            res.put("Result", MessageCodeException.C_NO_CHANGE);
+            res.put("Message", MessageCodeException.M_NO_CHANGE);
             return res;
         }
         // Erreur lors de la modification
         else if(Calendrier.modificationCalendrier(id, nom, couleur) < 0) {
-            res.put("Result", "Error during modification");
+            res.put("Result", MessageCodeException.C_ERROR_BDD);
+            res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
         }
         // La calendrier a bien été modifié
         else {
             //envoiNotifications(Calendrier.findInvites(id));
-            res.put("Result", "Success");
+            res.put("Result", MessageCodeException.C_SUCCESS);
+            res.put("Message", MessageCodeException.M_SUCCESS);
         }
         return res;
     }
