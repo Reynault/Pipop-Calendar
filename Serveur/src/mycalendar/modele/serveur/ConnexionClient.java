@@ -2,6 +2,7 @@ package mycalendar.modele.serveur;
 
 import javafx.beans.binding.BooleanBinding;
 import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.calendrier.Calendrier;
 import mycalendar.modele.exceptions.BadRequestExeption;
 import mycalendar.modele.exceptions.NoRequestException;
 
@@ -10,6 +11,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -109,6 +111,13 @@ public class ConnexionClient implements Runnable{
                     result = ApplicationServeur.getInstance().authentification(
                             donnees.get("Email"),
                             donnees.get("Mdp")
+                    );
+                    break;
+                }
+                case "LoadCalendar":
+                {
+                    result = ApplicationServeur.getInstance().loadCalendars(
+                            donnees.get("Email")
                     );
                     break;
                 }

@@ -341,6 +341,12 @@ public class ApplicationServeur implements Observer {
         return res;
     }
 
+    public HashMap<String, String> loadCalendars(String email){
+        HashMap<String, String> res = new HashMap<String, String>();
+        ArrayList<Calendrier> calendriers;
+        return res;
+    }
+
     /**
      * Méthode serveur de création d'un calendrier. C'est celle-ci qui est appelée par le client
      * @param nomCalendrier nom du calendrier
