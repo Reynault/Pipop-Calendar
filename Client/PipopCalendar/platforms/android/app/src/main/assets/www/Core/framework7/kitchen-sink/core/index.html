@@ -40,7 +40,7 @@
                   <div class="item-inner">
                     <div class="item-title item-floating-label">E-mail</div>
                     <div class="item-input-wrap">
-                      <input id="emailInput" type="email" name="email" required validate>
+                      <input id="emailInput" type="email" name="email" required validate data-validate-on-blur="true">
                       <span class="input-clear-button"></span>
                     </div>
                   </div>
@@ -49,7 +49,7 @@
                   <div class="item-inner">
                     <div class="item-title item-floating-label">Password</div>
                     <div class="item-input-wrap">
-                      <input id="mdpInput" type="password" name="password" required validate>
+                      <input id="mdpInput" type="password" name="password" required validate data-validate-on-blur="true">
                       <span class="input-clear-button"></span>
                     </div>
                     <div id="connexionErrMsg" class="block-footer" style="color:red"></div>
@@ -60,7 +60,7 @@
             <div class="list">
               <ul>
                 <li>
-                  <a href="#" id="connexionBouton" class="item-link list-button button button-large">Sign in</a>
+                  <button type="submit" id="connexionBouton" class="list-button button button-large">Sign in</button>
                 </li>
               </ul>
               <div class="block-footer">Don't have an account ? <a class="link" href="/sign-up/">Sign up here !</a></div>

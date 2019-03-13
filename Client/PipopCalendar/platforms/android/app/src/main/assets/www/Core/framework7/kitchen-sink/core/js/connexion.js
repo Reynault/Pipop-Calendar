@@ -47,7 +47,7 @@ $(document).ready(function(){
       var hash = crypMdp.getHash("HEX");
       var arr = {"Request":"SignIn","Email":email, "Mdp":hash};
       console.log("JSON : "+JSON.stringify(arr));
-      app.preloader.show();
+      app.preloader.show('multi');
       $.ajax({
           url: 'http://10.0.2.2:3306',
           type: 'POST',

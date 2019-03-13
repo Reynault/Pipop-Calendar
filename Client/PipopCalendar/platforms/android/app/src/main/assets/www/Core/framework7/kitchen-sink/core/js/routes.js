@@ -15,6 +15,11 @@ var mainView = app.views.create('.view-main', {
       componentUrl: './pages/calendar-view.html',
       name: 'calendar-view'
     },
+    {
+      path: '/event-form/',
+      componentUrl: './pages/event-form.html',
+      name: 'event-form'
+    },
     // Default route, match to all pages (e.g. 404 page)
     {
       path: '(.*)',

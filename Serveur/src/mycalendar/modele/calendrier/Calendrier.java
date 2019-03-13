@@ -137,15 +137,16 @@ public class Calendrier {
     public static int getCalendrierID(String nomUtilisateur, String nomCalendrier) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
-            String request = "SELECT idc FROM Calendrier WHERE nomC=?;";
+            String request = "SELECT idc FROM utilisateur_calendrier WHERE email=?;";
             PreparedStatement prep = connect.prepareStatement(request);
             prep.setString(1, nomUtilisateur);
             prep.execute();
             ResultSet rs = prep.getResultSet();
             while (rs.next()) {
-                request = "SELECT idc FROM Calendrier WHERE nomC=?;";
+                request = "SELECT idc FROM Calendrier WHERE idc=? AND nomC=?;";
                 prep = connect.prepareStatement(request);
-                prep.setString(1, nomCalendrier);
+                prep.setInt(1, rs.getInt("idc"));
+                prep.setString(2, nomCalendrier);
                 prep.execute();
                 ResultSet rst = prep.getResultSet();
                 if (rst.next()) {
@@ -168,6 +169,36 @@ public class Calendrier {
                 ev.delete();
             }
         }
+    }
+
+    
+    /**
+     * Getter sur les membres d'un calendrier
+     * @param id id du calendrier
+     * @return liste des utilisateurs
+     * @throws SQLException
+     */
+    public static ArrayList<Utilisateur> findInvites(int id) throws SQLException {
+        ArrayList<Utilisateur> alu = new ArrayList<>();
+        String email, nom, mdp, prenom;
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        // Sélection des utilisateurs possédant le calendrier
+        System.out.println("findInvites avant");
+        String SQLPrep = "SELECT email FROM utilisateur_calendrier WHERE idc=?;";
+        System.out.println("findInvites après");
+        PreparedStatement prep = connect.prepareStatement(SQLPrep);
+        prep.setInt(1, id);
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        // s'il y a un resultat
+        while(rs.next()){
+            email = rs.getString("Email");
+            nom = rs.getString("nom");
+            mdp = rs.getString("mdp");
+            prenom = rs.getString("prenom");
+            alu.add(new Utilisateur(email, nom, mdp, prenom));    // Création d'Utilisateur à ajouter à la liste
+        }
+        return alu;
     }
 
 

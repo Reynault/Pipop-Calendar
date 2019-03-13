@@ -32,8 +32,15 @@ public class GestionnaireBDD{
 
     public static Connection getConnection() throws SQLException{
         GestionnaireBDD co= getInstance();
-        connect = DriverManager.getConnection(url, connectionProps);
         return connect;
+    }
+
+    public void createConnection() throws SQLException{
+        connect = DriverManager.getConnection(url, connectionProps);
+    }
+
+    public void closeConnection() throws SQLException{
+        connect.close();
     }
 
     public void setNomDB(String nomDb){
