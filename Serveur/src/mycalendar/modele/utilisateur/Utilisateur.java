@@ -116,7 +116,8 @@ public class Utilisateur{
         prep.setString(1, email);
         ResultSet result = prep.executeQuery();
         while(result.next()){
-            calendriers.add(new Calendrier(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5)));
+            calendriers.add(new Calendrier(result.getInt(1), result.getString(2), result.getString(3),
+                    result.getString(4), result.getString(5), email));
         }
         return calendriers;
     }
