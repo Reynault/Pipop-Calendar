@@ -1,0 +1,133 @@
+<template>
+  <div class="page" data-name="event-form">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="f7-icons">arrow_left</i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">New event (modify event)</div>
+      </div>
+    </div>
+    <div class="fab fab-extended fab-left-bottom">
+      <a href="#">
+        <i class="icon f7-icons">download</i>
+        <div class="fab-text">Import</div>
+      </a>
+    </div>
+    <div class="page-content">
+      <form>
+        <div class="list no-hairlines">
+          <ul>
+            <li>
+              <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Event name</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="name">
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Description</div>
+                  <div class="item-input-wrap">
+                    <textarea class="resizable" name="desc"></textarea>
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              
+            </li>
+
+            <li>
+              <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
+                <select name="color">
+                  {{#each colors}}
+                    <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
+                  {{/each}}
+                </select>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title">Color</div>
+                  </div>
+                </div>
+              </a>
+            </li>
+            <li class="media-item">
+              <a id="themeSelect" class="item-link smart-select">
+                <select name="theme" multiple>
+                  <option value="cours">Cours</option>
+                  <option value="activite">Activité</option>
+                  <option value="evenement">Evénement</option>
+                  <option value="voyage">Voyage</option>
+                </select>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">Themes</div>
+                    </div>
+                    <div class="item-text"></div>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="list no-hairlines">
+          <ul>
+            <li>
+              <a href="#" class="item-link list-button button button-outline button-large" >Create / Modify</a>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+<script>
+  return {
+    data: function(){
+      var colors = [
+        ['deeppurple', 'Deep purple'],
+        ['purple', 'Purple'],
+        ['pink', 'Pink'],
+        ['red', 'Red'],
+        ['deeporange', 'Deep orange'],
+        ['orange', 'Orange'],
+        ['yellow', 'Yellow'],
+        ['lime', 'Lime'],
+        ['green', 'Green'],
+        ['teal', 'Teal'],
+        ['blue', 'Blue'],
+        ['lightblue', 'Light blue'],
+        ['gray', 'Gray'],
+        ['black', 'Black'],
+      ];
+      return {
+        colors: colors,
+      };
+    },
+    on: {
+      pageInit: function (e, page) {
+        var self = this;
+        var app = self.$app;
+        var themeSelect = app.smartSelect.create({
+          el: '#themeSelect',
+          valueEl: '.item-text',
+          openIn: 'popup',
+          searchbar: true,
+          searchbarPlaceholder: 'Search theme',
+        });
+      },
+    }
+  }
+</script>

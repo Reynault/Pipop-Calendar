@@ -8,7 +8,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">E-mail</div>
               <div class="item-input-wrap">
-                <input id ="emailInscripInput" type="email" name="email" required validate>
+                <input id ="emailInscripInput" type="email" name="email" required validate data-validate-on-blur="true">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -17,7 +17,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Password</div>
               <div class="item-input-wrap">
-                <input id="mdpInscripInput" type="password" name="password" required validate>
+                <input id="mdpInscripInput" type="password" name="password" required validate data-validate-on-blur="true">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -26,7 +26,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">First name</div>
               <div class="item-input-wrap">
-                <input id="prenomInput" type="text" name="firstname" required validate>
+                <input id="prenomInput" type="text" name="firstname" required validate data-validate-on-blur="true">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -35,7 +35,7 @@
             <div class="item-inner">
               <div class="item-title item-floating-label">Last name</div>
               <div class="item-input-wrap">
-                <input id="nomInput" type="text" name="lastname" required validate>
+                <input id="nomInput" type="text" name="lastname" required validate data-validate-on-blur="true">
                 <span class="input-clear-button"></span>
               </div>
             </div>
@@ -45,7 +45,7 @@
       <div class="list">
         <ul>
           <li>
-            <a id="inscriptionBouton" href="#" class="item-link list-button button button-large" >Sign Up</a>
+            <button type="submit" id="inscriptionBouton" class="list-button button button-large">Sign Up</button>
           </li>
         </ul>
         <div class="block-footer">Already have an account ? <a class="link back" href="#">Sign in here !</a></div>
