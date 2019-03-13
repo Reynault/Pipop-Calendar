@@ -107,15 +107,15 @@ public class Utilisateur{
         return retour;
     }
 
-    public static String findCalendriers(String email) throws SQLException {
-        String calendriers = "";
+    public static ArrayList<Calendrier> findCalendriers(String email) throws SQLException {
+        ArrayList<Calendrier> calendriers = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         String request = "SELECT * FROM Calendrier WHERE idc = (SELECT idc FROM utilisateur_calendrier WHERE Email = ? );";
         PreparedStatement prep = connect.prepareStatement(request);
         prep.setString(1, email);
         ResultSet result = prep.executeQuery();
         while(result.next()){
-            calendriers += result.getInt(1)+","+result.getString(2)+","+result.getString(3)+","+result.getString(4)+","+result.getString(5)+";";
+            calendriers.add(new Calendrier(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5)));
         }
         return calendriers;
     }

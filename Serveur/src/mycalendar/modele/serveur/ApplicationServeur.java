@@ -281,7 +281,7 @@ public class ApplicationServeur implements Observer {
         // Vérification de la connexion
         if(Utilisateur.verifierConnexion(email, mdp)){
             // Récupération des calendriers de l'utilisateur
-            String calendriers = Utilisateur.findCalendriers(email);
+            ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
             res.put("Result","0");
         }else{
             // Utilisateur non trouvé
