@@ -1,5 +1,3 @@
-            //String request = "GET {\"Request\":\"DeleteEvent\",\"ID\":\"1\"} HTTP/1.1";
-
 $(document).ready(function(){
 
   console.log("Envoi de données au serveur");
