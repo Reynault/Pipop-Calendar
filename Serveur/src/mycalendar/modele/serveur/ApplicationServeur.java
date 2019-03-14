@@ -549,6 +549,38 @@ public class ApplicationServeur implements Observer {
         }
     }
 
+    public HashMap<String, String> getUtilisateurs(String nom, String prenom) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "GetUsers");
+        try {
+        if (nom.equals("") && prenom.equals("")) {
+            res.put("Result", "FirstNameAndLastNameNull");
+            return res;
+        }
+        ArrayList<Utilisateur> ul = null;
+            ul = Utilisateur.find(nom, prenom);
+        if (ul.size() == 0) {
+            res.put("Result", "NoUsersFound");
+        }
+        else {
+            StringBuilder usersList = new StringBuilder();
+            int i = 0;
+            for (Utilisateur u: ul) {
+                usersList.append(u.getEmail() + "," + u.getNom() + "," + u.getPrenom());
+                if (i < ul.size() - 1) {
+                    usersList.append("|");
+                }
+                i++;
+            }
+            res.put("Result", usersList.toString());
+        }
+        } catch (SQLException e) {
+            res.put("Result", "SQLError");
+            e.printStackTrace();
+        }
+        return res;
+    }
+
     /**
      * Getter sur un calendrier
      * @param id id du calendrier
