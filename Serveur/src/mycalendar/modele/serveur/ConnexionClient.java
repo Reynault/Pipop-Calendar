@@ -1,6 +1,5 @@
 package mycalendar.modele.serveur;
 
-import javafx.beans.binding.BooleanBinding;
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.exceptions.BadRequestExeption;
 import mycalendar.modele.exceptions.NoRequestException;
@@ -123,8 +122,10 @@ public class ConnexionClient implements Runnable{
                             donnees.get("Prenom"), donnees.get("Nom"));
                         break;
                 }
-                //cas creation d'evenement
-                case "CreateEvent": {
+                case "GetUsers": {
+                    String nom = donnees.get("FirstName");
+                    String prenom = donnees.get("LastName");
+                    result = ApplicationServeur.getInstance().getUtilisateurs(nom, prenom);
                     break;
                 }
                 default: {

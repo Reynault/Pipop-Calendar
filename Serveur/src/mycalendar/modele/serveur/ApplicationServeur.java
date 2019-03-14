@@ -525,11 +525,13 @@ public class ApplicationServeur implements Observer {
     public HashMap<String, String> getUtilisateurs(String nom, String prenom) {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "GetUsers");
-        if (nom.equals("") && nom.equals("")) {
+        try {
+        if (nom.equals("") && prenom.equals("")) {
             res.put("Result", "FirstNameAndLastNameNull");
             return res;
         }
-        ArrayList<Utilisateur> ul = Utilisateur.find(nom, prenom);
+        ArrayList<Utilisateur> ul = null;
+            ul = Utilisateur.find(nom, prenom);
         if (ul.size() == 0) {
             res.put("Result", "NoUsersFound");
         }
@@ -537,13 +539,17 @@ public class ApplicationServeur implements Observer {
             StringBuilder usersList = new StringBuilder();
             int i = 0;
             for (Utilisateur u: ul) {
-                usersList.append(u.getNom() + "," + u.getPrenom());
+                usersList.append(u.getEmail() + "," + u.getNom() + "," + u.getPrenom());
                 if (i < ul.size() - 1) {
                     usersList.append("|");
                 }
                 i++;
             }
             res.put("Result", usersList.toString());
+        }
+        } catch (SQLException e) {
+            res.put("Result", "SQLError");
+            e.printStackTrace();
         }
         return res;
     }

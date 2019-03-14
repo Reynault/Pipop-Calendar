@@ -118,9 +118,32 @@ public class Utilisateur{
         return res;
     }
 
-    public static ArrayList<Utilisateur> find(String nom, String prenom) {
+    public static ArrayList<Utilisateur> find(String nom, String prenom) throws SQLException {
         ArrayList<Utilisateur> ul = new ArrayList<>();
-
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        PreparedStatement prep;
+        String request;
+        if (nom.equals("")) {
+            request = "SELECT * FROM Utilisateur WHERE prenom=?;";
+            prep = connect.prepareStatement(request);
+            prep.setString(1, prenom);
+        }
+        else if (prenom.equals("")) {
+            request = "SELECT * FROM Utilisateur WHERE nom=?;";
+            prep = connect.prepareStatement(request);
+            prep.setString(1, nom);
+        }
+        else {
+            request = "SELECT * FROM Utilisateur WHERE nom=? AND prenom=?;";
+            prep = connect.prepareStatement(request);
+            prep.setString(1, nom);
+            prep.setString(2, prenom);
+        }
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        while (rs.next()) {
+            ul.add(new Utilisateur(rs.getString("Email"), rs.getString("nom"), rs.getString("mdp"), rs.getString("prenom")));
+        }
         return ul;
     }
 
