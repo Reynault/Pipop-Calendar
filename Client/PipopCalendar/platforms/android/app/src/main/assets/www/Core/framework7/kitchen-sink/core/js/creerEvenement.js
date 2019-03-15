@@ -1,9 +1,8 @@
 $(document).ready(function(){
 
-  console.log("Envoi de données au serveur");
-  $("#creerCalendrierBouton").click(function(e){
-    e.preventDefault();
-    creerEvenement($("#nomCalInput").val(), $("#nomEvInput").val(), $("#descEvInput").val(), $("imageEvInput").val(), $("#dateEvInput").val(), $("#lieuEvInput").val(), $("#auteurEvInput").val(), $("#visibiliteEvInput").val());
+  $("#creerEvenementBouton").click(function(e){
+      console.log("TEST RECUP:"+ localStorage.getItem("nomCalendrierCourant"));
+    //creerEvenement($("#nomCalInput").val(), $("#nomEvInput").val(), $("#descEvInput").val(), $("imageEvInput").val(), $("#dateEvInput").val(), $("#lieuEvInput").val(), $("#auteurEvInput").val(), $("#visibiliteEvInput").val());
   });
 
 

@@ -39,7 +39,7 @@
                 <div class="list links-list no-hairlines">
                   <ul>
                     <li>
-                      <a href="#" class="panel-close">Log out</a>
+                      <a href="#" class="panel-close" id="deconnexionBouton">Log out</a>
                     </li>
                     <li>
                       <a href="#" class="panel-close">Profil settings</a>
@@ -99,9 +99,12 @@
             </a>
           </div>
 
-          <div class="page-content">
-
-            <div class="block">
+          <div class="page-content ptr-content">
+            <div class="ptr-preloader">
+              <div class="preloader"></div>
+              <div class="ptr-arrow"></div>
+            </div>
+            <div class="block" id="calendrierContainer">
               <p class="row">
                 <a href="/calendar-view/" class="col-50 button button-large button-fill color-orange">Calendar name</a>
                 <a href="/calendar-view/" class="col-50 button button-large button-fill color-red">Calendar name</a>
@@ -114,6 +117,7 @@
           </div>
         </div>
       </div>
+
     </div>
     <!-- Path to Framework7 Library Bundle JS-->
     <script src="../../packages/core/js/framework7.bundle.min.js"></script>
@@ -122,6 +126,7 @@
     <!-- Path to your app js-->
     <script src="js/jquery.js"></script>
     <script src="js/chargerCalendrier.js"></script>
+    <script src="js/logout.js"></script>
     <script src="js/app.js"></script>
     <script src="js/routes.js"></script>
   </body>

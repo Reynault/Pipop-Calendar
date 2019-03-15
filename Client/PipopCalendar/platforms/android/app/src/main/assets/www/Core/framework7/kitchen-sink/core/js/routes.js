@@ -14,12 +14,44 @@ var mainView = app.views.create('.view-main', {
     {
       path: '/calendar-form/',
       componentUrl: './pages/calendar-form.html',
-      name: 'calendar-form'
+      name: 'calendar-form',
+      on: {
+          pageAfterIn: function (e, page) {
+            console.log("Chargement formulaire");
+            $.ajax({
+              url: "js/creerCalendrier.js",
+              dataType: "script",
+              cache: true,
+              success:function(msg) {
+                console.log("Success!!");
+              },
+              error:function(msg) {
+                console.log("Error chargement script de création de calendrier");
+              },
+            })
+          },
+        }
     },
     {
       path: '/calendar-view/',
       componentUrl: './pages/calendar-view.html',
-      name: 'calendar-view'
+      name: 'calendar-view',
+      on: {
+          pageAfterIn: function (e, page) {
+            console.log("Chargement formulaire");
+            $.ajax({
+              url: "js/enregistrerNomCalendrier.js",
+              dataType: "script",
+              cache: true,
+              success:function(msg) {
+                console.log("Success!!");
+              },
+              error:function(msg) {
+                console.log("Error chargement script de l'enregistreur de nom de calendrier");
+              },
+            })
+          }
+        }
     },
     {
       path: '/event-form/',
@@ -33,3 +65,4 @@ var mainView = app.views.create('.view-main', {
     }
   ]
 });
+//document.addEventListener("backbutton", app.methods.onBackKeyDown, false);

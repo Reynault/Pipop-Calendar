@@ -1,6 +1,4 @@
 $(document).ready(function(){
-
-  console.log("Envois de données au serveur");
   $("#connexionBouton").click(function(e){
     //e.preventDefault();
     //alert("Click!");
@@ -62,7 +60,9 @@ $(document).ready(function(){
               console.log("data : "+obj["Result"]);
               if(obj["Result"]==0){
                 window.location = "user-home.html";
+                localStorage.setItem("emailUtilisateur",$("#emailInput").val());
               }else{
+              localStorage.setItem("emailUtilisateur","");
                 window.plugins.toast.showWithOptions(
                 {
                    message: "Connexion Echouée",
@@ -90,6 +90,7 @@ $(document).ready(function(){
               console.log("ERREUR : "+textStatus);
               console.log("ERREUR : "+errorThrown);
               app.preloader.hide();
+              localStorage.setItem("emailUtilisateur","");
               window.plugins.toast.showWithOptions(
                   {
                     message: "Connexion échoué",

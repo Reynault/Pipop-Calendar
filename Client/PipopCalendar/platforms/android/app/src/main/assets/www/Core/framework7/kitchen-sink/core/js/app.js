@@ -1,3 +1,4 @@
+var $$ = Dom7;
 var app = new Framework7({
   // App root element
   root: '#app',
@@ -40,5 +41,29 @@ var app = new Framework7({
     }
   ]
 });
-
+var $ptrContent = $$('.ptr-content');
+$ptrContent.on('ptr:refresh', function (e) {
+  // Emulate 2s loading
+  setTimeout(function () {
+    console.log("Loading Calendar");
+    app.ptr.done(); // or e.detail();
+  }, 2000);
+});
 var mainView = app.views.create('.view-main');
+
+document.addEventListener("backbutton", onBackKeyDown, false);
+function onBackKeyDown() {
+  var path = window.location.pathname;
+  var page = path.split("/").pop();
+  if(page != "index.html"){
+    app.dialog.confirm('Are you sure you want to log out?', function () {
+        window.location = "index.html";
+        localStorage.setItem("emailUtilisateur","");
+    });
+  }else{
+    app.dialog.confirm('Do you really want to exit Pipop?', function () {
+            localStorage.setItem("emailUtilisateur","");
+            window.navigator.app.exitApp();
+    });
+  }
+}

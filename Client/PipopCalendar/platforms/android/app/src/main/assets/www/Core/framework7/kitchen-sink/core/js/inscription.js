@@ -1,7 +1,5 @@
 
 $(document).ready(function(){
-
-  console.log("Envoi de données au serveur");
   $("#inscriptionBouton").click(function(e){
     app.input.checkEmptyState("#emailInscripInput");
     app.input.checkEmptyState("mdpInscripInput");
@@ -63,20 +61,24 @@ $(document).ready(function(){
                 case "0":
                 {
                   window.location = "user-home.html";
+                  localStorage.setItem("emailUtilisateur",$("#nomInscripInput").val());
                   break;
                 }
                 case "1":
                 {
+                  localStorage.setItem("emailUtilisateur","");
                   // Message d'erreur : L'utilisateur existe déjà
                   break;
                 }
                 case "2":
                 {
+                  localStorage.setItem("emailUtilisateur","");
                   // Message d'erreur : données trop longues
                   break;
                 }
                 default:
                 {
+                  localStorage.setItem("emailUtilisateur","");
                   // Message d'erreur : autre
                   break;
                 }
