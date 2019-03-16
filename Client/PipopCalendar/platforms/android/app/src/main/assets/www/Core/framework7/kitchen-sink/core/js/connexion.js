@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   $("#connexionBouton").click(function(e){
     //e.preventDefault();
     //alert("Click!");
@@ -39,8 +40,6 @@ $(document).ready(function(){
   });
 
   function connexion(email, mdp){
-      // Il faut crypter les données
-      // Il faut vérifier les données
       var crypMdp =  new jsSHA("SHA-512", "TEXT");
       crypMdp.update(mdp);
       var hash = crypMdp.getHash("HEX");
@@ -57,7 +56,7 @@ $(document).ready(function(){
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
-              console.log("data : "+obj["Result"]);
+              console.log("BUG : data : "+obj["Result"]);
               if(obj["Result"]==0){
                 window.location = "user-home.html";
                 localStorage.setItem("emailUtilisateur",$("#emailInput").val());

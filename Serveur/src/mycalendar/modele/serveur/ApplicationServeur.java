@@ -12,54 +12,67 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+/**
+ * Application Serveur qui met en attente le serveur des requêtes des clients
+ */
 public class ApplicationServeur implements Observer {
 
-    public static int PORT_NUMBER = 3306;
+    // Numero de port
+    public static int PORT_NUMBER = 3307;
 
+    public static int NB_BACKLOG = 100;
+
+    public static String URL = "127.0.0.1";
+
+    // Listener du serveur
     private ServerSocket listener;
+
+    // Socket du client en cours
     private Socket socket;
 
+    // Instance unique
     private static ApplicationServeur instance = new ApplicationServeur();
 
     private ApplicationServeur(){
-
+        // Constructeur privé
     }
 
+    /**
+     * Getteur du singleton
+     * @return l'instance unique
+     */
     public static ApplicationServeur getInstance(){
         return instance;
     }
 
+    /**
+     * Méthode qui permet d'attendre les clients
+     * @throws IOException
+     */
     public void launchServer() throws IOException{
         Thread thread;
         // Adresse IP
-        InetAddress inet = InetAddress.getByName("localhost");
+        InetAddress inet = InetAddress.getByName(URL);
         // Mise en place du serveur
-        listener = new ServerSocket(PORT_NUMBER, 100, inet);
+        listener = new ServerSocket(PORT_NUMBER, NB_BACKLOG, inet);
         System.out.println("LAUNCH SERVER");
         // Le serveur attend continuellement un client
         while (true) {
             // On accepte d'un client
             socket = listener.accept();
-            System.out.println("On accepte le client.");
             // Création du thread lié au client en cours
             thread = new Thread(new ConnexionClient(socket));
             // Lancement du thread
             thread.start();
-            System.out.println("Je continue d'attendre des clients.");
         }
 }
 
