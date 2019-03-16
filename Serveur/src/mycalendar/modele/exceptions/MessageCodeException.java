@@ -1,19 +1,25 @@
 package mycalendar.modele.exceptions;
 
+/**
+ * Fabrique qui garde l'ensemble des messages et codes d'erreurs
+ * utilisés par l'application
+ */
 public class MessageCodeException {
     /**
      * Message de retour de la part du serveur
      */
     public static String M_CALENDAR_NOT_FOUND = "Calendar not found.";
     public static String M_CALENDAR_ALREADY_EXIST = "Calendar already exist.";
-    public static String M_CALENDAR_ERROR_BDD = "Could not insert / delete or modifie event from database.";
+    public static String M_CALENDAR_ERROR_BDD = "Could not insert / delete or modify event from database.";
 
     public static String M_EVENT_ALREADY_EXIST = "Event already exists.";
-    public static String M_EVENT_ERROR_BDD = "Could not insert / delete or modifie event into database.";
+    public static String M_EVENT_ERROR_BDD = "Could not insert / delete or modify event into database.";
     public static String M_EVENT_NOT_FOUND = "Event not found.";
 
     public static String M_USER_NOT_FOUND = "User not found.";
     public static String M_USER_ALREADY_EXIST = "User already exists.";
+
+    public static String M_BDD_ERROR = "Erreur de connexion avec la base de données";
 
     public static String M_DATE_ERROR = "Date already passed.";
 
@@ -24,11 +30,13 @@ public class MessageCodeException {
     public static String M_SIZE_ERROR = "Data size error.";
 
 
+
     /**
      * Code de retour de la part du serveur
      */
     public static String C_NOT_FOUND = "1";
     public static String C_ALREADY_EXIST = "2";
+
     public static String C_ERROR_BDD = "3";
 
     public static String C_DATE_ERROR = "4";

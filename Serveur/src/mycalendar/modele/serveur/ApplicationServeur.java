@@ -39,6 +39,8 @@ public class ApplicationServeur implements Observer {
     // Socket du client en cours
     private Socket socket;
 
+    private static DateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+
     // Instance unique
     private static ApplicationServeur instance = new ApplicationServeur();
 
@@ -89,7 +91,7 @@ public class ApplicationServeur implements Observer {
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
     public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) {
-        int calendrierID;
+        int calendrierID, eventID = -1;
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "AddEvent");
         try {
@@ -106,7 +108,7 @@ public class ApplicationServeur implements Observer {
                 res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                 return res;
             }
-            if (!this.createEvenement(calendrierID, nom, description, image, date, lieu, auteur, visible)) { // On crée l'événement
+            if ( (eventID = this.createEvenement(calendrierID, nom, description, image, date, lieu, auteur, visible)) < 0) { // On crée l'événement
                 // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
                 res.put("Result", MessageCodeException.C_ERROR_BDD);
                 res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
@@ -117,6 +119,7 @@ public class ApplicationServeur implements Observer {
         }
         res.put("Result", MessageCodeException.C_SUCCESS);
         res.put("Message", MessageCodeException.M_SUCCESS);
+        res.put("ID",""+eventID);
         return res;
     }
 
@@ -155,10 +158,11 @@ public class ApplicationServeur implements Observer {
      * @return 1 si la création s'est bien passé, 0 sinon
      * @throws ParseException
      */
-    private boolean createEvenement(int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
+    private int createEvenement(int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
+        int res = -1;
         // On parse la date afin d'en créer un objet utilisable
-        DateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-        Date dateP = df.parse(date);
+        dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        Date dateP = dateFormat.parse(date);
         Evenement e;
         int id;
         id = Evenement.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
@@ -168,7 +172,12 @@ public class ApplicationServeur implements Observer {
         else {
             e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateP, lieu, auteur);
         }
-        return e.save();
+
+        if(e.save()){
+            res = e.getId();
+        }
+
+        return res;
     }
 
     /**
@@ -210,15 +219,17 @@ public class ApplicationServeur implements Observer {
      * @param calendrierID l'ID du calendrier de l'événement modifier
      * @param description la description de l'événement modifier
      * @param image l'image de l'événement modifier
-     * @param date la date de l'événement modifier
+     * @param datef la date de l'événement modifier
      * @param lieu le lieu de l'événement modifier
      * @param auteur l'auteur de l'événement modifier
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
-    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) {
+    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, String datef, String lieu, String auteur){
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "ModifyEvent");
         try {
+            dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+            Date date = dateFormat.parse(datef);
             Evenement e = null;
             e = Evenement.find(idEv);
             if (e == null) {
@@ -239,8 +250,10 @@ public class ApplicationServeur implements Observer {
                 res.put("Message", MessageCodeException.M_EVENT_ERROR_BDD);
                 return res;
             }
-        } catch (SQLException e1) {
+        }catch (SQLException e1) {
             e1.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         res.put("Result", MessageCodeException.C_SUCCESS);
         res.put("Message", MessageCodeException.M_SUCCESS);
@@ -354,11 +367,55 @@ public class ApplicationServeur implements Observer {
         return res;
     }
 
+    /**
+     * Méthode qui permet de charger la liste des calendriers de l'utilisateur
+     * @param email email de l'utilisateur
+     * @return Hashmap qui contient les données
+     * @throws SQLException
+     */
     public HashMap<String, String> loadCalendars(String email) throws SQLException{
         HashMap<String, String> res = new HashMap<String, String>();
+        // Récupération des calendriers
         ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
-        for(Calendrier calend : calendriers){
-            
+        if(calendriers.size() == 0){
+            res.put("RESULT", MessageCodeException.C_NOT_FOUND);
+            res.put("MESSAGE", MessageCodeException.M_CALENDAR_NOT_FOUND);
+        }else {
+            res.put("RESULT", MessageCodeException.C_SUCCESS);
+            res.put("MESSAGE", MessageCodeException.M_SUCCESS);
+            HashMap<String, String> calendars = new HashMap<>();
+            Calendrier c;
+            // Pour chaque, on l'ajoute dans la hashmap
+            for (int i = 0; i < calendriers.size(); i++) {
+                c = calendriers.get(i);
+                calendars.put("ID", "" + c.getIdC());
+                calendars.put("Nom", c.getNomCalendrier());
+                calendars.put("Description", c.getDescription().toString());
+                res.put(""+i, ParseurJson.getInstance().encode(calendars));
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Méthode qui permet de charger un calendrier
+     * @param idCalendrier
+     * @return
+     * @throws SQLException
+     */
+    public HashMap<String, String> consultCalendar(int idCalendrier) throws SQLException{
+        HashMap<String, String> res = new HashMap<String, String>();
+        Calendrier c = Calendrier.find(idCalendrier);
+        if( c == null){
+            res.put("RESULT", MessageCodeException.C_NOT_FOUND);
+            res.put("MESSAGE", MessageCodeException.M_CALENDAR_NOT_FOUND);
+        }else{
+            res.put("RESULT", MessageCodeException.C_SUCCESS);
+            res.put("MESSAGE", MessageCodeException.M_SUCCESS);
+            res.put("Nom", c.getNomCalendrier());
+            res.put("Description", c.getDescription().toString());
+            res.put("Couleur", c.getCouleur());
+            res.put("Theme", c.getTheme());
         }
         return res;
     }
@@ -373,14 +430,15 @@ public class ApplicationServeur implements Observer {
      */
     public HashMap<String, String> creationCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur) {
         HashMap<String, String> res = new HashMap<>();
-        res.put("Request", "AddCalendar");
+        int id = -1;
+        res.put("Request", "CreateCalendar");
         try {
             if (!this.verifierCalendrier(auteur, nomCalendrier)) { // On vérifie que le calendrier n'existe pas déjà
                 res.put("Result", MessageCodeException.C_ALREADY_EXIST);
                 res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                 return res;
             }
-            if (!this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur)) { // On crée le calendrier
+            if ( (id = this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur)) < 0) { // On crée le calendrier
 
                 res.put("Result", MessageCodeException.C_ERROR_BDD);
                 res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
@@ -391,6 +449,7 @@ public class ApplicationServeur implements Observer {
         }
         res.put("Result", MessageCodeException.C_SUCCESS);
         res.put("Message", MessageCodeException.M_SUCCESS);
+        res.put("ID", ""+id);
         return res;
     }
 
@@ -422,12 +481,16 @@ public class ApplicationServeur implements Observer {
      * @return 1 si la création s'est bien passé, 0 sinon
      * @throws ParseException, SQLException
      */
-    private boolean creerCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur) throws ParseException, SQLException {
+    private int creerCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur) throws ParseException, SQLException {
         Calendrier c;
         int id;
+        int res = -1;
         id = Calendrier.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
         c = new Calendrier(id+1,nomCalendrier, couleur, description, theme, auteur);
-        return c.save();
+        if(c.save()){
+            res = id;
+        }
+        return res;
     }
 
     /**
@@ -441,7 +504,7 @@ public class ApplicationServeur implements Observer {
 
 
            HashMap<String, String> res = new HashMap<>();
-           res.put("Request", "DeleteEvent");
+           res.put("Request", "DeleteCalendar");
            try {
                //b a true si on souhaire supprimer les evenements liés au calendrier
                if(b) {
@@ -516,7 +579,7 @@ public class ApplicationServeur implements Observer {
      * @return Hashmap indiquant si la requête s'est bien déroulée ou sinon l'erreur associée
      * @throws SQLException
      */
-    public HashMap<String, String> modificationCalendrier(int id, String nom, String couleur) throws SQLException, ParseException {
+    public HashMap<String, String> modificationCalendrier(int id, String nom, String couleur) throws SQLException {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "ModifyCalendar");
         // Le calendrier n'existe pas
@@ -566,29 +629,26 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "GetUsers");
         try {
-        if (nom.equals("") && prenom.equals("")) {
-            res.put("Result", "FirstNameAndLastNameNull");
-            return res;
-        }
-        ArrayList<Utilisateur> ul = null;
-            ul = Utilisateur.find(nom, prenom);
-        if (ul.size() == 0) {
-            res.put("Result", "NoUsersFound");
-        }
-        else {
-            StringBuilder usersList = new StringBuilder();
-            int i = 0;
-            for (Utilisateur u: ul) {
-                usersList.append(u.getEmail() + "," + u.getNom() + "," + u.getPrenom());
-                if (i < ul.size() - 1) {
-                    usersList.append("|");
+            ArrayList<Utilisateur> ul = Utilisateur.find(nom, prenom);
+            if (ul.size() == 0){
+                res.put("Result", MessageCodeException.M_USER_NOT_FOUND);
+                res.put("Message", MessageCodeException.C_NOT_FOUND);
+            }else{
+                HashMap<String, String> users = new HashMap<>();
+                int i = 0;
+                for(int j = 0; j < ul.size(); j++){
+                    Utilisateur u = ul.get(j);
+                    users.put("Email", u.getEmail());
+                    users.put("Nom", u.getNom());
+                    users.put("Prenom", u.getPrenom());
+                    res.put(""+j, ParseurJson.getInstance().encode(users));
                 }
-                i++;
+                res.put("Result", MessageCodeException.M_SUCCESS);
+                res.put("Message", MessageCodeException.C_SUCCESS);
             }
-            res.put("Result", usersList.toString());
-        }
         } catch (SQLException e) {
-            res.put("Result", "SQLError");
+            res.put("Result", MessageCodeException.M_BDD_ERROR);
+            res.put("Message", MessageCodeException.C_ERROR_BDD);
             e.printStackTrace();
         }
         return res;

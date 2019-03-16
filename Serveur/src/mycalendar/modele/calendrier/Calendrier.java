@@ -320,4 +320,19 @@ public class Calendrier {
         return true;
     }
 
+    public int getIdC() {
+        return idC;
+    }
+
+    public StringBuilder getDescription() {
+        return description;
+    }
+
+    public String getCouleur() {
+        return couleur;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
 }

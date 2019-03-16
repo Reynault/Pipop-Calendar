@@ -167,7 +167,6 @@ public class ConnexionClient implements Runnable{
     private String createReponse(HashMap<String, String> donnees) throws BadRequestExeption, SQLException {
         String result = "";
         HashMap<String, String> rep;
-        HashMap<String, HashMap<String, String>> rep2;
         ParseurJson parseur = ParseurJson.getInstance();
         switch (donnees.get("Request")) {
             // Authentification
@@ -176,32 +175,6 @@ public class ConnexionClient implements Runnable{
                         donnees.get("Email"),
                         donnees.get("Mdp")
                 );
-                result = parseur.encode(rep);
-                break;
-            }
-            case "LoadCalendar": {
-                rep = ApplicationServeur.getInstance().loadCalendars(
-                        donnees.get("Email")
-                );
-                result = parseur.encode(rep);
-                break;
-            }
-            case "AddEvent": {
-                String calendarName = donnees.get("CalendarName");
-                String eventName = donnees.get("EventName");
-                String eventDescription = donnees.get("EventDescription");
-                String eventPicture = donnees.get("EventPicture");
-                String eventDate = donnees.get("EventDate");
-                String eventLocation = donnees.get("EventLocation");
-                String eventAuthor = donnees.get("EventAuthor");
-                boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
-                rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
-                result = parseur.encode(rep);
-                break;
-            }
-            case "DeleteEvent": {
-                int idEv = Integer.parseInt(donnees.get("ID"));
-                rep = ApplicationServeur.getInstance().suppressionEvenement(idEv);
                 result = parseur.encode(rep);
                 break;
             }
@@ -216,11 +189,109 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encode(rep);
                 break;
             }
+            // Ajout d'un événement
+            case "AddEvent": {
+                String calendarName = donnees.get("CalendarName");
+                String eventName = donnees.get("EventName");
+                String eventDescription = donnees.get("EventDescription");
+                String eventPicture = donnees.get("EventPicture");
+                String eventDate = donnees.get("EventDate");
+                String eventLocation = donnees.get("EventLocation");
+                String eventAuthor = donnees.get("EventAuthor");
+                boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
+                rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
+                result = parseur.encode(rep);
+                break;
+            }
+            // Suppression d'un événement
+            case "DeleteEvent": {
+                int idEv = Integer.parseInt(donnees.get("ID"));
+                rep = ApplicationServeur.getInstance().suppressionEvenement(idEv);
+                result = parseur.encode(rep);
+                break;
+            }
+            // Modification d'un événement
+            case "ModifyEvent": {
+                String idevent = donnees.get("IdEvent");
+                String idCalendar = donnees.get("IdCalendar");
+                String eventName = donnees.get("EventName");
+                String eventDescription = donnees.get("EventDescription");
+                String eventPicture = donnees.get("EventPicture");
+                String eventDate = donnees.get("EventDate");
+                String eventLocation = donnees.get("EventLocation");
+                String eventAuthor = donnees.get("EventAuthor");
+                rep = ApplicationServeur.getInstance().modificationEvenement
+                        (Integer.parseInt(idevent), Integer.parseInt(idCalendar),eventName, eventDescription, eventPicture,
+                                eventDate, eventLocation, eventAuthor);
+                result = parseur.encode(rep);
+                break;
+            }
+            // Consultation d'un événement
+            case "ConsultEvent": {
+                String idevent = donnees.get("IdEvent");
+                rep = ApplicationServeur.getInstance().consultationEvenement(idevent);
+                result = parseur.encode(rep);
+                break;
+            }
+            // Consultation d'un calendrier
+            case "CreateCalendar":
+            {
+                String nom = donnees.get("Nom");
+                String desc = donnees.get("Description");
+                String couleur = donnees.get("Couleur");
+                String theme = donnees.get("Theme");
+                String auteur = donnees.get("Auteur");
+                rep = ApplicationServeur.getInstance().creationCalendrier(nom, desc, couleur, theme, auteur);
+                result = parseur.encode(rep);
+                break;
+            }
+            case "DeleteCalendar":
+            {
+                String email = donnees.get("Email");
+                int idCalendar = Integer.parseInt(donnees.get("IDCalendar"));
+                boolean b = Boolean.parseBoolean(
+                        donnees.get("SuppEv")
+                );
+                rep = ApplicationServeur.getInstance().suppressionCalendrier(email, idCalendar, b);
+                result = parseur.encode(rep);
+                break;
+            }
+            case "ModifyCalendar":
+            {
+                int idCalendar = Integer.parseInt(donnees.get("IdCalendar"));
+                String nom = donnees.get("Nom");
+                String couleur = donnees.get("Couleur");
+                rep = ApplicationServeur.getInstance().modificationCalendrier(
+                        idCalendar,
+                        nom,
+                        couleur
+                );
+                result = parseur.encode(rep);
+                break;
+            }
+            // Récupération de plusieurs utilisateurs
             case "GetUsers": {
-                System.out.println("user");
                 String nom = donnees.get("FirstName");
                 String prenom = donnees.get("LastName");
                 rep = ApplicationServeur.getInstance().getUtilisateurs(nom, prenom);
+                result = parseur.encode(rep);
+                break;
+            }
+            // Chargement d'un calendrier et de ses événements
+            case "ConsultCalendar": {
+                int id = Integer.parseInt(donnees.get("ID"));
+                rep = ApplicationServeur.getInstance().consultCalendar(
+                        id
+                );
+                result = parseur.encode(rep);
+                break;
+            }
+            // Chargement de la liste des calendriers d'un utilisateur
+            case "LoadCalendars": {
+                String email = donnees.get("Email");
+                rep = ApplicationServeur.getInstance().loadCalendars(
+                        email
+                );
                 result = parseur.encode(rep);
                 break;
             }
