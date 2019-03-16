@@ -315,9 +315,6 @@ public class ApplicationServeur implements Observer {
 			PreparedStatement prep = connect.prepareStatement(request);
 			prep.setString(1, email);
 			ResultSet result = prep.executeQuery();
-			while(result.next()){
-
-			}
             res.put("Result", MessageCodeException.C_SUCCESS);
             res.put("Message", MessageCodeException.M_SUCCESS);
         }else{
