@@ -5,7 +5,7 @@ $(document).ready(function(){
   function chargerCalendrier(email){
       // Il faut crypter les données
       // Il faut vérifier les données
-      var arr = {"Request":"LoadCalendar","Email":email};
+      var arr = {"Request":"LoadCalendars","Email":email};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
