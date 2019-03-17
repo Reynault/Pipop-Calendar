@@ -47,8 +47,8 @@ $(document).ready(function(){
               console.log("BUG : data : "+obj["Message"]);
               if(obj["Result"]==0){
 //                app.views.main.router.navigate("/user-home/");
-                window.location = "user-home.html";
                 localStorage.setItem("emailUtilisateur",$("#emailInput").val());
+                window.location = "user-home.html";
               }else{
               localStorage.setItem("emailUtilisateur","");
                 window.plugins.toast.showWithOptions(

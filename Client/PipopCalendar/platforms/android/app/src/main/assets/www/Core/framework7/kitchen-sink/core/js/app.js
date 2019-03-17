@@ -48,7 +48,7 @@ $ptrContent.on('ptr:refresh', function (e) {
   // Emulate 2s loading
   setTimeout(function () {
     console.log("Loading Calendar");
-    chargerCalendrier(null);
+    chargerCalendrier(localStorage.getItem("emailUtilisateur"));
     app.ptr.done(); // or e.detail();
   }, 2000);
 });
