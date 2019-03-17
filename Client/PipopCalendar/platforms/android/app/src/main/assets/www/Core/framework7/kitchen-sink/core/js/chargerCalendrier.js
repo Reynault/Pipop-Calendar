@@ -19,8 +19,8 @@ $(document).ready(function(){
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
-              console.log("Err : "+ obj["Result"]+"          data : "+obj["Message"]);
-              if(obj["Result"]==0){
+              console.log("Err : "+ obj["RESULT"]+"          data : "+obj["Message"]);
+              if(obj["RESULT"]==0){
                  var nbCalendriers = 8;
                  var y = 0;
                  if(nbCalendriers > 0){

@@ -108,7 +108,7 @@ public class Utilisateur{
     public static ArrayList<Calendrier> findCalendriers(String email) throws SQLException {
         ArrayList<Calendrier> calendriers = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-        String request = "SELECT * FROM Calendrier WHERE idc = (SELECT idc FROM utilisateur_calendrier WHERE Email = ? );";
+        String request = "SELECT * FROM `Calendrier` WHERE `idc` IN (SELECT `idc` FROM `utilisateur_calendrier` WHERE `Email` = ? );";
         PreparedStatement prep = connect.prepareStatement(request);
         prep.setString(1, email);
         ResultSet result = prep.executeQuery();

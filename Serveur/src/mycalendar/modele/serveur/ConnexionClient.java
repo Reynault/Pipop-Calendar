@@ -167,6 +167,7 @@ public class ConnexionClient implements Runnable{
     private String createReponse(HashMap<String, String> donnees) throws BadRequestExeption, SQLException {
         String result = "";
         HashMap<String, String> rep;
+        HashMap<String, Object> repObj;
         ParseurJson parseur = ParseurJson.getInstance();
         switch (donnees.get("Request")) {
             // Authentification
@@ -273,8 +274,8 @@ public class ConnexionClient implements Runnable{
             case "GetUsers": {
                 String nom = donnees.get("FirstName");
                 String prenom = donnees.get("LastName");
-                rep = ApplicationServeur.getInstance().getUtilisateurs(nom, prenom);
-                result = parseur.encode(rep);
+                repObj = ApplicationServeur.getInstance().getUtilisateurs(nom, prenom);
+                result = parseur.encodeObj(repObj);
                 break;
             }
             // Chargement d'un calendrier et de ses événements
@@ -289,10 +290,10 @@ public class ConnexionClient implements Runnable{
             // Chargement de la liste des calendriers d'un utilisateur
             case "LoadCalendars": {
                 String email = donnees.get("Email");
-                rep = ApplicationServeur.getInstance().loadCalendars(
+                repObj = ApplicationServeur.getInstance().loadCalendars(
                         email
                 );
-                result = parseur.encode(rep);
+                result = parseur.encodeObj(repObj);
                 break;
             }
             default: {

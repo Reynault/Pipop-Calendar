@@ -370,8 +370,8 @@ public class ApplicationServeur implements Observer {
      * @return Hashmap qui contient les données
      * @throws SQLException
      */
-    public HashMap<String, String> loadCalendars(String email) throws SQLException{
-        HashMap<String, String> res = new HashMap<String, String>();
+    public HashMap<String, Object> loadCalendars(String email) throws SQLException{
+        HashMap<String, Object> res = new HashMap<>();
         // Récupération des calendriers
         ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
         if(calendriers.size() == 0){
@@ -388,7 +388,7 @@ public class ApplicationServeur implements Observer {
                 calendars.put("ID", "" + c.getIdC());
                 calendars.put("Nom", c.getNomCalendrier());
                 calendars.put("Description", c.getDescription().toString());
-                res.put(""+i, ParseurJson.getInstance().encode(calendars));
+                res.put(""+i, calendars);
             }
         }
         return res;
@@ -622,8 +622,8 @@ public class ApplicationServeur implements Observer {
         }
     }
 
-    public HashMap<String, String> getUtilisateurs(String nom, String prenom) {
-        HashMap<String, String> res = new HashMap<>();
+    public HashMap<String, Object> getUtilisateurs(String nom, String prenom) {
+        HashMap<String, Object> res = new HashMap<>();
         res.put("Request", "GetUsers");
         try {
             ArrayList<Utilisateur> ul = Utilisateur.find(nom, prenom);
@@ -638,7 +638,7 @@ public class ApplicationServeur implements Observer {
                     users.put("Email", u.getEmail());
                     users.put("Nom", u.getNom());
                     users.put("Prenom", u.getPrenom());
-                    res.put(""+j, ParseurJson.getInstance().encode(users));
+                    res.put(""+j, users);
                 }
                 res.put("Result", MessageCodeException.M_SUCCESS);
                 res.put("Message", MessageCodeException.C_SUCCESS);

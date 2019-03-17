@@ -44,14 +44,13 @@ public class ParseurJson {
      * @param param La hashmap à encoder
      * @return le json résultant
      */
+    public String encodeObj(HashMap<String, Object> param){
+        String json = gson.toJson(param);
+        return json;
+    }
+
     public String encode(HashMap<String, String> param){
         String json = gson.toJson(param);
         return json;
     }
-
-    public String encodeTableaux(HashMap<String,HashMap<String, String>> param){
-        String json = gson.toJson(param);
-        return json;
-    }
-
 }
