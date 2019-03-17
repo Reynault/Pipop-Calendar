@@ -435,8 +435,8 @@ public class ApplicationServeur implements Observer {
                 res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                 return res;
             }
-            if ( (id = this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur)) < 0) { // On crée le calendrier
-
+            id = this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur);
+            if ( id < 0) { // On crée le calendrier
                 res.put("Result", MessageCodeException.C_ERROR_BDD);
                 res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
                 return res;
