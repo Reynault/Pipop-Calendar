@@ -4,6 +4,7 @@ var app = new Framework7({
   root: '#app',
   // App Name
   name: 'Pipop Calendar',
+  template7Pages: true,
   // Add default routes
   routes: [
     {
@@ -41,11 +42,13 @@ var app = new Framework7({
     }
   ]
 });
+
 var $ptrContent = $$('.ptr-content');
 $ptrContent.on('ptr:refresh', function (e) {
   // Emulate 2s loading
   setTimeout(function () {
     console.log("Loading Calendar");
+    chargerCalendrier(null);
     app.ptr.done(); // or e.detail();
   }, 2000);
 });

@@ -2,14 +2,14 @@ var mainView = app.views.create('.view-main', {
   stackPages: true,
   routes: [
     {
-      path: '/user-home/',
-      componentUrl: './user-home.html',
-      name: 'user-home'
-    },
-    {
       path: '/themes/',
       componentUrl: './pages/themes.html',
       name: 'themes'
+    },
+    {
+      path: '/preloaderTheme/',
+      componentUrl: './pages/preloaderTheme.html',
+      name: 'preloaderTheme'
     },
     {
       path: '/calendar-form/',
@@ -65,4 +65,3 @@ var mainView = app.views.create('.view-main', {
     }
   ]
 });
-//document.addEventListener("backbutton", app.methods.onBackKeyDown, false);

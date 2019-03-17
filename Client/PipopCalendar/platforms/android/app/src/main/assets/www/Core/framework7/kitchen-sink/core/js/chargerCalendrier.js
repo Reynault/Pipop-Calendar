@@ -2,10 +2,11 @@ $(document).ready(function(){
 
    chargerCalendrier($("#emailInput").val());
 
+});
+
+
   function chargerCalendrier(email){
-      // Il faut crypter les données
-      // Il faut vérifier les données
-      var arr = {"Request":"LoadCalendar","Email":email};
+      var arr = {"Request":"LoadCalendars","Email":email};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -18,13 +19,46 @@ $(document).ready(function(){
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
-              console.log("data : "+obj["Result"]);
+              console.log("Err : "+ obj["Result"]+"          data : "+obj["Message"]);
               if(obj["Result"]==0){
-                window.location = "user-home.html";
+                 var nbCalendriers = 8;
+                 var y = 0;
+                 if(nbCalendriers > 0){
+                   for(var i = 0; i<nbCalendriers; i++){
+                     if(i%2==0){
+                       var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
+                       $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+y+"Calendrier");
+                     }else{
+                       $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+ (y-1) +"Calendrier");
+                     }
+                   y++;
+                   }
+                 }else{
+                    var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
+                    $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Calendar Found</p></div>").appendTo("#"+y+"Calendrier");
+                 }
               }else{
+                $("#calendrierContainer").empty();
+                  var nbCalendriers = 8;
+                  var y = 0;
+                  if(nbCalendriers > 0){
+                    for(var i = 0; i<nbCalendriers; i++){
+                      if(i%2==0){
+                        var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
+                        $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+y+"Calendrier");
+                      }else{
+                        $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+ (y-1) +"Calendrier");
+                      }
+                    y++;
+                    }
+                  }else{
+                     var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
+                     $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Calendar Found</p></div>").appendTo("#"+y+"Calendrier");
+                  }
+                 console.log($("#calendrierContainer").prop('outerHTML'));
                 window.plugins.toast.showWithOptions(
                 {
-                   message: "Chargement Echouée",
+                   message: ""+obj["Message"],
                    duration: 1500, // ms
                    position: "bottom",
                    addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
@@ -37,10 +71,7 @@ $(document).ready(function(){
                      verticalPadding: 20 // iOS default 12, Android default 30
                    }
                   }
-                 );//
-                 $("#connexionErrMsg").append("Connexion error. Please, check your login information.");
-                 $("#emailInput").css("border","2px solid #ff0000");
-                 $("#mdpInput").css("border","2px solid #ff0000");
+                 );
                 }
           },
           error: function(jqXHR, textStatus, errorThrown) {
@@ -50,7 +81,7 @@ $(document).ready(function(){
               app.preloader.hide();
               window.plugins.toast.showWithOptions(
                   {
-                    message: "Connexion échoué",
+                    message: ""+obj["Message"],
                     duration: 1500, // ms
                     position: "bottom",
                     addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
@@ -62,21 +93,8 @@ $(document).ready(function(){
                           horizontalPadding: 20, // iOS default 16, Android default 50
                           verticalPadding: 16 // iOS default 12, Android default 30
                         }
-                  },
-                  // implement the success callback
-                  function(result) {
-                    if (result && result.event) {
-                      console.log("The toast was tapped or got hidden, see the value of result.event");
-                      console.log("Event: " + result.event); // "touch" when the toast was touched by the user or "hide" when the toast geot hidden
-                      console.log("Message: " + result.message); // will be equal to the message you passed in
-
-                      if (result.event === 'hide') {
-                        console.log("The toast has been shown");
-                      }
-                    }
                   }
                );
           }
       });
   }
-});
