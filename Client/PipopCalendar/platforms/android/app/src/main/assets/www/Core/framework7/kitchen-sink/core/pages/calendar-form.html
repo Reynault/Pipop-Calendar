@@ -26,7 +26,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Calendar name</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="name">
+                    <input id="nomCalendrierForm" type="text" name="name">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Description</div>
                   <div class="item-input-wrap">
-                    <textarea class="resizable" name="desc"></textarea>
+                    <textarea id="descriptionCalendrierForm" class="resizable" name="desc"></textarea>
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -47,7 +47,7 @@
               <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
                 <select name="color">
                   {{#each colors}}
-                    <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
+                    <option value="{{this[0]}}" onclick="localStorage.setItem('colorSelectForm',{{this[0]}})" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
                   {{/each}}
                 </select>
                 <div class="item-content">

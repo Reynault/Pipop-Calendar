@@ -18,10 +18,13 @@ $(document).ready(function(){
           async: true,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
+              console.log(data);
               var obj = JSON.parse(data);
-              console.log("Err : "+ obj["RESULT"]+"          data : "+obj["Message"]);
+              console.log(obj);
+              console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
               if(obj["RESULT"]==0){
-                 var nbCalendriers = 8;
+                $("#calendrierContainer").empty();
+                 var nbCalendriers = Object.keys(obj.DATA[0]).length;
                  var y = 0;
                  if(nbCalendriers > 0){
                    for(var i = 0; i<nbCalendriers; i++){

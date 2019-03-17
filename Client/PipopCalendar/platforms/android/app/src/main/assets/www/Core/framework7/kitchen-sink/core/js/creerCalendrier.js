@@ -1,11 +1,17 @@
 $(document).ready(function(){
 
-   chargerCalendrier(localStorage.getItem(""));
+  if(localStorage.getItem("colorSelectForm")==""){
+      localStorage.setItem("colorSelectForm","Black");
+  }
 
-  function chargerCalendrier(email){
+   $("#creationCalendrierBouton").click(function(e){
+     creerCalendrier($("#nomCalendrierForm").val(),$("#descriptionCalendrierForm").val(),localStorage.getItem("colorSelectForm"),"art",localStorage.getItem("emailUtilisateur"));
+   });
+
+  function creerCalendrier(nom, description, couleur, theme, email){
       // Il faut crypter les données
       // Il faut vérifier les données
-      var arr = {"Request":"createCalendar","Email":email, /*-autres informations pour la  création de calendrier*/};
+      var arr = {"Request":"CreateCalendar","Nom":nom, "Description": description,"Couleur":couleur, "Theme":theme, "Auteur":email};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -18,13 +24,12 @@ $(document).ready(function(){
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
-              console.log("data : "+obj["Result"]);
-              if(obj["Result"]==0){
-                window.location = "user-home.html";
+              if(obj["RESULT"]==0){
+
               }else{
                 window.plugins.toast.showWithOptions(
                 {
-                   message: "Erreur : informations non valide",
+                   message: ""+obj["MESSAGE"],
                    duration: 1500, // ms
                    position: "bottom",
                    addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
@@ -38,9 +43,6 @@ $(document).ready(function(){
                    }
                   }
                  );//
-                 $("#connexionErrMsg").append("Connexion error. Please, check your login information.");
-                 $("#emailInput").css("border","2px solid #ff0000");
-                 $("#mdpInput").css("border","2px solid #ff0000");
                 }
           },
           error: function(jqXHR, textStatus, errorThrown) {
@@ -50,7 +52,7 @@ $(document).ready(function(){
               app.preloader.hide();
               window.plugins.toast.showWithOptions(
                   {
-                    message: "Connexion échoué",
+                    message: ""+obj["MESSAGE"],
                     duration: 1500, // ms
                     position: "bottom",
                     addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
@@ -62,18 +64,6 @@ $(document).ready(function(){
                           horizontalPadding: 20, // iOS default 16, Android default 50
                           verticalPadding: 16 // iOS default 12, Android default 30
                         }
-                  },
-                  // implement the success callback
-                  function(result) {
-                    if (result && result.event) {
-                      console.log("The toast was tapped or got hidden, see the value of result.event");
-                      console.log("Event: " + result.event); // "touch" when the toast was touched by the user or "hide" when the toast geot hidden
-                      console.log("Message: " + result.message); // will be equal to the message you passed in
-
-                      if (result.event === 'hide') {
-                        console.log("The toast has been shown");
-                      }
-                    }
                   }
                );
           }
