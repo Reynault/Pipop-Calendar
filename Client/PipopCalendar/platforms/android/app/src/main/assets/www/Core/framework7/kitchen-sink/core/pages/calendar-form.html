@@ -3,7 +3,7 @@
     <div class="navbar">
       <div class="navbar-inner sliding">
         <div class="left">
-          <a href="#" class="link back">
+          <a id="backToHome" class="link back">
             <i class="f7-icons">arrow_left</i>
             <span class="ios-only">Back</span>
           </a>
@@ -47,7 +47,7 @@
               <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
                 <select name="color">
                   {{#each colors}}
-                    <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white"  @click="setColorCalendar({{this[0]}})">{{this[1]}}</option>
+                    <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
                   {{/each}}
                 </select>
                 <div class="item-content">
@@ -111,11 +111,6 @@
         colors: colors,
       };
     },
-    methods:{
-      setColorCalendar: function (color) {
-        localStorage.setItem("colorSelectForm",color);
-      },
-    },
     on: {
       pageInit: function (e, page) {
         var self = this;
@@ -132,6 +127,6 @@
     pageBeforeRemove() {
       var self = this;
       self.themeSelect.destroy();
-    }
+    },
   }
 </script>

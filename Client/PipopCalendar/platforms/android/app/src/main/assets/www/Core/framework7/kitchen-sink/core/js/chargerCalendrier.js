@@ -28,9 +28,9 @@ $(document).ready(function(){
                  for(var i = 0; i<nbCalendriers; i++){
                    if(i%2==0){
                      var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
-                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+y+"Calendrier");
+                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["DATA"][i]["Couleur"] + "'>"+ obj["DATA"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
                    }else{
-                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+ (y-1) +"Calendrier");
+                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["DATA"][i]["Couleur"] + "'>"+ obj["DATA"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
                    }
                    y++;
                  }

@@ -28,9 +28,23 @@ var mainView = app.views.create('.view-main', {
               error:function(msg) {
                 console.log("Error chargement script de création de calendrier");
               },
-            })
+            });
           },
-        }
+          pageAfterOut: function(e,page){
+          console.log("Chargement Back");
+              $.ajax({
+                url: "js/chargerCalendrier.js",
+                dataType: "script",
+                cache: true,
+                success:function(msg) {
+                  console.log("Success!!");
+                },
+                error:function(msg) {
+                  console.log("Error chargement script de création de calendrier");
+                },
+              });
+          }
+      }
     },
     {
       path: '/calendar-view/',
