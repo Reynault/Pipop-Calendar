@@ -370,26 +370,31 @@ public class ApplicationServeur implements Observer {
      * @return Hashmap qui contient les données
      * @throws SQLException
      */
-    public HashMap<String, Object> loadCalendars(String email) throws SQLException{
+    public HashMap<String, Object> loadCalendars(String email){
         HashMap<String, Object> res = new HashMap<>();
         // Récupération des calendriers
-        ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
-        if(calendriers.size() == 0){
-            res.put("RESULT", MessageCodeException.C_NOT_FOUND);
-            res.put("MESSAGE", MessageCodeException.M_CALENDAR_NOT_FOUND);
-        }else {
-            res.put("RESULT", MessageCodeException.C_SUCCESS);
-            res.put("MESSAGE", MessageCodeException.M_SUCCESS);
-            HashMap<String, String> calendars = new HashMap<>();
-            Calendrier c;
-            // Pour chaque, on l'ajoute dans la hashmap
-            for (int i = 0; i < calendriers.size(); i++) {
-                c = calendriers.get(i);
-                calendars.put("ID", "" + c.getIdC());
-                calendars.put("Nom", c.getNomCalendrier());
-                calendars.put("Description", c.getDescription().toString());
-                res.put(""+i, calendars);
+        try {
+            ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
+            if (calendriers.size() == 0) {
+                res.put("RESULT", MessageCodeException.C_NOT_FOUND);
+                res.put("MESSAGE", MessageCodeException.M_CALENDAR_NOT_FOUND);
+            } else {
+                res.put("RESULT", MessageCodeException.C_SUCCESS);
+                res.put("MESSAGE", MessageCodeException.M_SUCCESS);
+                HashMap<String, String> calendars = new HashMap<>();
+                Calendrier c;
+                // Pour chaque, on l'ajoute dans la hashmap
+                for (int i = 0; i < calendriers.size(); i++) {
+                    c = calendriers.get(i);
+                    calendars.put("ID", "" + c.getIdC());
+                    calendars.put("Nom", c.getNomCalendrier());
+                    calendars.put("Description", c.getDescription().toString());
+                    res.put("" + i, calendars);
+                }
             }
+        }catch (SQLException e){
+            res.put("RESULT", MessageCodeException.C_ERROR_BDD);
+            res.put("MESSAGE", MessageCodeException.M_BDD_ERROR);
         }
         return res;
     }
