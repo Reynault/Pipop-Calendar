@@ -29,6 +29,7 @@ public class MessageCodeException {
 
     public static String M_SIZE_ERROR = "Data size error.";
 
+    public static String M_THEME_NOT_FOUND = "Themes non trouve.";
 
 
     /**

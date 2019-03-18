@@ -10,8 +10,7 @@ $(document).ready(function(){
    });
 
   function creerCalendrier(nom, description, couleur, theme, email){
-      // Il faut crypter les données
-      // Il faut vérifier les données
+      console.log("COULEUR : "+couleur);
       var arr = {"Request":"CreateCalendar","Nom":nom, "Description": description,"Couleur":couleur, "Theme":theme, "Auteur":email};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();

@@ -296,6 +296,11 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encodeObj(repObj);
                 break;
             }
+            case "getTheme":{
+                rep = ApplicationServeur.getInstance().getThemes();
+                result = parseur.encode(rep);
+                break;
+            }
             default: {
                 throw new BadRequestExeption(donnees.get("Request"));
             }
