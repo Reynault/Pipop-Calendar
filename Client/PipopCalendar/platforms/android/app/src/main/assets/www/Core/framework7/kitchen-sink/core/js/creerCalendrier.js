@@ -1,8 +1,9 @@
 $(document).ready(function(){
 
-  if(localStorage.getItem("colorSelectForm")==""){
-      localStorage.setItem("colorSelectForm","Black");
+  if(localStorage.getItem("colorSelectForm")===null){
+      localStorage.setItem("colorSelectForm","black");
   }
+  console.log(localStorage.getItem("colorSelectForm"));
 
    $("#creationCalendrierBouton").click(function(e){
      creerCalendrier($("#nomCalendrierForm").val(),$("#descriptionCalendrierForm").val(),localStorage.getItem("colorSelectForm"),"art",localStorage.getItem("emailUtilisateur"));

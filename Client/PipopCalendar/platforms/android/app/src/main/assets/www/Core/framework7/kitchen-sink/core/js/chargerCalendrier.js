@@ -14,7 +14,6 @@ $(document).ready(function(){
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          timeout: 512,
           async: true,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
@@ -24,26 +23,21 @@ $(document).ready(function(){
               console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
               if(obj["RESULT"]==0){
                 $("#calendrierContainer").empty();
-                 var nbCalendriers = Object.keys(obj.DATA[0]).length;
+                 var nbCalendriers = Object.keys(obj.DATA).length;
                  var y = 0;
-                 if(nbCalendriers > 0){
-                   for(var i = 0; i<nbCalendriers; i++){
-                     if(i%2==0){
-                       var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
-                       $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+y+"Calendrier");
-                     }else{
-                       $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+ (y-1) +"Calendrier");
-                     }
-                   y++;
+                 for(var i = 0; i<nbCalendriers; i++){
+                   if(i%2==0){
+                     var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
+                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+y+"Calendrier");
+                   }else{
+                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-orange'>"+ y/*nom calendrier*/+"</a>").appendTo("#"+ (y-1) +"Calendrier");
                    }
-                 }else{
-                    var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
-                    $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Calendar Found</p></div>").appendTo("#"+y+"Calendrier");
+                   y++;
                  }
               }else{
                 $("#calendrierContainer").empty();
                 var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
-                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Error</p></div>").appendTo("#0Calendrier");
+                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Calendar Found</p></div>").appendTo("#0Calendrier");
                 console.log($("#calendrierContainer").prop('outerHTML'));
                 window.plugins.toast.showWithOptions(
                 {
@@ -68,8 +62,11 @@ $(document).ready(function(){
               console.log("ERREUR : "+textStatus);
               console.log("ERREUR : "+errorThrown);
               app.preloader.hide();
+              $("#calendrierContainer").empty();
+              var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
+              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connexion</p></div>").appendTo("#0Calendrier");
               window.plugins.toast.showWithOptions({
-                 message: ""+obj["Message"],
+                 message: "No network connexion or server error",
                  duration: 1500, // ms
                  position: "bottom",
                  addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
