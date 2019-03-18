@@ -319,6 +319,18 @@ public class Calendrier {
         return true;
     }
 
+    public static ArrayList<String> getThemes() throws SQLException {
+        ArrayList<String> themes = new ArrayList<>();
+        Connection connect = GestionnaireBDD.getConnection();
+        String requete = "SELECT * FROM themes";
+        PreparedStatement statement = connect.prepareStatement(requete);
+        ResultSet res = statement.executeQuery();
+        while(res.next()){
+            themes.add(res.getString("nom"));
+        }
+        return themes;
+    }
+
     public int getIdC() {
         return idC;
     }

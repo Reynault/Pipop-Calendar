@@ -47,7 +47,7 @@
               <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
                 <select name="color">
                   {{#each colors}}
-                    <option value="{{this[0]}}" onclick="localStorage.setItem('colorSelectForm',{{this[0]}})" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
+                    <option value="{{this[1]}}" onclick="localStorage.setItem('colorSelectForm',{{this[0]}})" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[0]}}</option>
                   {{/each}}
                 </select>
                 <div class="item-content">

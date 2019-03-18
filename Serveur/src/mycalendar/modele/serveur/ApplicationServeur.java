@@ -628,8 +628,8 @@ public class ApplicationServeur implements Observer {
         try {
             ArrayList<Utilisateur> ul = Utilisateur.find(nom, prenom);
             if (ul.size() == 0){
-                res.put("Result", MessageCodeException.M_USER_NOT_FOUND);
-                res.put("Message", MessageCodeException.C_NOT_FOUND);
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
             }else{
                 HashMap<String, String> users = new HashMap<>();
                 int i = 0;
@@ -640,12 +640,12 @@ public class ApplicationServeur implements Observer {
                     users.put("Prenom", u.getPrenom());
                     res.put(""+j, users);
                 }
-                res.put("Result", MessageCodeException.M_SUCCESS);
-                res.put("Message", MessageCodeException.C_SUCCESS);
+                res.put("Result", MessageCodeException.C_SUCCESS);
+                res.put("Message", MessageCodeException.M_SUCCESS);
             }
         } catch (SQLException e) {
-            res.put("Result", MessageCodeException.M_BDD_ERROR);
-            res.put("Message", MessageCodeException.C_ERROR_BDD);
+            res.put("Result", MessageCodeException.C_ERROR_BDD);
+            res.put("Message", MessageCodeException.M_BDD_ERROR);
             e.printStackTrace();
         }
         return res;
@@ -662,5 +662,24 @@ public class ApplicationServeur implements Observer {
     }
 
 
-
+    public HashMap<String, String> getThemes() {
+        HashMap<String, String> themes = new HashMap<String, String>();
+        try {
+            ArrayList<String> res = Calendrier.getThemes();
+            if(res.size() > 0){
+                themes.put("Result", MessageCodeException.C_SUCCESS);
+                themes.put("Message", MessageCodeException.M_SUCCESS);
+                for (int i = 0 ; i < res.size() ; i ++){
+                    themes.put(""+i,res.get(i));
+                }
+            }else{
+                themes.put("Result", MessageCodeException.C_NOT_FOUND);
+                themes.put("Message", MessageCodeException.M_THEME_NOT_FOUND);
+            }
+        }catch (SQLException e){
+            themes.put("Result", MessageCodeException.C_ERROR_BDD);
+            themes.put("Message", MessageCodeException.M_BDD_ERROR);
+        }
+        return themes;
+    }
 }
