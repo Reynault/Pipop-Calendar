@@ -13,7 +13,7 @@ $(document).ready(function(){
                "EventDate": dateEv, "EventDateFin": dateFin, "EventLocation": lieuEv, "EventAuthor": auteurEv, "EventVisibility": String(visibiliteEv)};
       console.log("CREER EVENEMENT : "+JSON.stringify(arr));
       $.ajax({
-          url: 'http://10.0.2.2:3307',
+          url: adresse,
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',

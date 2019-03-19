@@ -32,3 +32,5 @@ function onBackKeyDown() {
     });
   }
 }
+
+var adresse = 'http://8f357cb6.ngrok.io/'; // 'http://10.0.2.2:3307'; // 'http://cf16c634.ngrok.io/'; //

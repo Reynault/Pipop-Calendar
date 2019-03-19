@@ -112,7 +112,6 @@ public abstract class Evenement extends Observable {
     public static Evenement find(int idEv) throws SQLException, ParseException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
-            Date deb, fin;
             String request = "SELECT * FROM Evenement WHERE ide=?;";
             PreparedStatement prep = connect.prepareStatement(request);
             prep.setInt(1, idEv);
@@ -142,7 +141,6 @@ public abstract class Evenement extends Observable {
      * @throws SQLException
      */
     public static ArrayList<Evenement> find(int idc, String Email) throws SQLException, ParseException {
-        Date deb, fin;
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         ArrayList<Evenement> events = new ArrayList<>();
         {
@@ -153,24 +151,12 @@ public abstract class Evenement extends Observable {
             prep.execute();
             ResultSet rs = prep.getResultSet();
             while (rs.next()) {
-                deb = new Date( rs.getDate("datedeb").getYear(),
-                        rs.getDate("datedeb").getMonth(),
-                        rs.getDate("datedeb").getDate(),
-                        rs.getDate("datedeb").getHours(),
-                        rs.getDate("datedeb").getMinutes(),
-                        rs.getDate("datedeb").getSeconds());
-                fin = new Date( rs.getDate("datefin").getYear(),
-                        rs.getDate("datefin").getMonth(),
-                        rs.getDate("datefin").getDate(),
-                        rs.getDate("datefin").getHours(),
-                        rs.getDate("datefin").getMinutes(),
-                        rs.getDate("datefin").getSeconds());
                 if (rs.getBoolean("idc")) {
                     events.add(new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"), rs.getString("auteur")));
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("auteur")));
                 } else {
                     events.add(new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"), rs.getString("auteur")));
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("auteur")));
                 }
             }
         }

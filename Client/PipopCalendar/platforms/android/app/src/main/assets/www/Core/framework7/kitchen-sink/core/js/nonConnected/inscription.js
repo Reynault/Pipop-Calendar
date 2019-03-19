@@ -46,7 +46,7 @@ $(document).ready(function(){
       // Ne pas oublier de vérifier les données
       var arr = {"Request":"SignUp", "Email": email, "Mdp": hash, "Nom": nom, "Prenom": prenom};
       $.ajax({
-          url: 'http://10.0.2.2:3307',
+          url: adresse,
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',

@@ -13,7 +13,7 @@ $(document).ready(function(){
       var arr = {"Request":"GetUsers", "FirstName": nom, "LastName": prenom};
       console.log(JSON.stringify(arr));
       $.ajax({
-          url: 'https://10.0.2.2:3306',
+          url: adresse,
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',

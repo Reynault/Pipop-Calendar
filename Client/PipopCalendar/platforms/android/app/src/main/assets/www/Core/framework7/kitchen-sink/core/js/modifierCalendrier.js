@@ -14,7 +14,7 @@ $(document).ready(function(){
       var arr = {"Request":"ModifyCalendar", "idc": idc, "nameC": nomc, "couleur": couleur};
       console.log(JSON.stringify(arr));
       $.ajax({
-          url: 'https://10.0.2.2:3306',
+          url: adresse,
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',

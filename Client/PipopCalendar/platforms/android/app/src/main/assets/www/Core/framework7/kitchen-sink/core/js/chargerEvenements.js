@@ -10,7 +10,7 @@ $(document).ready(function(){
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
-          url: 'http://10.0.2.2:3307',
+          url: adresse,
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
@@ -22,18 +22,11 @@ $(document).ready(function(){
               console.log(obj);
               console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
               if(obj["RESULT"]==0){
-                $("#evenementContainer").empty();
-                 var nbEvenements = Object.keys(obj.Data).length;
-                 var y = 0;
-                 for(var i = 0; i<nbEvenements; i++){
-                   if(i%2==0){
-                     var p = $("#evenementContainer").append("<p id='"+ y +"Evenement' class='row'>");
-                     $("<a href='/event-view/' class='col-50 button button-large button-fill color-white'>"+ obj["Data"][y]["EventName"]+"</a>").appendTo("#"+y+"Evenement");
-                   }else{
-                     $("<a href='/event-view/' class='col-50 button button-large button-fill color-white'>"+ obj["Data"][y]["EventName"]+"</a>").appendTo("#"+ (y-1) +"Evenement");
-                   }
-                   y++;
-                 }
+                /*let today = new Date();
+                let weeklater = new Date();
+                let calendarEvents = app.calendar.create({
+
+                });*/
               }else{
                 $("#evenementContainer").empty();
                 var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");

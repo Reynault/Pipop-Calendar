@@ -195,7 +195,7 @@ public class ConnexionClient implements Runnable{
                 String calendarName = donnees.get("CalendarName");
                 String eventName = donnees.get("EventName");
                 String eventDescription = donnees.get("EventDescription");
-                String image = donnees.get("EventPicture");
+                String image = "";
                 String eventDateDeb = donnees.get("EventDate");
                 String eventDateFin = donnees.get("EventDateFin");
                 String eventLocation = donnees.get("EventLocation");
