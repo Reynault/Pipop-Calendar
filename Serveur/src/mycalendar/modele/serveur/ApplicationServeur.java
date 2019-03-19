@@ -388,7 +388,6 @@ public class ApplicationServeur implements Observer {
                 for (int i = 0; i < calendriers.size(); i++) {
                     calendars = new HashMap<>();
                     c = calendriers.get(i);
-                    System.out.println(c.getNomCalendrier());
                     calendars.put("ID", "" + c.getIdC());
                     calendars.put("Nom", c.getNomCalendrier());
                     calendars.put("Couleur", c.getCouleur());
