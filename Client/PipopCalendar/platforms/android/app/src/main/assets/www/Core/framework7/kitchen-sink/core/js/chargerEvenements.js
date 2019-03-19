@@ -1,15 +1,12 @@
 $(document).ready(function(){
 
-  chargerCalendrier(localStorage.getItem("emailUtilisateur"));
-
-  $("body").on('click', '.calend', function(){
-    localStorage.setItem("nomCalendrierCourant", $(this).text());
-  });
+   chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrier"));
 
 });
 
-  function chargerCalendrier(email){
-      var arr = {"Request":"LoadCalendars","Email":email};
+
+  function chargerEvenements(email, calendrier){
+      var arr = {"Request":"LoadEvents","Mail":email,"CalendarName":calendrier};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -20,24 +17,28 @@ $(document).ready(function(){
           async: true,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
+              console.log(data);
               var obj = JSON.parse(data);
-              if(obj["Result"]==0){
-                $("#calendrierContainer").empty();
-                 var nbCalendriers = Object.keys(obj.Data).length;
+              console.log(obj);
+              console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
+              if(obj["RESULT"]==0){
+                $("#evenementContainer").empty();
+                 var nbEvenements = Object.keys(obj.Data).length;
                  var y = 0;
-                 for(var i = 0; i<nbCalendriers; i++){
+                 for(var i = 0; i<nbEvenements; i++){
                    if(i%2==0){
-                     var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
-                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
+                     var p = $("#evenementContainer").append("<p id='"+ y +"Evenement' class='row'>");
+                     $("<a href='/event-view/' class='col-50 button button-large button-fill color-white'>"+ obj["Data"][y]["EventName"]+"</a>").appendTo("#"+y+"Evenement");
                    }else{
-                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
+                     $("<a href='/event-view/' class='col-50 button button-large button-fill color-white'>"+ obj["Data"][y]["EventName"]+"</a>").appendTo("#"+ (y-1) +"Evenement");
                    }
                    y++;
                  }
               }else{
-                $("#calendrierContainer").empty();
-                var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
-                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Calendar Found</p></div>").appendTo("#0Calendrier");
+                $("#evenementContainer").empty();
+                var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
+                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Events Found</p></div>").appendTo("#0Evenement");
+                console.log($("#evenementContainer").prop('outerHTML'));
                 window.plugins.toast.showWithOptions(
                 {
                    message: ""+obj["Message"],
@@ -57,12 +58,15 @@ $(document).ready(function(){
               }
           },
           error: function(jqXHR, textStatus, errorThrown) {
+              console.log("ERREUR : "+jqXHR);
+              console.log("ERREUR : "+textStatus);
+              console.log("ERREUR : "+errorThrown);
               app.preloader.hide();
-              $("#calendrierContainer").empty();
-              var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
-              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connexion</p></div>").appendTo("#0Calendrier");
+              $("#evenementContainer").empty();
+              var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
+              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connection</p></div>").appendTo("#0Evenement");
               window.plugins.toast.showWithOptions({
-                 message: "No network connexion or server error",
+                 message: "No network connection or server error",
                  duration: 1500, // ms
                  position: "bottom",
                  addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)

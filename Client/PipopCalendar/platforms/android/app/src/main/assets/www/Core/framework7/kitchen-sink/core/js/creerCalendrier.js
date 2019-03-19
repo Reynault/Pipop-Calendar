@@ -4,12 +4,13 @@ $(document).ready(function(){
       localStorage.setItem("colorSelectForm","black");
   }
    $("#creationCalendrierBouton").click(function(e){
-     creerCalendrier($("#nomCalendrierForm").val(),$("#descriptionCalendrierForm").val(),localStorage.getItem("colorSelectForm"),"art",localStorage.getItem("emailUtilisateur"));
+     creerCalendrier($("#nomCalendrierForm").val(),$("#descriptionCalendrierForm").val(), localStorage.getItem("emailUtilisateur"));
    });
 
-  function creerCalendrier(nom, description, couleur, theme, email){
-      var smartSelect = app.smartSelect.get('.smart-select');
-      var arr = {"Request":"CreateCalendar","Nom":nom, "Description": description,"Couleur":smartSelect.getValue(), "Theme":theme, "Auteur":email};
+  function creerCalendrier(nom, description, email){
+      var smartSelectCouleur = app.smartSelect.get('#couleurSelect');
+      var smartSelectTheme = app.smartSelect.get('#themeSelect');
+      var arr = {"Request":"CreateCalendar","Nom":nom, "Description": description,"Couleur":smartSelectCouleur.getValue(), "Theme":smartSelectTheme.getValue(), "Auteur":email};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({

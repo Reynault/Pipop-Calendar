@@ -27,66 +27,17 @@
         <!-- Initial Page, "data-name" contains page name -->
         <div class="page" data-name="user-home">
 
-          <!-- Left panel -->
-          <div class="panel panel-left panel-cover">
-            <div class="page">
-              <div class="navbar no-shadow">
-                <div class="navbar-inner sliding">
-                  <div class="title">Settings</div>
-                </div>
-              </div>
-              <div class="page-content">
-                <div class="list links-list no-hairlines">
-                  <ul>
-                    <li>
-                      <a href="#" class="panel-close" id="deconnexionBouton">Log out</a>
-                    </li>
-                    <li>
-                      <a href="#" class="panel-close">Profil settings</a>
-                    </li>
-                    <li>
-                      <a href="/themes/" class="panel-close">Theme</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right panel -->
-          <div class="panel panel-right panel-cover">
-            <div class="page">
-              <div class="navbar no-shadow">
-                <div class="navbar-inner sliding">
-                  <div class="title">Social</div>
-                </div>
-              </div>
-              <div class="page-content">
-                <div class="list links-list no-hairlines">
-                  <ul>
-                    <li>
-                      <a href="#" class="panel-close">Notifications <span class="badge">32</span></a>
-                    </li>
-                    <li>
-                      <a href="#" class="panel-close">Friends</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Top Navbar -->
           <div class="navbar no-shadow">
             <div class="navbar-inner">
               <div class="left">
-                <a href="#" class="link icon-only panel-open" data-panel="left">
+                <a href="/panel-left/" class="link icon-only panel-open" data-panel="left">
                     <i class="material-icons">settings</i>
                 </a>
               </div>
               <div class="title">Pipop Calendar</div>
               <div class="right">
-                <a href="#" class="link icon-only panel-open" data-panel="right">
+                <a href="/panel-right/" class="link icon-only panel-open" data-panel="right">
                     <i class="icon f7-icons">persons<span class="badge">32</span></i>
                 </a>
               </div>
@@ -107,11 +58,9 @@
             <div class="block" id="calendrierContainer">
 
             </div>
-
           </div>
         </div>
       </div>
-
     </div>
     <!-- Path to Framework7 Library Bundle JS-->
     <script src="../../packages/core/js/framework7.bundle.min.js"></script>

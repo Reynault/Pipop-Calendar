@@ -2,6 +2,23 @@ var mainView = app.views.create('.view-main', {
   stackPages: true,
   routes: [
     {
+      path: '/panel-left/',
+      panel: {
+        componentUrl: './pages/panels/left.html',
+      },
+    },
+    {
+      path: '/panel-right/',
+      panel: {
+        componentUrl: './pages/panels/right.html',
+      },
+    },
+    {
+      path: '/user-home/',
+      componentUrl: './user-home.html',
+      name: 'user-home'
+    },
+    {
       path: '/themes/',
       componentUrl: './pages/themes.html',
       name: 'themes'
@@ -23,7 +40,6 @@ var mainView = app.views.create('.view-main', {
               dataType: "script",
               cache: true,
               success:function(msg) {
-                console.log("Success!!");
               },
               error:function(msg) {
                 console.log("Error chargement script de création de calendrier");
@@ -31,13 +47,11 @@ var mainView = app.views.create('.view-main', {
             });
           },
           pageAfterOut: function(e,page){
-          console.log("Chargement Back");
               $.ajax({
                 url: "js/chargerCalendrier.js",
                 dataType: "script",
                 cache: true,
                 success:function(msg) {
-                  console.log("Success!!");
                 },
                 error:function(msg) {
                   console.log("Error chargement script de création de calendrier");
@@ -52,25 +66,23 @@ var mainView = app.views.create('.view-main', {
       name: 'calendar-view'
     },
     {
-      path: '/event-form/',
-      componentUrl: './pages/event-form.html',
-      name: 'event-form',
-      on: {
-        pageAfterIn: function (e, page) {
-          $.ajax({
-            url: "js/creerEvenement.js",
-            dataType: "script",
-            cache: true,
-            success:function(msg) {
-              console.log("Success!!");
-            },
-            error:function(msg) {
-              console.log("Error chargement script de création de calendrier");
-            },
-          })
-        }
-      }
-    },
+     path: '/event-form/',
+     componentUrl: './pages/event-form.html',
+     name: 'event-form',
+       pageAfterIn: function (e, page) {
+         $.ajax({
+           url: "js/creerEvenement.js",
+           dataType: "script",
+           cache: true,
+           success:function(msg) {
+             console.log("Success!!");
+           },
+           error:function(msg) {
+             console.log("Error chargement script de création de calendrier");
+           },
+         })
+       }
+     },
     // Default route, match to all pages (e.g. 404 page)
     {
       path: '(.*)',

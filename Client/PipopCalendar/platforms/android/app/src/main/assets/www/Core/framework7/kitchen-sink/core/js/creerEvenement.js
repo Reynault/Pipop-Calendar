@@ -60,8 +60,7 @@ $(document).ready(function(){
             }
           },
           error: function(jqXHR, textStatus, errorThrown) {
-	            window.plugins.toast.showWithOptions(
-                {
+	              window.plugins.toast.showWithOptions({
                    message: "Erreur connexion serveur",
                    duration: 1500, // ms
                    position: "bottom",
@@ -76,9 +75,6 @@ $(document).ready(function(){
                    }
                   }
                  );
-              console.log("ERREUR : "+jqXHR);
-              console.log("ERREUR : "+textStatus);
-              console.log("ERREUR : "+errorThrown);
           }
       });
   }
