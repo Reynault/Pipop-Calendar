@@ -391,7 +391,7 @@ public class ApplicationServeur implements Observer {
                     System.out.println(c.getNomCalendrier());
                     calendars.put("ID", "" + c.getIdC());
                     calendars.put("Nom", c.getNomCalendrier());
-                    calendars.put("Description", c.getDescription().toString());
+                    calendars.put("Couleur", c.getCouleur());
                     res1.put("" + i, calendars);
                 }
                 res.put("Data", res1);
