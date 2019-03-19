@@ -372,6 +372,7 @@ public class ApplicationServeur implements Observer {
      */
     public HashMap<String, Object> loadCalendars(String email){
         HashMap<String, Object> res = new HashMap<>();
+        HashMap<String, Object> res1 = new HashMap<>();
         // Récupération des calendriers
         try {
             ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
@@ -389,8 +390,9 @@ public class ApplicationServeur implements Observer {
                     calendars.put("ID", "" + c.getIdC());
                     calendars.put("Nom", c.getNomCalendrier());
                     calendars.put("Description", c.getDescription().toString());
-                    res.put("" + i, calendars);
+                    res1.put("" + i, calendars);
                 }
+                res.put("Data", res1);
             }
         }catch (SQLException e){
             res.put("RESULT", MessageCodeException.C_ERROR_BDD);
