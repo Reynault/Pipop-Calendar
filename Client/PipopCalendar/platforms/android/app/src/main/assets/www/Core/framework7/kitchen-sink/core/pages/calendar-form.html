@@ -44,7 +44,7 @@
               </div>
             </li>
             <li>
-              <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
+              <a class="item-link smart-select smart-select-init" id="couleurSelect" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
                 <select name="color">
                   {{#each colors}}
                     <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
@@ -59,7 +59,8 @@
             </li>
             <li class="media-item">
               <a id="themeSelect" class="item-link smart-select">
-                <select name="theme" multiple>
+                <select id="themeSelectOption" name="theme" >
+                  <!--multiple-->
                   <option value="cours">Cours</option>
                   <option value="activite">Activité</option>
                   <option value="evenement">Evénement</option>
@@ -115,6 +116,16 @@
       pageInit: function (e, page) {
         var self = this;
         var app = self.$app;
+        $.ajax({
+            url: "js/chargerTheme.js",
+            dataType: "script",
+            cache: true,
+            success:function(msg) {
+            },
+            error:function(msg) {
+              console.log("Error chargement script de l'enregistreur de nom de calendrier");
+            },
+         });
         var themeSelect = app.smartSelect.create({
           el: '#themeSelect',
           valueEl: '.item-text',
@@ -122,6 +133,7 @@
           searchbar: true,
           searchbarPlaceholder: 'Search theme',
         });
+
       },
     },
     pageBeforeRemove() {

@@ -1,12 +1,10 @@
 $(document).ready(function(){
-
-   chargerCalendrier(localStorage.getItem("emailUtilisateur"));
-
+  chargerTheme();
 });
 
 
-  function chargerCalendrier(email){
-      var arr = {"Request":"LoadCalendars","Email":email};
+  function chargerTheme(){
+      var arr = {"Request":"GetTheme"};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -14,27 +12,17 @@ $(document).ready(function(){
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: true,
+          async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
-              if(obj["RESULT"]==0){
-                $("#calendrierContainer").empty();
-                 var nbCalendriers = Object.keys(obj.Data).length;
-                 var y = 0;
-                 for(var i = 0; i<nbCalendriers; i++){
-                   if(i%2==0){
-                     var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
-                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
-                   }else{
-                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
-                   }
-                   y++;
+              if(obj["Result"]==0){
+                 var nbTheme = Object.keys(obj.Data).length;
+                 console.log(obj["Data"]);
+                 for(var i = 0; i<nbTheme; i++){
+                    var p = $("#themeSelectOption").append("<option value='"+obj["Data"][i]+"'>"+obj["Data"][i]+"</option>");
                  }
               }else{
-                $("#calendrierContainer").empty();
-                var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
-                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Calendar Found</p></div>").appendTo("#0Calendrier");
                 window.plugins.toast.showWithOptions(
                 {
                    message: ""+obj["Message"],
@@ -49,15 +37,11 @@ $(document).ready(function(){
                      horizontalPadding: 22, // iOS default 16, Android default 50
                      verticalPadding: 20 // iOS default 12, Android default 30
                    }
-                  }
-                 );
+                  });
               }
           },
           error: function(jqXHR, textStatus, errorThrown) {
               app.preloader.hide();
-              $("#calendrierContainer").empty();
-              var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
-              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connexion</p></div>").appendTo("#0Calendrier");
               window.plugins.toast.showWithOptions({
                  message: "No network connexion or server error",
                  duration: 1500, // ms

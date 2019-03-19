@@ -23,7 +23,6 @@ var mainView = app.views.create('.view-main', {
               dataType: "script",
               cache: true,
               success:function(msg) {
-                console.log("Success!!");
               },
               error:function(msg) {
                 console.log("Error chargement script de création de calendrier");
@@ -37,7 +36,6 @@ var mainView = app.views.create('.view-main', {
                 dataType: "script",
                 cache: true,
                 success:function(msg) {
-                  console.log("Success!!");
                 },
                 error:function(msg) {
                   console.log("Error chargement script de création de calendrier");
@@ -58,7 +56,6 @@ var mainView = app.views.create('.view-main', {
               dataType: "script",
               cache: true,
               success:function(msg) {
-                console.log("Success!!");
               },
               error:function(msg) {
                 console.log("Error chargement script de l'enregistreur de nom de calendrier");

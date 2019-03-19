@@ -20,7 +20,6 @@ var app = new Framework7({
             dataType: "script",
             cache: true,
             success:function(msg) {
-              console.log("Success!!");
             },
             error:function(msg) {
               console.log("Error chargement script de cryptage");
@@ -31,7 +30,6 @@ var app = new Framework7({
             dataType: "script",
             cache: true,
             success:function(msg) {
-              console.log("Success!!");
             },
             error:function(msg) {
               console.log("Error chargement script inscription");
@@ -47,7 +45,6 @@ var $ptrContent = $$('.ptr-content');
 $ptrContent.on('ptr:refresh', function (e) {
   // Emulate 2s loading
   setTimeout(function () {
-    console.log("Loading Calendar");
     chargerCalendrier(localStorage.getItem("emailUtilisateur"));
     app.ptr.done(); // or e.detail();
   }, 2000);
