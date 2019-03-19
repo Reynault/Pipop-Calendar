@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 public class  ClientTest {
     private static void lancerClient(String requete, boolean post) throws IOException {
         // Création socket
-        int port = 55555;
+        int port = 3307;
         InetAddress ip = InetAddress.getByName(ApplicationServeur.URL);
 
         Socket socket = new Socket(ip, port);

@@ -382,11 +382,13 @@ public class ApplicationServeur implements Observer {
             } else {
                 res.put("RESULT", MessageCodeException.C_SUCCESS);
                 res.put("MESSAGE", MessageCodeException.M_SUCCESS);
-                HashMap<String, String> calendars = new HashMap<>();
+                HashMap<String, String> calendars;
                 Calendrier c;
                 // Pour chaque, on l'ajoute dans la hashmap
                 for (int i = 0; i < calendriers.size(); i++) {
+                    calendars = new HashMap<>();
                     c = calendriers.get(i);
+                    System.out.println(c.getNomCalendrier());
                     calendars.put("ID", "" + c.getIdC());
                     calendars.put("Nom", c.getNomCalendrier());
                     calendars.put("Description", c.getDescription().toString());
