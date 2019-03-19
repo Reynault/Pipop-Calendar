@@ -60,8 +60,8 @@ function onBackKeyDown() {
   var page = path.split("/").pop();
   if(page != "index.html"){
     app.dialog.confirm('Are you sure you want to log out?', function () {
-        window.location = "index.html";
         localStorage.setItem("emailUtilisateur","");
+        window.location = "index.html";
     });
   }else{
     app.dialog.confirm('Do you really want to exit Pipop?', function () {

@@ -26,7 +26,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Event name</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="name">
+                    <input id="nomEvInput" type="text" name="name">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -37,13 +37,23 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Description</div>
                   <div class="item-input-wrap">
-                    <textarea class="resizable" name="desc"></textarea>
+                    <textarea id="descEvInput" class="resizable" name="desc"></textarea>
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
               </div>
             </li>
-
+            <li>
+              <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Lieu</div>
+                  <div class="item-input-wrap">
+                    <input id="lieuEvInput" type="text" name="lieu">
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </div>
+            </li>
             <li>
               <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
@@ -79,28 +89,10 @@
                 </div>
               </a>
             </li>
-            <li class="media-item">
-              <a id="themeSelect" class="item-link smart-select">
-                <select name="theme" multiple>
-                  <option value="cours">Cours</option>
-                  <option value="activite">Activité</option>
-                  <option value="evenement">Evénement</option>
-                  <option value="voyage">Voyage</option>
-                </select>
-                <div class="item-content">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">Themes</div>
-                    </div>
-                    <div class="item-text"></div>
-                  </div>
-                </div>
-              </a>
-            </li>
 
             <li>
               <label class="item-checkbox item-content">
-                <input type="checkbox"/>
+                <input id="public" type="checkbox"/>
                 <i class="icon icon-checkbox"></i>
                 <div class="item-inner">
                   <div class="item-title">Public event</div>
