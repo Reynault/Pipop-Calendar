@@ -105,14 +105,14 @@ public class ApplicationServeur implements Observer {
             }
             if (!this.verifierEvenement(auteur, calendrierID, nom)) { // On vérifie que l'événement n'existe pas déjà
                 // Données invalides : l'événement existe déjà ; son code d'erreur associé est 1
-                MessageCodeException.calendar_already_exist(res);
+                MessageCodeException.event_already_exist(res);
                 //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
                 //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                 return res;
             }
             if ( (eventID = this.createEvenement(calendrierID, nom, description, image, date, lieu, auteur, visible)) < 0) { // On crée l'événement
                 // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
-                MessageCodeException.bdd_calendar_error(res);
+                MessageCodeException.bdd_event_error(res);
                 //res.put("Result", MessageCodeException.C_ERROR_BDD);
                 //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
                 return res;
@@ -165,7 +165,8 @@ public class ApplicationServeur implements Observer {
     private int createEvenement(int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
         int res = -1;
         // On parse la date afin d'en créer un objet utilisable
-        dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+        System.out.println(date);
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date dateP = dateFormat.parse(date);
         Evenement e;
         int id;

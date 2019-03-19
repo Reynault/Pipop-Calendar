@@ -71,6 +71,11 @@ public class MessageCodeException {
         map.put("Message", MessageCodeException.M_USER_NOT_FOUND);
     }
 
+    public static void event_already_exist(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_ALREADY_EXIST);
+        map.put("Message", MessageCodeException.M_EVENT_ALREADY_EXIST);
+    }
+
     public static void bdd_calendar_error(HashMap<String, String> map){
         map.put("Result", MessageCodeException.C_ERROR_BDD);
         map.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);

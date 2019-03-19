@@ -6,6 +6,10 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class  ClientTest {
     private static void lancerClient(String requete, boolean post) throws IOException {
@@ -49,12 +53,15 @@ public class  ClientTest {
 
     public static void main(String[] args) {
         try{
-            //lancerClient("{\"Request\":\"getTheme\",\"Email\":\"test@test\"}", false);
-            //lancerClient("{\"Request\":\"CreateCalendar\",\"Nom\":\"pootis\",\"Description\":\"pootis\",\"Couleur\":\"red\",\"Theme\":\"art\",\"Auteur\":\"pootis@spenser.tf\"}", false);
-            //lancerClient("{\"Request\":\"AddEvent\",\"CalendarName\":\"pootis\",\"EventName\":\"Baby\",\"EventDescription\":\"entire team is baby!\",\"EventPicture\":\"N.A.\",\"EventDate\":\"22:00 3/10/2019\",\"EventLocation\":\"sd_doomsday\", \"EventAuthor\":\"pootis@spenser.tf\", \"EventVisibility\":\"true\"}", false);
-            lancerClient("{\"Request\":\"LoadEvents\",\"Mail\":\"pootis@spenser.tf\",\"CalendarName\":\"pootis\"}", false);
-        }catch(IOException e){
-            System.out.println(e.getMessage());
+            lancerClient("{\"Request\":\"AddEvent\",\"CalendarName\":\"TOUTANCLAKOS\",\"EventName\":\"azeaze\"," +
+                    "\"EventDescription\":\"\",\"EventDate\":\"19/03/2019 16:15\",\"EventLocation\":\"\",\"EventAuthor\":" +
+                    "\"test@test\",\"EventVisibility\":\"false\"}", true);
+
+           /* DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date dateP = dateFormat.parse("19/03/2019 16:15");
+            System.out.println(dateP.toString());*/
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
