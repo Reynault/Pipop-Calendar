@@ -95,7 +95,7 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "AddEvent");
         try {
-            calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // IL nous faut l'ID du calendrier pour la suite, pas son nom
+            calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // Il nous faut l'ID du calendrier pour la suite, pas son nom
             // nomCalendrier spécifié inexistant : son code d'erreur est 2
             if (calendrierID == -1) {
                 MessageCodeException.calendar_not_found(res);
@@ -402,7 +402,7 @@ public class ApplicationServeur implements Observer {
                 res.put("Message", MessageCodeException.M_SUCCESS);
                 HashMap<String, String> calendars;
                 Calendrier c;
-                // Pour chaque, on l'ajoute dans la hashmap
+                // Pour chaque calendrier, on l'ajoute dans la hashmap
                 for (int i = 0; i < calendriers.size(); i++) {
                     calendars = new HashMap<>();
                     c = calendriers.get(i);
@@ -671,7 +671,6 @@ public class ApplicationServeur implements Observer {
                 res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
             }else{
                 HashMap<String, String> users = new HashMap<>();
-                int i = 0;
                 for(int j = 0; j < ul.size(); j++){
                     Utilisateur u = ul.get(j);
                     users.put("Email", u.getEmail());
@@ -723,4 +722,38 @@ public class ApplicationServeur implements Observer {
         }
         return themes;
     }
+
+    public HashMap<String, Object> loadEvents(String auteur, String nomCalendrier) {
+        HashMap<String, Object> calendriers = new HashMap<>();
+        calendriers.put("Request", "LoadEvents");
+        try {
+            int calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier);
+            ArrayList<Evenement> donnees = Evenement.find(calendrierID, auteur);
+            if (donnees.size() > 0) {
+                HashMap<String, String> events = new HashMap<>();
+                for (int j = 0 ; j < donnees.size() ; j++){
+                    Evenement u = donnees.get(j);
+                    events.put("EventName", u.getNomE());
+                    events.put("Description", u.getDescription());
+                    events.put("Picture", u.getImage());
+                    events.put("Date", u.getDate().toString());
+                    events.put("EventLocation", u.getLieu());
+                    events.put("EventAuthor", u.getAuteur());
+                    calendriers.put("" + j, events);
+                }
+                calendriers.put("Result", MessageCodeException.C_SUCCESS);
+                calendriers.put("Message", MessageCodeException.M_SUCCESS);
+            }
+            else {
+                calendriers.put("Result", MessageCodeException.C_NOT_FOUND);
+                calendriers.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
+            }
+        } catch (SQLException e) {
+            calendriers.put("Result", MessageCodeException.C_ERROR_BDD);
+            calendriers.put("Message", MessageCodeException.M_BDD_ERROR);
+            e.printStackTrace();
+        }
+        return calendriers;
+    }
+
 }
