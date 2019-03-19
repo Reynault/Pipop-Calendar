@@ -29,8 +29,11 @@
         <!-- Mois -->
         <div id="calendar-inline-container"></div>
 
-        <!-- Semaine -->
-        <div class="timeline timeline-horizontal tablet-15">
+        <div id="zoom" class="range-slider">
+          <input type="range" min="20" max="100" step="5" value="30">
+        </div>
+        <!-- Semaine et jour -->
+        <div id="timeline" class="timeline timeline-horizontal col-30">
           <div class="timeline-item">
             <div class="timeline-item-date"><small>MONDAY</small> 11</div>
             <div class="timeline-item-divider"></div>
@@ -84,8 +87,15 @@
   return {
     on: {
       pageInit: function (e, page) {
+        var $$ = Dom7;
         var self = this;
         var app = self.$app;
+        var range = app.range.create({
+          el: '#zoom',
+        });
+        $$('#zoom').on('range:change', function (e, r) {
+          $$('#timeline').attr('class', 'timeline timeline-horizontal col-' + r.value);
+        });
         var calendarInline = app.calendar.create({
           containerEl: '#calendar-inline-container',
           value: [new Date()],

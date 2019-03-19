@@ -2,6 +2,18 @@ var mainView = app.views.create('.view-main', {
   stackPages: true,
   routes: [
     {
+      path: '/panel-left/',
+      panel: {
+        componentUrl: './pages/panels/left.html',
+      },
+    },
+    {
+      path: '/panel-right/',
+      panel: {
+        componentUrl: './pages/panels/right.html',
+      },
+    },
+    {
       path: '/user-home/',
       componentUrl: './user-home.html',
       name: 'user-home'
