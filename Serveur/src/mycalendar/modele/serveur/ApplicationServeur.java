@@ -730,6 +730,7 @@ public class ApplicationServeur implements Observer {
 
     public HashMap<String, Object> loadEvents(String auteur, String nomCalendrier) {
         HashMap<String, Object> calendriers = new HashMap<>();
+        HashMap<String, Object> evenements = new HashMap<>();
         calendriers.put("Request", "LoadEvents");
         try {
             int calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier);
@@ -745,10 +746,11 @@ public class ApplicationServeur implements Observer {
                     events.put("DateFin", u.getDatefin().toString());
                     events.put("EventLocation", u.getLieu());
                     events.put("EventAuthor", u.getAuteur());
-                    calendriers.put("" + j, events);
+                    evenements.put("" + j, events);
                 }
                 calendriers.put("Result", MessageCodeException.C_SUCCESS);
                 calendriers.put("Message", MessageCodeException.M_SUCCESS);
+                calendriers.put("Data", evenements);
             }
             else {
                 calendriers.put("Result", MessageCodeException.C_NOT_FOUND);

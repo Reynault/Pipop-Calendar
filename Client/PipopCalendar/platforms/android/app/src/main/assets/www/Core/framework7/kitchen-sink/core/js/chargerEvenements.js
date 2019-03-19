@@ -22,11 +22,18 @@ $(document).ready(function(){
               console.log(obj);
               console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
               if(obj["RESULT"]==0){
-                /*let today = new Date();
-                let weeklater = new Date();
-                let calendarEvents = app.calendar.create({
 
-                });*/
+                var nbEvents = Object.keys(obj.Data).length;
+                let i = 0;
+                while( i  < nbEvents ){
+                obj["Data"][i]
+                  /*
+                  let today = new Date();
+                  let weeklater = new Date();
+                  let calendarEvents = app.calendar.create({
+
+                  });*/
+                }
               }else{
                 $("#evenementContainer").empty();
                 var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
