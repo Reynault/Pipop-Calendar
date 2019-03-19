@@ -301,6 +301,13 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encodeObj(repObj);
                 break;
             }
+            case "LoadEvents": {
+                String email = donnees.get("Mail");
+                String cal = donnees.get("CalendarName");
+                repObj = ApplicationServeur.getInstance().loadEvents(email, cal);
+                result = parseur.encodeObj(repObj);
+                break;
+            }
             default: {
                 throw new BadRequestExeption(donnees.get("Request"));
             }

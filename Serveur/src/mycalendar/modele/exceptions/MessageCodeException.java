@@ -1,5 +1,7 @@
 package mycalendar.modele.exceptions;
 
+import java.util.HashMap;
+
 /**
  * Fabrique qui garde l'ensemble des messages et codes d'erreurs
  * utilisés par l'application
@@ -48,4 +50,69 @@ public class MessageCodeException {
 
     public static String C_NO_CHANGE = "6";
 
+
+    public static void success(HashMap<String, String> map) {
+        map.put("Result", MessageCodeException.C_SUCCESS);
+        map.put("Message", MessageCodeException.M_SUCCESS);
+    }
+
+    public static void theme_not_found(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_NOT_FOUND);
+        map.put("Message", MessageCodeException.M_THEME_NOT_FOUND);
+    }
+
+    public static void bdd_error(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_ERROR_BDD);
+        map.put("Message", MessageCodeException.M_BDD_ERROR);
+    }
+
+    public static void user_not_found(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_NOT_FOUND);
+        map.put("Message", MessageCodeException.M_USER_NOT_FOUND);
+    }
+
+    public static void bdd_calendar_error(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_ERROR_BDD);
+        map.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
+    }
+
+    public static void no_change(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_NO_CHANGE);
+        map.put("Message", MessageCodeException.M_NO_CHANGE);
+    }
+
+    public static void calendar_not_found(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_NOT_FOUND);
+        map.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
+    }
+
+    public static void event_not_found(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_NOT_FOUND);
+        map.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
+    }
+
+    public static void calendar_already_exist(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_ALREADY_EXIST);
+        map.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
+    }
+
+    public static void size_error(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_SIZE_ERROR);
+        map.put("Message", MessageCodeException.M_SIZE_ERROR);
+    }
+
+    public static void user_already_exist(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_ALREADY_EXIST);
+        map.put("Message", MessageCodeException.M_USER_ALREADY_EXIST);
+    }
+
+    public static void bdd_event_error(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_ALREADY_EXIST);
+        map.put("Message", MessageCodeException.M_USER_ALREADY_EXIST);
+    }
+
+    public static void date(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_DATE_ERROR);
+        map.put("Message", MessageCodeException.M_DATE_ERROR);
+    }
 }

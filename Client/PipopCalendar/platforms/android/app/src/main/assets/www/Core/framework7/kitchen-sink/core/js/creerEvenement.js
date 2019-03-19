@@ -1,20 +1,19 @@
 $(document).ready(function(){
 
   $("#creerEvenementBouton").click(function(e){
-      console.log("TEST RECUP:"+ localStorage.getItem("nomCalendrierCourant"));
-    //creerEvenement($("#nomCalInput").val(), $("#nomEvInput").val(), $("#descEvInput").val(), $("imageEvInput").val(), $("#dateEvInput").val(), $("#lieuEvInput").val(), $("#auteurEvInput").val(), $("#visibiliteEvInput").val());
+      let check = $('#public').is(':checked');
+      creerEvenement( localStorage.getItem("nomCalendrierCourant"),
+          $("#nomEvInput").val(), $("#descEvInput").val(), $("#dateStart").val(), $("#dateEnd").val(),
+          $("#lieuEvInput").val(), localStorage.getItem("emailUtilisateur"),
+          check);
   });
 
-
-
-  function creerEvenement(nomCal, nomEv, descEv, imageEv, dateEv, lieuEv, auteurEv, visibiliteEv){
-      console.log("CreerEvenement");
-      // Ne pas oublier de crypter les données
-      // Ne pas oublier de vérifier les données
-      var arr = {"Request":"AddEvent", "CalendarName": nomCal, "EventName": nomEv, "EventDescription": descEv, "EventPicture": imageEv, "EventDate": dateEv, "EventLocation": lieuEv, "EventAuthor": auteurEv, "EventVisibility": visibiliteEv};
-      console.log(JSON.stringify(arr));
+  function creerEvenement(nomCal, nomEv, descEv, dateEv, dateFin, lieuEv, auteurEv, visibiliteEv){
+      var arr = {"Request":"AddEvent", "CalendarName": nomCal, "EventName": nomEv, "EventDescription": descEv,
+               "EventDate": dateEv, "EventLocation": lieuEv, "EventAuthor": auteurEv, "EventVisibility": visibiliteEv};
+      console.log("CREER EVENEMENT : "+JSON.stringify(arr));
       $.ajax({
-          url: 'https://10.0.2.2:3306',
+          url: 'https://10.0.2.2:3307',
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
@@ -24,7 +23,6 @@ $(document).ready(function(){
               let obj = JSON.parse(data);
               if(obj["Result"]==0){
                 //window.location = "user-home.html";
-		//TODO Redirection vers la page du calendrier
               }else{
                 window.plugins.toast.showWithOptions(
                 {
@@ -39,9 +37,10 @@ $(document).ready(function(){
                      cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
                      horizontalPadding: 22, // iOS default 16, Android default 50
                      verticalPadding: 20 // iOS default 12, Android default 30
-                   }
                   }
-                 );
+                }
+              );
+            }
           },
           error: function(jqXHR, textStatus, errorThrown) {
 	              window.plugins.toast.showWithOptions({
@@ -62,5 +61,4 @@ $(document).ready(function(){
           }
       });
   }
-
 });
