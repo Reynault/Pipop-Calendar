@@ -21,7 +21,8 @@ public abstract class Evenement extends Observable {
     private String nomE;
     private String description;
     private String image;
-    private Date date;
+    private Date datedeb;
+    private Date datefin;
     private String lieu;
     private String auteur;
 
@@ -38,17 +39,19 @@ public abstract class Evenement extends Observable {
      * @param nom
      * @param description
      * @param image
-     * @param date
+     * @param datedeb
+     * @param datefin
      * @param lieu
      * @param auteur
      */
-    public Evenement(int id, int calID, String nom, String description, String image, Date date, String lieu, String auteur) {
+    public Evenement(int id, int calID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String auteur) {
         this.idEv = id;
         this.calendrierID = calID;
         this.nomE = nom;
         this.description = description;
         this.image = image;
-        this.date = date;
+        this.datedeb = datedeb;
+        this.datefin = datefin;
         this.lieu = lieu;
         this.auteur = auteur;
         this.messages = new ArrayList<>();
@@ -70,18 +73,20 @@ public abstract class Evenement extends Observable {
     public boolean save() throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
-            String request = "INSERT INTO Evenement VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            String request = "INSERT INTO Evenement VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement prep = connect.prepareStatement(request);
             prep.setInt(1, this.idEv);
             prep.setInt(2, this.calendrierID);
             prep.setString(3, this.nomE);
-            java.sql.Timestamp t = new java.sql.Timestamp(this.date.getTime());
+            java.sql.Timestamp t = new java.sql.Timestamp(this.datedeb.getTime());
             prep.setTimestamp(4, t);
-            prep.setString(5, this.description);
-            prep.setString(6, this.image);
-            prep.setString(7, this.lieu);
-            prep.setString(8, this.auteur);
-            prep.setBoolean(9, this.visibilite);
+            t = new java.sql.Timestamp(this.datefin.getTime());
+            prep.setTimestamp(5, t);
+            prep.setString(6, this.description);
+            prep.setString(7, this.image);
+            prep.setString(8, this.lieu);
+            prep.setString(9, this.auteur);
+            prep.setBoolean(10, this.visibilite);
             if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
                 return false;
             }
@@ -112,9 +117,13 @@ public abstract class Evenement extends Observable {
             ResultSet rs = prep.getResultSet();
             if (rs.next()) {
                 if (rs.getBoolean("idc")) {
-                    return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
+                    return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),
+                            rs.getString("auteur"));
                 } else {
-                    return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur"));
+                    return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),
+                            rs.getString("auteur"));
                 }
             }
             return null;
@@ -141,9 +150,11 @@ public abstract class Evenement extends Observable {
             ResultSet rs = prep.getResultSet();
             while (rs.next()) {
                 if (rs.getBoolean("idc")) {
-                    events.add(new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur")));
+                    events.add(new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("auteur")));
                 } else {
-                    events.add(new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur")));
+                    events.add(new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("auteur")));
                 }
             }
         }
@@ -245,7 +256,8 @@ public abstract class Evenement extends Observable {
         res.put("nomE", nomE);
         res.put("description", description);
         res.put("image", image);
-        res.put("date", date.toString());
+        res.put("date", datedeb.toString());
+        res.put("date", datefin.toString());
         res.put("lieu", lieu);
         res.put("auteur", auteur);
         return res;
@@ -256,12 +268,13 @@ public abstract class Evenement extends Observable {
      * @return false si erreur lors de l'exécution de la requête, true sinon
      * @throws SQLException
      */
-    public boolean modify(int calendrierID, String nomE, String description, String image, Date date, String lieu, String auteur) throws SQLException {
+    public boolean modify(int calendrierID, String nomE, String description, String image, Date datedeb, Date datefin, String lieu, String auteur) throws SQLException {
         this.calendrierID=calendrierID;
         this.nomE=nomE;
         this.description=description;
         this.image=image;
-        this.date=date;
+        this.datedeb=datedeb;
+        this.datefin=datefin;
         this.lieu=lieu;
         this.auteur=auteur;
         return save();
@@ -279,8 +292,12 @@ public abstract class Evenement extends Observable {
         return this.image;
     }
 
-    public Date getDate() {
-        return this.date;
+    public Date getDatedeb() {
+        return datedeb;
+    }
+
+    public Date getDatefin() {
+        return datefin;
     }
 
     public String getLieu() {

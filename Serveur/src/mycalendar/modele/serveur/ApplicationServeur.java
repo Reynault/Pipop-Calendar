@@ -83,14 +83,15 @@ public class ApplicationServeur implements Observer {
      * @param nomCalendrier nom du calendrier auquel l'événement est associé
      * @param nom nom de l'événement
      * @param description description de l'événement
-     * @param image image visuelle de l'événement
-     * @param date date à laquelle l'événement va se dérouler
+     * @param image image de l'événement
+     * @param datedeb date de début
+     * @param datefin date de fin
      * @param lieu lieu à lequel l'événement va se dérouler
      * @param auteur créateur de l'événement
      * @param visible visibilité des événements auprès des autres utilisateurs
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
-    public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) {
+    public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String datedeb, String datefin, String lieu, String auteur, boolean visible) {
         int calendrierID, eventID = -1;
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "AddEvent");
@@ -110,7 +111,7 @@ public class ApplicationServeur implements Observer {
                 //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                 return res;
             }
-            if ( (eventID = this.createEvenement(calendrierID, nom, description, image, date, lieu, auteur, visible)) < 0) { // On crée l'événement
+            if ( (eventID = this.createEvenement(calendrierID, nom, description, image, datedeb, datefin, lieu, auteur, visible)) < 0) { // On crée l'événement
                 // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
                 MessageCodeException.bdd_event_error(res);
                 //res.put("Result", MessageCodeException.C_ERROR_BDD);
@@ -154,28 +155,30 @@ public class ApplicationServeur implements Observer {
      * @param calendrierID ID du calendrier associé à l'événement
      * @param nom nom de l'événement
      * @param description description de l'événement
-     * @param image image de l'événement
-     * @param date date de l'événement
+     * @param image, image de l'événement
+     * @param datedeb date de début de l'événement
+     * @param datefin date de fin de l'événement
      * @param lieu lieu de l'événement
      * @param auteur créateur de l'événement
      * @param visible visibilité public de l'événement
      * @return 1 si la création s'est bien passé, 0 sinon
      * @throws ParseException
      */
-    private int createEvenement(int calendrierID, String nom, String description, String image, String date, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
+    private int createEvenement(int calendrierID, String nom, String description, String image, String datedeb, String datefin, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
         int res = -1;
-        // On parse la date afin d'en créer un objet utilisable
-        System.out.println(date);
+        // Date de début
         dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        Date dateP = dateFormat.parse(date);
+        Date dateD = dateFormat.parse(datedeb);
+        // Date de fin
+        Date dateF = dateFormat.parse(datefin);
         Evenement e;
         int id;
         id = Evenement.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
         if (visible) {
-            e = new EvenementPublic(id + 1, calendrierID, nom, description, image, dateP, lieu, auteur);
+            e = new EvenementPublic(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
         }
         else {
-            e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateP, lieu, auteur);
+            e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
         }
 
         if(e.save()){
@@ -227,17 +230,21 @@ public class ApplicationServeur implements Observer {
      * @param calendrierID l'ID du calendrier de l'événement modifier
      * @param description la description de l'événement modifier
      * @param image l'image de l'événement modifier
-     * @param datef la date de l'événement modifier
+     * @param datedeb la date de l'événement modifier
+     * @param datefin date de fin
      * @param lieu le lieu de l'événement modifier
      * @param auteur l'auteur de l'événement modifier
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
-    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, String datef, String lieu, String auteur){
+    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, String datedeb, String datefin, String lieu, String auteur){
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "ModifyEvent");
         try {
-            dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-            Date date = dateFormat.parse(datef);
+            // Date de début
+            dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date dateD = dateFormat.parse(datedeb);
+            // Date de fin
+            Date dateF = dateFormat.parse(datefin);
             Evenement e = null;
             e = Evenement.find(idEv);
             if (e == null) {
@@ -247,14 +254,14 @@ public class ApplicationServeur implements Observer {
                 //res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
                 return res;
             }
-            if (date.before(Calendar.getInstance().getTime())){
+            if (dateD.before(Calendar.getInstance().getTime())){
                 // Date déjà passée
                 MessageCodeException.date(res);
                 //res.put("Result", MessageCodeException.C_DATE_ERROR);
                 //res.put("Message", MessageCodeException.M_DATE_ERROR);
                 return res;
             }
-            if (!e.modify(calendrierID, nomE, description, image,date, lieu, auteur)) {
+            if (!e.modify(calendrierID, nomE, description, image, dateD, dateF, lieu, auteur)) {
                 // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
                 MessageCodeException.bdd_event_error(res);
                 //res.put("Result", MessageCodeException.C_ERROR_BDD);
@@ -736,7 +743,8 @@ public class ApplicationServeur implements Observer {
                     events.put("EventName", u.getNomE());
                     events.put("Description", u.getDescription());
                     events.put("Picture", u.getImage());
-                    events.put("Date", u.getDate().toString());
+                    events.put("Date", u.getDatedeb().toString());
+                    events.put("DateFin", u.getDatefin().toString());
                     events.put("EventLocation", u.getLieu());
                     events.put("EventAuthor", u.getAuteur());
                     calendriers.put("" + j, events);

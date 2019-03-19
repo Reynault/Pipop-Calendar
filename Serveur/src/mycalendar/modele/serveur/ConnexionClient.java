@@ -195,12 +195,14 @@ public class ConnexionClient implements Runnable{
                 String calendarName = donnees.get("CalendarName");
                 String eventName = donnees.get("EventName");
                 String eventDescription = donnees.get("EventDescription");
-                String eventPicture = donnees.get("EventPicture");
-                String eventDate = donnees.get("EventDate");
+                String image = donnees.get("EventPicture");
+                String eventDateDeb = donnees.get("EventDate");
+                String eventDateFin = donnees.get("EventDateFin");
                 String eventLocation = donnees.get("EventLocation");
                 String eventAuthor = donnees.get("EventAuthor");
                 boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
-                rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription, eventPicture, eventDate, eventLocation, eventAuthor, eventVisibility);
+                rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription,
+                        image , eventDateDeb, eventDateFin, eventLocation, eventAuthor, eventVisibility);
                 result = parseur.encode(rep);
                 break;
             }
@@ -219,11 +221,12 @@ public class ConnexionClient implements Runnable{
                 String eventDescription = donnees.get("EventDescription");
                 String eventPicture = donnees.get("EventPicture");
                 String eventDate = donnees.get("EventDate");
+                String eventDateFin = donnees.get("EventDateFin");
                 String eventLocation = donnees.get("EventLocation");
                 String eventAuthor = donnees.get("EventAuthor");
                 rep = ApplicationServeur.getInstance().modificationEvenement
                         (Integer.parseInt(idevent), Integer.parseInt(idCalendar),eventName, eventDescription, eventPicture,
-                                eventDate, eventLocation, eventAuthor);
+                                eventDate, eventDateFin, eventLocation, eventAuthor);
                 result = parseur.encode(rep);
                 break;
             }

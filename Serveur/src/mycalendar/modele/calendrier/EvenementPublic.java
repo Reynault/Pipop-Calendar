@@ -11,12 +11,13 @@ public class EvenementPublic extends Evenement {
      * @param nom
      * @param description
      * @param image
-     * @param date
+     * @param datedeb
+     * @param datefin
      * @param lieu
      * @param auteur
      */
-    public EvenementPublic(int id, int calendrierID, String nom, String description, String image, Date date, String lieu, String auteur) {
-        super(id, calendrierID, nom, description, image, date, lieu, auteur);
+    public EvenementPublic(int id, int calendrierID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String auteur) {
+        super(id, calendrierID, nom, description, image, datedeb, datefin, lieu, auteur);
         this.visibilite = true;
     }
 
