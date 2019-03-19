@@ -26,12 +26,13 @@ $(document).ready(function(){
                 var nbEvents = Object.keys(obj.Data).length;
                 let i = 0;
                 while( i  < nbEvents ){
-                obj["Data"][i]
-                  /*
-                  let today = new Date();
-                  let weeklater = new Date();
+/*                  let date = obj["Data"][i]['Date'].split("-");
+                  let dateFin = obj["Data"][i]['DateFin'].split("-");
+                  let deb = new Date(date[0], date[1], date[2]);
+                  let fin = new Date(dateFin[0], dateFin[1], dateFin[2]);
                   let calendarEvents = app.calendar.create({
-
+                    inputEl: '',
+                    dateFormat: 'M dd YYYY'
                   });*/
                 }
               }else{
