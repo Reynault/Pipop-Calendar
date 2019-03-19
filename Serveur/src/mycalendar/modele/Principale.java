@@ -14,8 +14,6 @@ public class Principale {
         }catch (Exception e){
             System.out.println("Exception côté serveur :");
             System.out.println(e.getMessage());
-        }finally {
-            main(args);
         }
     }
 }
