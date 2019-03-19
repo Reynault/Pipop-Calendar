@@ -8,7 +8,7 @@ $(document).ready(function(){
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
-          url: 'http://10.0.2.2:3307',
+          url: adresse,
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',

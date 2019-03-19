@@ -63,12 +63,28 @@ var mainView = app.views.create('.view-main', {
     {
       path: '/calendar-view/',
       componentUrl: './pages/calendar-view.html',
-      name: 'calendar-view'
+      name: 'calendar-view',
+      on:{
+        pageAfterIn: function (e, page) {
+           $.ajax({
+             url: "js/chargerEvenements.js",
+             dataType: "script",
+             cache: true,
+             success:function(msg) {
+               console.log("Charger event Success!!");
+             },
+             error:function(msg) {
+               console.log("Error chargement script de création de calendrier");
+             },
+           })
+         }
+      }
     },
     {
      path: '/event-form/',
      componentUrl: './pages/event-form.html',
      name: 'event-form',
+     on:{
        pageAfterIn: function (e, page) {
          $.ajax({
            url: "js/creerEvenement.js",
@@ -82,7 +98,8 @@ var mainView = app.views.create('.view-main', {
            },
          })
        }
-     },
+     }
+   },
     // Default route, match to all pages (e.g. 404 page)
     {
       path: '(.*)',

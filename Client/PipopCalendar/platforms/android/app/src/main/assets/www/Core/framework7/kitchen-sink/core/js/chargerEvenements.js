@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-   chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrier"));
+   chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
 
 });
 
@@ -10,7 +10,7 @@ $(document).ready(function(){
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
-          url: 'http://10.0.2.2:3307',
+          url: adresse,
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
@@ -22,18 +22,19 @@ $(document).ready(function(){
               console.log(obj);
               console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
               if(obj["RESULT"]==0){
-                $("#evenementContainer").empty();
-                 var nbEvenements = Object.keys(obj.Data).length;
-                 var y = 0;
-                 for(var i = 0; i<nbEvenements; i++){
-                   if(i%2==0){
-                     var p = $("#evenementContainer").append("<p id='"+ y +"Evenement' class='row'>");
-                     $("<a href='/event-view/' class='col-50 button button-large button-fill color-white'>"+ obj["Data"][y]["EventName"]+"</a>").appendTo("#"+y+"Evenement");
-                   }else{
-                     $("<a href='/event-view/' class='col-50 button button-large button-fill color-white'>"+ obj["Data"][y]["EventName"]+"</a>").appendTo("#"+ (y-1) +"Evenement");
-                   }
-                   y++;
-                 }
+
+                var nbEvents = Object.keys(obj.Data).length;
+                let i = 0;
+                while( i  < nbEvents ){
+/*                  let date = obj["Data"][i]['Date'].split("-");
+                  let dateFin = obj["Data"][i]['DateFin'].split("-");
+                  let deb = new Date(date[0], date[1], date[2]);
+                  let fin = new Date(dateFin[0], dateFin[1], dateFin[2]);
+                  let calendarEvents = app.calendar.create({
+                    inputEl: '',
+                    dateFormat: 'M dd YYYY'
+                  });*/
+                }
               }else{
                 $("#evenementContainer").empty();
                 var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");

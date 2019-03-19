@@ -3,12 +3,14 @@ package mycalendar.modele.calendrier;
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.droits.Admin;
 import mycalendar.modele.droits.Droit;
+import mycalendar.modele.serveur.ApplicationServeur;
 import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -107,7 +109,7 @@ public abstract class Evenement extends Observable {
      * @return l'événement avec toutes ses informations
      * @throws SQLException
      */
-    public static Evenement find(int idEv) throws SQLException {
+    public static Evenement find(int idEv) throws SQLException, ParseException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
             String request = "SELECT * FROM Evenement WHERE ide=?;";
@@ -118,11 +120,11 @@ public abstract class Evenement extends Observable {
             if (rs.next()) {
                 if (rs.getBoolean("idc")) {
                     return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),
+                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
                             rs.getString("auteur"));
                 } else {
                     return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),
+                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
                             rs.getString("auteur"));
                 }
             }
@@ -138,7 +140,7 @@ public abstract class Evenement extends Observable {
      * @return liste des événements
      * @throws SQLException
      */
-    public static ArrayList<Evenement> find(int idc, String Email) throws SQLException {
+    public static ArrayList<Evenement> find(int idc, String Email) throws SQLException, ParseException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         ArrayList<Evenement> events = new ArrayList<>();
         {
@@ -257,7 +259,7 @@ public abstract class Evenement extends Observable {
         res.put("description", description);
         res.put("image", image);
         res.put("date", datedeb.toString());
-        res.put("date", datefin.toString());
+        res.put("datefin", datefin.toString());
         res.put("lieu", lieu);
         res.put("auteur", auteur);
         return res;
