@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-   chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrier"));
+   chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
 
 });
 

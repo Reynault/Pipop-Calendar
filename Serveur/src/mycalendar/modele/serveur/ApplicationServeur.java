@@ -1,10 +1,7 @@
 package mycalendar.modele.serveur;
 
 import mycalendar.modele.bdd.GestionnaireBDD;
-import mycalendar.modele.calendrier.Calendrier;
-import mycalendar.modele.calendrier.Evenement;
-import mycalendar.modele.calendrier.EvenementPrive;
-import mycalendar.modele.calendrier.EvenementPublic;
+import mycalendar.modele.calendrier.*;
 import mycalendar.modele.exceptions.MessageCodeException;
 import mycalendar.modele.utilisateur.Utilisateur;
 
@@ -39,7 +36,7 @@ public class ApplicationServeur implements Observer {
     // Socket du client en cours
     private Socket socket;
 
-    private static DateFormat dateFormat = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+    private static DateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     // Instance unique
     private static ApplicationServeur instance = new ApplicationServeur();
@@ -167,7 +164,6 @@ public class ApplicationServeur implements Observer {
     private int createEvenement(int calendrierID, String nom, String description, String image, String datedeb, String datefin, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
         int res = -1;
         // Date de début
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date dateD = dateFormat.parse(datedeb);
         // Date de fin
         Date dateF = dateFormat.parse(datefin);
@@ -241,7 +237,6 @@ public class ApplicationServeur implements Observer {
         res.put("Request", "ModifyEvent");
         try {
             // Date de début
-            dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date dateD = dateFormat.parse(datedeb);
             // Date de fin
             Date dateF = dateFormat.parse(datefin);
@@ -306,7 +301,9 @@ public class ApplicationServeur implements Observer {
                 res.putAll(e.consult());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            MessageCodeException.bdd_event_error(res);
+        } catch (ParseException e){
+            MessageCodeException.date_parse_error(res);
         }
         return res;
     }
@@ -591,7 +588,9 @@ public class ApplicationServeur implements Observer {
                }
            } catch (SQLException e1) {
                e1.printStackTrace();
-           }
+           } catch (ParseException e) {
+               e.printStackTrace();
+        }
         MessageCodeException.success(res);
         //res.put("Result", MessageCodeException.C_SUCCESS);
         //res.put("Message", MessageCodeException.M_SUCCESS);
@@ -658,8 +657,7 @@ public class ApplicationServeur implements Observer {
     private void envoiNotifications(ArrayList<Utilisateur> alu) throws ParseException {
         System.out.println("envoie notif avant");
         //String date = LocalDate.now().format(DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy"));  // HH MM JJ MM AAAA
-        DateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-        Date date = df.parse("01:01 11/11/2019");
+        Date date = dateFormat.parse("01:01 11/11/2019");
         System.out.println("après avoir récup la date");
         for(Utilisateur u : alu) {
             //TODO Modifier l'id
@@ -760,8 +758,15 @@ public class ApplicationServeur implements Observer {
             calendriers.put("Result", MessageCodeException.C_ERROR_BDD);
             calendriers.put("Message", MessageCodeException.M_BDD_ERROR);
             e.printStackTrace();
+        }catch (ParseException e){
+            calendriers.put("Result", MessageCodeException.C_DATE_PARSE);
+            calendriers.put("Message", MessageCodeException.M_DATE_PARSE_ERROR);
         }
         return calendriers;
+    }
+
+    public static DateFormat getDateFormat() {
+        return dateFormat;
     }
 
 }

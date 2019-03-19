@@ -33,6 +33,7 @@ public class MessageCodeException {
 
     public static String M_THEME_NOT_FOUND = "Themes non trouve.";
 
+    public static String M_DATE_PARSE_ERROR = "Erreur de date.";
 
     /**
      * Code de retour de la part du serveur
@@ -50,10 +51,16 @@ public class MessageCodeException {
 
     public static String C_NO_CHANGE = "6";
 
+    public static String C_DATE_PARSE = "7";
 
     public static void success(HashMap<String, String> map) {
         map.put("Result", MessageCodeException.C_SUCCESS);
         map.put("Message", MessageCodeException.M_SUCCESS);
+    }
+
+    public static void date_parse_error(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_DATE_PARSE);
+        map.put("Message", MessageCodeException.M_DATE_PARSE_ERROR);
     }
 
     public static void theme_not_found(HashMap<String, String> map){

@@ -10,7 +10,7 @@ $(document).ready(function(){
 
   function creerEvenement(nomCal, nomEv, descEv, dateEv, dateFin, lieuEv, auteurEv, visibiliteEv){
       var arr = {"Request":"AddEvent", "CalendarName": nomCal, "EventName": nomEv, "EventDescription": descEv,
-               "EventDate": dateEv, "EventLocation": lieuEv, "EventAuthor": auteurEv, "EventVisibility": String(visibiliteEv)};
+               "EventDate": dateEv, "EventDateFin": dateFin, "EventLocation": lieuEv, "EventAuthor": auteurEv, "EventVisibility": String(visibiliteEv)};
       console.log("CREER EVENEMENT : "+JSON.stringify(arr));
       $.ajax({
           url: 'http://10.0.2.2:3307',
