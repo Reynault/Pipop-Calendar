@@ -17,6 +17,7 @@ $ptrContent.on('ptr:refresh', function (e) {
 });
 
 document.addEventListener("backbutton", onBackKeyDown, false);
+
 function onBackKeyDown() {
   var path = window.location.pathname;
   var page = path.split("/").pop();
