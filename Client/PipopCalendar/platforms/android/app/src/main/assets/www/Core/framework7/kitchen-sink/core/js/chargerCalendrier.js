@@ -23,14 +23,14 @@ $(document).ready(function(){
               console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
               if(obj["RESULT"]==0){
                 $("#calendrierContainer").empty();
-                 var nbCalendriers = Object.keys(obj.DATA).length;
+                 var nbCalendriers = Object.keys(obj.Data).length;
                  var y = 0;
                  for(var i = 0; i<nbCalendriers; i++){
                    if(i%2==0){
                      var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
-                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["DATA"][i]["Couleur"] + "'>"+ obj["DATA"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
+                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
                    }else{
-                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["DATA"][i]["Couleur"] + "'>"+ obj["DATA"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
+                     $("<a href='/calendar-view/' class='col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
                    }
                    y++;
                  }
