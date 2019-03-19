@@ -1,56 +1,45 @@
 $(document).ready(function(){
 
-  $("#connexionBouton").click(function(e){
-    //e.preventDefault();
-    //alert("Click!");
-    app.input.checkEmptyState("#emailInput");
-    app.input.checkEmptyState("mdpInput");
-    if(!$("#emailInput").val() &&  !$("#mdpInput").val()){
-       window.plugins.toast.showWithOptions({
-              message: obj["Messsage"],
-              duration: 1500, // ms
-              position: "bottom",
-              addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
-              styling: {
-                    opacity: 0.75, // 0.0 (transparent) to 1.0 (opaque). Default 0.8
-                    backgroundColor: '#FF0000', // make sure you use #RRGGBB. Default #333333
-                    textSize: 12, // Default is approx. 13.
-                    cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
-                    horizontalPadding: 20, // iOS default 16, Android default 50
-                    verticalPadding: 16 // iOS default 12, Android default 30
-                  }
-            }
-         );
-    }else{
-      connexion($("#emailInput").val(), $("#mdpInput").val());
-    }
-    e.preventDefault();
-  });
+  if(localStorage.getItem("colorSelectForm")===null){
+      localStorage.setItem("colorSelectForm","black");
+  }
+   $("#creationCalendrierBouton").click(function(e){
+     creerCalendrier($("#nomCalendrierForm").val(),$("#descriptionCalendrierForm").val(), localStorage.getItem("emailUtilisateur"));
+   });
 
-  function connexion(email, mdp){
-      var crypMdp =  new jsSHA("SHA-512", "TEXT");
-      crypMdp.update(mdp);
-      var hash = crypMdp.getHash("HEX");
-      var arr = {"Request":"SignIn","Email":email, "Mdp":hash};
+  function creerCalendrier(nom, description, email){
+      var smartSelectCouleur = app.smartSelect.get('#couleurSelect');
+      var smartSelectTheme = app.smartSelect.get('#themeSelect');
+      var arr = {"Request":"CreateCalendar","Nom":nom, "Description": description,"Couleur":smartSelectCouleur.getValue(), "Theme":smartSelectTheme.getValue(), "Auteur":email};
       console.log("JSON : "+JSON.stringify(arr));
-      app.preloader.show('multi');
+      app.preloader.show();
       $.ajax({
           url: 'http://10.0.2.2:3307',
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          timeout: 512,
-          async: false,
+          async: true,
           success: function(data, textStatus, jqXHR) {
+          console.log(data);
               app.preloader.hide();
               var obj = JSON.parse(data);
-              console.log("BUG : data : "+obj["Message"]);
               if(obj["Result"]==0){
-//                app.views.main.router.navigate("/user-home/");
-                localStorage.setItem("emailUtilisateur",$("#emailInput").val());
-                window.location = "user-home.html";
+                  app.views.main.router.back( "user-home.html" , {reloadPrevious: true, ignoreCache: true, reload: true} );
+                  window.plugins.toast.showWithOptions({
+                    message: ""+obj["Message"],
+                    duration: 1500, // ms
+                    position: "bottom",
+                    addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
+                    styling: {
+                      opacity: 0.75, // 0.0 (transparent) to 1.0 (opaque). Default 0.8
+                      backgroundColor: '#00FF00', // make sure you use #RRGGBB. Default #333333
+                      textSize: 12, // Default is approx. 13.
+                      cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
+                      horizontalPadding: 22, // iOS default 16, Android default 50
+                      verticalPadding: 20 // iOS default 12, Android default 30
+                    }
+                  });
               }else{
-              localStorage.setItem("emailUtilisateur","");
                 window.plugins.toast.showWithOptions(
                 {
                    message: ""+obj["Message"],
@@ -67,10 +56,6 @@ $(document).ready(function(){
                    }
                   }
                  );//
-                 $("#connexionErrMsg").empty();
-                 $("#connexionErrMsg").append("Connexion error. Please, check your login information.");
-                 $("#emailInput").parents('li').addClass('item-input-invalid');
-                 $("#mdpInput").parents('li').addClass('item-input-invalid');
                 }
           },
           error: function(jqXHR, textStatus, errorThrown) {
@@ -78,7 +63,6 @@ $(document).ready(function(){
               console.log("ERREUR : "+textStatus);
               console.log("ERREUR : "+errorThrown);
               app.preloader.hide();
-              localStorage.setItem("emailUtilisateur","");
               window.plugins.toast.showWithOptions(
                   {
                     message: ""+obj["Message"],
@@ -98,5 +82,4 @@ $(document).ready(function(){
           }
       });
   }
-
 });

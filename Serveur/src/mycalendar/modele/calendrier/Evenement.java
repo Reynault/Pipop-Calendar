@@ -139,7 +139,7 @@ public abstract class Evenement extends Observable {
             prep.setString(2,Email);
             prep.execute();
             ResultSet rs = prep.getResultSet();
-            if (rs.next()) {
+            while (rs.next()) {
                 if (rs.getBoolean("idc")) {
                     events.add(new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"), rs.getString("description"), rs.getString("image"), rs.getDate("dateE"), rs.getString("lieu"), rs.getString("auteur")));
                 } else {
@@ -266,4 +266,29 @@ public abstract class Evenement extends Observable {
         this.auteur=auteur;
         return save();
     }
+
+    public String getNomE() {
+        return this.nomE;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public String getImage() {
+        return this.image;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public String getLieu() {
+        return this.lieu;
+    }
+
+    public String getAuteur() {
+        return this.auteur;
+    }
+
 }

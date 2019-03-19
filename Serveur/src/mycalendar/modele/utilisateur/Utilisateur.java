@@ -50,7 +50,6 @@ public class Utilisateur{
         if(result.next()){
             connexion = true;
         }
-        connect.close();
         return connexion;
     }
 
@@ -103,20 +102,19 @@ public class Utilisateur{
             // Execution de la mise à jour
             retour = prep.executeUpdate();
         }
-        connect.close();
         return retour;
     }
 
     public static ArrayList<Calendrier> findCalendriers(String email) throws SQLException {
         ArrayList<Calendrier> calendriers = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-        String request = "SELECT * FROM Calendrier WHERE idc = (SELECT idc FROM utilisateur_calendrier WHERE Email = ? );";
+        String request = "SELECT * FROM `Calendrier` WHERE `idc` IN (SELECT `idc` FROM `utilisateur_calendrier` WHERE `Email` = ? );";
         PreparedStatement prep = connect.prepareStatement(request);
         prep.setString(1, email);
         ResultSet result = prep.executeQuery();
         while(result.next()){
-            calendriers.add(new Calendrier(result.getInt(1), result.getString(2), result.getString(3),
-                    result.getString(4), result.getString(5), email));
+            calendriers.add(new Calendrier(result.getInt(1), result.getString(2), result.getString(4),
+                    result.getString(3), result.getString(5), email));
         }
         return calendriers;
     }
@@ -130,8 +128,37 @@ public class Utilisateur{
         int res = 1;
         return res;
     }
-    
-        /**
+
+    public static ArrayList<Utilisateur> find(String nom, String prenom) throws SQLException {
+        ArrayList<Utilisateur> ul = new ArrayList<>();
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        PreparedStatement prep;
+        String request;
+        if (nom.equals("")) {
+            request = "SELECT * FROM Utilisateur WHERE prenom=?;";
+            prep = connect.prepareStatement(request);
+            prep.setString(1, prenom);
+        }
+        else if (prenom.equals("")) {
+            request = "SELECT * FROM Utilisateur WHERE nom=?;";
+            prep = connect.prepareStatement(request);
+            prep.setString(1, nom);
+        }
+        else {
+            request = "SELECT * FROM Utilisateur WHERE nom=? AND prenom=?;";
+            prep = connect.prepareStatement(request);
+            prep.setString(1, nom);
+            prep.setString(2, prenom);
+        }
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        while (rs.next()) {
+            ul.add(new Utilisateur(rs.getString("Email"), rs.getString("nom"), rs.getString("mdp"), rs.getString("prenom")));
+        }
+        return ul;
+    }
+
+    /**
      * Getter sur l'email
      * @return email de l'utilisateur
      */
@@ -139,4 +166,11 @@ public class Utilisateur{
         return email;
     }
 
+    public String getNom() {
+        return this.nom;
+    }
+
+    public String getPrenom() {
+        return this.prenom;
+    }
 }

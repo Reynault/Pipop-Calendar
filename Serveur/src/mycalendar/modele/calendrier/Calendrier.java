@@ -278,11 +278,10 @@ public class Calendrier {
         String request = "INSERT INTO Calendrier (idC, nomC, description, couleur, theme) VALUES (?,?,?,?,?);";
         PreparedStatement prep = connect.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
         prep.setInt(1, idC);
-        prep.setString(2, nomC); 
+        prep.setString(2, nomC);
         prep.setString(3, description.toString());
         prep.setString(4, couleur);
         prep.setString(5, theme);
-        prep.executeUpdate();
        // System.out.println(" ajout calendrier ");
         if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
             return false;
@@ -320,4 +319,31 @@ public class Calendrier {
         return true;
     }
 
+    public static ArrayList<String> getThemes() throws SQLException {
+        ArrayList<String> themes = new ArrayList<>();
+        Connection connect = GestionnaireBDD.getConnection();
+        String requete = "SELECT * FROM themes";
+        PreparedStatement statement = connect.prepareStatement(requete);
+        ResultSet res = statement.executeQuery();
+        while(res.next()){
+            themes.add(res.getString("nom"));
+        }
+        return themes;
+    }
+
+    public int getIdC() {
+        return idC;
+    }
+
+    public StringBuilder getDescription() {
+        return description;
+    }
+
+    public String getCouleur() {
+        return couleur;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
 }
