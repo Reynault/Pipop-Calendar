@@ -4,14 +4,14 @@ var mainView = app.views.create('.view-main', {
     {
       path: '/panel-left/',
       panel: {
-        componentUrl: './pages/panels/left.html',
-      },
+        componentUrl: './pages/panels/left.html'
+      }
     },
     {
       path: '/panel-right/',
       panel: {
-        componentUrl: './pages/panels/right.html',
-      },
+        componentUrl: './pages/panels/right.html'
+      }
     },
     {
       path: '/user-home/',
@@ -43,7 +43,7 @@ var mainView = app.views.create('.view-main', {
               },
               error:function(msg) {
                 console.log("Error chargement script de création de calendrier");
-              },
+              }
             });
           },
           pageAfterOut: function(e,page){
@@ -55,7 +55,7 @@ var mainView = app.views.create('.view-main', {
                 },
                 error:function(msg) {
                   console.log("Error chargement script de création de calendrier");
-                },
+                }
               });
           }
       }

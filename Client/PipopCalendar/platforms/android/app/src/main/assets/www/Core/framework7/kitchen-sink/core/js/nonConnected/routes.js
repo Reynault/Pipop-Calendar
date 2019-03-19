@@ -9,7 +9,7 @@ var mainView = app.views.create('.view-main', {
           console.log("Chargement formulaire");
           console.log($("#emailInput"));
           $.ajax({
-            url: "js/sha.js",
+            url: "js/nonConnected/sha.js",
             dataType: "script",
             cache: true,
             success:function(msg) {
@@ -17,10 +17,10 @@ var mainView = app.views.create('.view-main', {
             },
             error:function(msg) {
               console.log("Error chargement script de cryptage");
-            },
-          })
+            }
+          });
           $.ajax({
-            url: "js/inscription.js",
+            url: "js/nonConnected/inscription.js",
             dataType: "script",
             cache: true,
             success:function(msg) {
@@ -29,7 +29,7 @@ var mainView = app.views.create('.view-main', {
             error:function(msg) {
               console.log("Error chargement script inscription");
             }
-          })
+          });
         }
       }
     }
