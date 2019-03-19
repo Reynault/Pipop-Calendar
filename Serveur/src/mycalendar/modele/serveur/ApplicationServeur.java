@@ -671,16 +671,18 @@ public class ApplicationServeur implements Observer {
     }
 
 
-    public HashMap<String, String> getThemes() {
-        HashMap<String, String> themes = new HashMap<String, String>();
+    public HashMap<String, Object> getThemes() {
+        HashMap<String, Object> themes = new HashMap<>();
+        HashMap<String, String> donnees = new HashMap<>();
         try {
             ArrayList<String> res = Calendrier.getThemes();
             if(res.size() > 0){
                 themes.put("Result", MessageCodeException.C_SUCCESS);
                 themes.put("Message", MessageCodeException.M_SUCCESS);
                 for (int i = 0 ; i < res.size() ; i ++){
-                    themes.put(""+i,res.get(i));
+                    donnees.put(""+i,res.get(i));
                 }
+                themes.put("Data", donnees);
             }else{
                 themes.put("Result", MessageCodeException.C_NOT_FOUND);
                 themes.put("Message", MessageCodeException.M_THEME_NOT_FOUND);

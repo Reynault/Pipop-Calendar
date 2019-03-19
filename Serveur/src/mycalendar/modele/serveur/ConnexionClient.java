@@ -297,8 +297,8 @@ public class ConnexionClient implements Runnable{
                 break;
             }
             case "getTheme":{
-                rep = ApplicationServeur.getInstance().getThemes();
-                result = parseur.encode(rep);
+                repObj = ApplicationServeur.getInstance().getThemes();
+                result = parseur.encodeObj(repObj);
                 break;
             }
             default: {

@@ -49,7 +49,7 @@ public class  ClientTest {
 
     public static void main(String[] args) {
         try{
-            lancerClient("{\"Request\":\"LoadCalendars\",\"Email\":\"test@test\"}", false);
+            lancerClient("{\"Request\":\"getTheme\",\"Email\":\"test@test\"}", false);
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
