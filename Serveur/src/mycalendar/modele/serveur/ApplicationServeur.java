@@ -395,11 +395,11 @@ public class ApplicationServeur implements Observer {
         try {
             ArrayList<Calendrier> calendriers = Utilisateur.findCalendriers(email);
             if (calendriers.size() == 0) {
-                res.put("RESULT", MessageCodeException.C_NOT_FOUND);
-                res.put("MESSAGE", MessageCodeException.M_CALENDAR_NOT_FOUND);
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
             } else {
-                res.put("RESULT", MessageCodeException.C_SUCCESS);
-                res.put("MESSAGE", MessageCodeException.M_SUCCESS);
+                res.put("Result", MessageCodeException.C_SUCCESS);
+                res.put("Message", MessageCodeException.M_SUCCESS);
                 HashMap<String, String> calendars;
                 Calendrier c;
                 // Pour chaque, on l'ajoute dans la hashmap
@@ -415,8 +415,8 @@ public class ApplicationServeur implements Observer {
                 res.put("Data", res1);
             }
         }catch (SQLException e){
-            res.put("RESULT", MessageCodeException.C_ERROR_BDD);
-            res.put("MESSAGE", MessageCodeException.M_BDD_ERROR);
+            res.put("Result", MessageCodeException.C_ERROR_BDD);
+            res.put("Message", MessageCodeException.M_BDD_ERROR);
         }
         return res;
     }
