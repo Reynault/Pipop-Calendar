@@ -49,7 +49,10 @@ public class  ClientTest {
 
     public static void main(String[] args) {
         try{
-            lancerClient("{\"Request\":\"getTheme\",\"Email\":\"test@test\"}", false);
+            //lancerClient("{\"Request\":\"getTheme\",\"Email\":\"test@test\"}", false);
+            //lancerClient("{\"Request\":\"CreateCalendar\",\"Nom\":\"pootis\",\"Description\":\"pootis\",\"Couleur\":\"red\",\"Theme\":\"art\",\"Auteur\":\"pootis@spenser.tf\"}", false);
+            //lancerClient("{\"Request\":\"AddEvent\",\"CalendarName\":\"pootis\",\"EventName\":\"Baby\",\"EventDescription\":\"entire team is baby!\",\"EventPicture\":\"N.A.\",\"EventDate\":\"22:00 3/10/2019\",\"EventLocation\":\"sd_doomsday\", \"EventAuthor\":\"pootis@spenser.tf\", \"EventVisibility\":\"true\"}", false);
+            lancerClient("{\"Request\":\"LoadEvents\",\"Mail\":\"pootis@spenser.tf\",\"CalendarName\":\"pootis\"}", false);
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
