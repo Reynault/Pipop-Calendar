@@ -5,6 +5,8 @@ var app = new Framework7({
   name: 'Pipop Calendar'
 });
 
+var $$ = Dom7;
+
 var $ptrContent = $$('.ptr-content');
 $ptrContent.on('ptr:refresh', function (e) {
   // Emulate 2s loading
