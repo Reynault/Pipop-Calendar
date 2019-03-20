@@ -23,6 +23,11 @@ var mainView = app.views.create('.view-main', {
       componentUrl: './pages/themes.html',
       name: 'themes'
     },
+		{
+      path: '/personnal-info/',
+      componentUrl: './pages/personnal-info.html',
+      name: 'personnal-info'
+    },
     {
       path: '/preloaderTheme/',
       componentUrl: './pages/preloaderTheme.html',
