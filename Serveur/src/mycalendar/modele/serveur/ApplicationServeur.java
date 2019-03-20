@@ -3,6 +3,7 @@ package mycalendar.modele.serveur;
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.calendrier.*;
 import mycalendar.modele.exceptions.MessageCodeException;
+import mycalendar.modele.utilisateur.GroupeAmi;
 import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.io.IOException;
@@ -769,6 +770,14 @@ public class ApplicationServeur implements Observer {
 
     public static DateFormat getDateFormat() {
         return dateFormat;
+    }
+
+    public ArrayList<GroupeAmi> rechercherGroupe(String nomG) throws SQLException {
+        return GroupeAmi.find(nomG);
+    }
+
+    public boolean verifInvitAmiEvenement(int idG){
+
     }
 
 }

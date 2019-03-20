@@ -16,7 +16,7 @@ public class GestionnaireBDD{
     private static String url;
     private static Properties connectionProps;
 
-    public GestionnaireBDD() throws SQLException{
+    private GestionnaireBDD() throws SQLException{
         connectionProps = new Properties();
         connectionProps.put("user", userName);
         connectionProps.put("password", password);
