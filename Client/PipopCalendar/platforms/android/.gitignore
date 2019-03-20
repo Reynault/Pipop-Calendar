@@ -19,3 +19,5 @@ out
 android.iml
 /app/app.iml
 /CordovaLib/CordovaLib.iml
+/CordovaLib/build.gradle
+build.gradle
