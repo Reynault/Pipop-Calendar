@@ -25,7 +25,8 @@ public class  ClientTest {
 
             //String request = "GET {\"Request\":\"AddEvent\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2069\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"pootis@spenser.tf\",\"EventVisibility\":\"true\"} HTTP/1.1";
             //String request = "GET {\"Request\":\"DeleteEvent\",\"ID\":\"1\"} HTTP/1.1";
-            String request = "GET {\"Request\":\"GetUsers\",\"FirstName\":\"devmaster\",\"LastName\":\"devmaster\"} HTTP/1.1";
+            //String request = "GET {\"Request\":\"GetUsers\",\"FirstName\":\"devmaster\",\"LastName\":\"devmaster\"} HTTP/1.1";
+            String request = "GET {\"Request\":\"AddFriend\",\"Email1\":\"util@util\",\"Email2\":\"test@test\"} HTTP/1.1";
             System.out.println("DONNEE ENVOYEE : " + request);
             pred.println(request);
             //pred.println("{\"Request\":\"DeleteEvent\",\"ID\":\"6\"}");
