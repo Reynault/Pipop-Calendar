@@ -30,7 +30,7 @@ public class GroupeAmi {
 		return groupes;
 	}
 
-	public static Boolean delet(int id_Groupe) throws SQLException{
+	public static Boolean delete(int id_Groupe) throws SQLException{
 	    Connection connection = GestionnaireBDD.getInstance().getConnection();
 	    String request = "DELETE FROM groupes_amis WHERE nom_groupe = ?";
 	    PreparedStatement preparedStatement = connection.prepareStatement(request);

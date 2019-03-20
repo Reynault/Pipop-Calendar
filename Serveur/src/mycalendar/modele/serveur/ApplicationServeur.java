@@ -853,9 +853,9 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "DeletFriendGroup");
         try {
-            //requete pour delet le groupe
-            if (GroupeAmi.delet(id_Groupe)){
-                MessageCodeException.group_not_foud(res);
+            //requete pour delete le groupe
+            if (GroupeAmi.delete(id_Groupe)){
+                MessageCodeException.group_not_found(res);
             }else{
                 MessageCodeException.success(res);
             }
@@ -870,8 +870,8 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "DeletFriendGroup");
         try {
-            //requete pour delet le groupe
-            if (Utilisateur.deletAmis(user, amis)){
+            //requete pour delete le groupe
+            if (Utilisateur.deleteAmis(user, amis)){
                 MessageCodeException.amis_not_found(res);
             }else{
                 MessageCodeException.success(res);

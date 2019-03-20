@@ -142,7 +142,7 @@ public class MessageCodeException {
         map.put("Message", MessageCodeException.M_DATE_ERROR);
     }
 
-    public static void group_not_foud(HashMap<String, String> map) {
+    public static void group_not_found(HashMap<String, String> map) {
         map.put("Result", MessageCodeException.C_GROUPE_ERROR);
         map.put("Message", MessageCodeException.M_GROUPE_ERROR);
     }

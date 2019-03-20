@@ -187,7 +187,7 @@ public class Utilisateur{
         return this.prenom;
     }
 
-    public static Boolean deletAmis(String user, String amis) throws SQLException {
+    public static Boolean deleteAmis(String user, String amis) throws SQLException {
         Connection connection = GestionnaireBDD.getInstance().getConnection();
         String request = "DELETE FROM Amis WHERE Email1=? AND Email2=?";
         PreparedStatement preparedStatement = connection.prepareStatement(request);
