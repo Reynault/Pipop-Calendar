@@ -189,7 +189,7 @@ public class Utilisateur{
 
     public static Boolean deletAmis(String user, String amis) throws SQLException {
         Connection connection = GestionnaireBDD.getInstance().getConnection();
-        String request = "DELETE FROM groupes_ams WHERE Email1=? AND Email2=?";
+        String request = "DELETE FROM Amis WHERE Email1=? AND Email2=?";
         PreparedStatement preparedStatement = connection.prepareStatement(request);
         preparedStatement.setString(1, user);
         preparedStatement.setString(2, amis);
