@@ -11,7 +11,7 @@
             <span class="ios-only">Back</span>
           </a>
         </div>
-        <div class="title">TITRE</div>
+        <div class="title titreCalendrier"></div>
       </div>
     </div>
 
@@ -24,7 +24,7 @@
 
     <div class="page-content">
 
-      <div class="block-title" id="nomCalendrier">Calendar name</div>
+      <div class="block-title titreCalendrier" id="nomCalendrier"></div>
       <div class="block block-strong no-padding">
 
         <!-- Mois -->
@@ -303,10 +303,15 @@
           }
         });
       },
+      pageAfterIn(){
+        var titre = localStorage.getItem('nomCalendrierCourant');
+        $(".titreCalendrier").text(titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase());
+      },
       pageBeforeRemove() {
         var self = this;
         self.calendarInline.destroy();
       }
     }
   };
+
 </script>
