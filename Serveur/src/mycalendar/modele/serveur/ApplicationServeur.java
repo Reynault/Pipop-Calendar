@@ -833,7 +833,6 @@ public class ApplicationServeur implements Observer {
 
     public boolean verifInvitAmiEvenement(int idG){
 
-
         return true;
     }
 
