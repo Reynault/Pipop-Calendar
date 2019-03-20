@@ -832,8 +832,24 @@ public class ApplicationServeur implements Observer {
     }
 
     public boolean verifInvitAmiEvenement(int idG){
+        return Boolean.parseBoolean(null);
+    }
 
-        return true;
+    public HashMap<String, String> supprimerGroupeAmis(String auteur, int id_Groupe) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "DeletFriendGroup");
+        try {
+            //requete pour delet le groupe
+            if (GroupeAmi.delet(id_Groupe)){
+                MessageCodeException.group_not_foud(res);
+            }else{
+                MessageCodeException.success(res);
+            }
+        } catch (SQLException e) {
+            MessageCodeException.bdd_error(res);
+            e.printStackTrace();
+        }
+        return res;
     }
 
 }

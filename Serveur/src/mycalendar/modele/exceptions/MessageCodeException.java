@@ -35,6 +35,8 @@ public class MessageCodeException {
 
     public static String M_DATE_PARSE_ERROR = "Erreur de date.";
 
+    private static String M_GROUPE_ERROR = "Erreur de groupe";
+
     public static String M_DB_CONSISTENCY_ERROR = "Database consistency error.";
 
     public static String M_USER_NOT_IN_EVENT = "User not participating in event.";
@@ -56,6 +58,8 @@ public class MessageCodeException {
     public static String C_NO_CHANGE = "6";
 
     public static String C_DATE_PARSE = "7";
+
+    public static String C_GROUPE_ERROR = "8";
 
     public static String C_DB_CONSISTENCY_ERROR = "8";
 
@@ -132,5 +136,10 @@ public class MessageCodeException {
     public static void date(HashMap<String, String> map){
         map.put("Result", MessageCodeException.C_DATE_ERROR);
         map.put("Message", MessageCodeException.M_DATE_ERROR);
+    }
+
+    public static void group_not_foud(HashMap<String, String> map) {
+        map.put("Result", MessageCodeException.C_GROUPE_ERROR);
+        map.put("Message", MessageCodeException.M_GROUPE_ERROR);
     }
 }
