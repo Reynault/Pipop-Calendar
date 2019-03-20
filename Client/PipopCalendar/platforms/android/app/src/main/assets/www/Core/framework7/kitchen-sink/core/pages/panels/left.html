@@ -10,7 +10,7 @@
         <div class="list links-list no-hairlines">
           <ul>
             <li>
-              <a href="#" class="panel-close">Log out</a>
+              <a href="#" id="deconnexionBouton" class="panel-close">Log out</a>
             </li>
             <li>
               <a href="#" class="panel-close">Profil settings</a>
@@ -24,3 +24,21 @@
     </div>
   </div>
 </template>
+<script>
+  return {
+    on: {
+      panelOpened: function(event,panel){
+         var $$ = Dom7;
+         var self = this;
+         var app = self.$app;
+         $('#deconnexionBouton').on('click', function (e) {
+           console.log("LOGOUT");
+           app.dialog.confirm('Voulez-vous vous déconnecter?', function () {
+              window.location = "index.html";
+              localStorage.setItem("emailUtilisateur","");
+            });
+         });
+      }
+    }
+  }
+</script>

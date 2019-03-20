@@ -4,11 +4,10 @@ $(document).ready(function(){
   console.log("Envoi de données au serveur");
   $("#modifierCalendrierBouton").click(function(e){
     e.preventDefault();
-
     app.input.checkEmptyState("#nomCalendrierForm");
-  if(localStorage.getItem("colorSelectForm")===null){
-      localStorage.setItem("colorSelectForm","black");
-  }
+    if(localStorage.getItem("colorSelectForm")===null){
+        localStorage.setItem("colorSelectForm","black");
+    }
     if(!$("#nomCalendirerForm")){
 	     window.plugins.toast.showWithOptions({
              message: obj["Message"],
@@ -63,12 +62,10 @@ $(document).ready(function(){
                      horizontalPadding: 22, // iOS default 16, Android default 50
                      verticalPadding: 20 // iOS default 12, Android default 30
                    }
-                  }
-                 );
+                });
           },
           error: function(jqXHR, textStatus, errorThrown) {
-	    window.plugins.toast.showWithOptions(
-                {
+	              window.plugins.toast.showWithOptions({
                    message: "Erreur connexion serveur",
                    duration: 1500, // ms
                    position: "bottom",
@@ -81,11 +78,7 @@ $(document).ready(function(){
                      horizontalPadding: 22, // iOS default 16, Android default 50
                      verticalPadding: 20 // iOS default 12, Android default 30
                    }
-                  }
-                 );
-              console.log("ERREUR : "+jqXHR);
-              console.log("ERREUR : "+textStatus);
-              console.log("ERREUR : "+errorThrown);
+                });
           }
       });
   }

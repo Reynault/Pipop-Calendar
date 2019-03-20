@@ -2,9 +2,9 @@ $(document).ready(function(){
    $("#creationCalendrierBouton").click(function(e){
 
     app.input.checkEmptyState("#nomCalendrierForm");
-  if(localStorage.getItem("colorSelectForm")===null){
-      localStorage.setItem("colorSelectForm","black");
-  }
+    if(localStorage.getItem("colorSelectForm")===null){
+        localStorage.setItem("colorSelectForm","black");
+    }
     if(!$("#nomCalendirerForm")){
 	     window.plugins.toast.showWithOptions({
              message: obj["Message"],

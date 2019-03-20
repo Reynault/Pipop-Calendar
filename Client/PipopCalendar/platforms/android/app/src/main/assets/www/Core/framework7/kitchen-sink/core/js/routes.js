@@ -59,7 +59,26 @@ var mainView = app.views.create('.view-main', {
                 success:function(msg) {
                 },
                 error:function(msg) {
-                  console.log("Error chargement script de création de calendrier");
+                  console.log("Error chargement script de chargement de calendrier");
+                }
+              });
+          }
+      }
+    },
+    {
+      path: '/calendar-form-edit/',
+      componentUrl: './pages/calendar-form-edit.html',
+      name: 'calendar-form-edit',
+      on: {
+          pageAfterOut: function(e,page){
+              $.ajax({
+                url: "js/modifierCalendrier.js",
+                dataType: "script",
+                cache: true,
+                success:function(msg) {
+                },
+                error:function(msg) {
+                  console.log("Error chargement script de chargement de calendrier");
                 }
               });
           }
@@ -76,12 +95,32 @@ var mainView = app.views.create('.view-main', {
              dataType: "script",
              cache: true,
              success:function(msg) {
-               console.log("Charger event Success!!");
              },
              error:function(msg) {
-               console.log("Error chargement script de création de calendrier");
+               console.log("Error chargement script de chargement d'événements");
              },
-           })
+           });
+           $.ajax({
+             url: "js/supprimerCalendrier.js",
+             dataType: "script",
+             cache: true,
+             success:function(msg) {
+              console.log("Successsss!");
+             },
+             error:function(msg) {
+               console.log("Error chargement script de suppression de calendrier");
+             },
+           });
+           $.ajax({
+             url: "js/modifierCalendrier.js",
+             dataType: "script",
+             cache: true,
+             success:function(msg) {
+             },
+             error:function(msg) {
+               console.log("Error chargement script de modification de calendrier");
+             },
+           });
          }
       }
     },
@@ -96,10 +135,9 @@ var mainView = app.views.create('.view-main', {
            dataType: "script",
            cache: true,
            success:function(msg) {
-             console.log("Success!!");
            },
            error:function(msg) {
-             console.log("Error chargement script de création de calendrier");
+             console.log("Error chargement script de création d'événement");
            },
          })
        }

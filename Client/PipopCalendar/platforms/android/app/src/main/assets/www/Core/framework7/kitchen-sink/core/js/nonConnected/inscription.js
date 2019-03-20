@@ -59,7 +59,7 @@ $(document).ready(function(){
                 case "0":
                 {
                   window.location = "user-home.html";
-                  localStorage.setItem("emailUtilisateur",$("#nomInscripInput").val());
+                  localStorage.setItem("emailUtilisateur",$("#emailInscripInput").val());
                   break;
                 }
                 default:
