@@ -4,8 +4,31 @@ $(document).ready(function(){
   console.log("Envoi de données au serveur");
   $("#modifierCalendrierBouton").click(function(e){
     e.preventDefault();
+
+    app.input.checkEmptyState("#nomCalendrierForm");
+  if(localStorage.getItem("colorSelectForm")===null){
+      localStorage.setItem("colorSelectForm","black");
+  }
+    if(!$("#nomCalendirerForm")){
+	     window.plugins.toast.showWithOptions({
+             message: obj["Message"],
+              duration: 1500, // ms
+              position: "bottom",
+              addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
+              styling: {
+                    opacity: 0.75, // 0.0 (transparent) to 1.0 (opaque). Default 0.8
+                    backgroundColor: '#FF0000', // make sure you use #RRGGBB. Default #333333
+                    textSize: 12, // Default is approx. 13.
+                    cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
+                    horizontalPadding: 20, // iOS default 16, Android default 50
+                    verticalPadding: 16 // iOS default 12, Android default 30
+                  }
+           });
+    }
+    else{
     modifierCalendrier($("#idcInput").val(), $("#nomcInput").val(), $("#couleurInput").val());
-  });
+	}
+ });
 
   function modifierCalendrier(idc, nomc, couleur){
       console.log("ModifierCalendrier");

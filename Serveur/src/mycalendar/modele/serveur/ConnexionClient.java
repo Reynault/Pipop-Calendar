@@ -273,6 +273,13 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encode(rep);
                 break;
             }
+            case "AddFriend": {
+                String email1 = donnees.get("Email1");
+                String email2 = donnees.get("Email2");
+                rep = ApplicationServeur.getInstance().ajoutAmi(email1, email2);
+                result = parseur.encode(rep);
+                break;
+            }
             // Récupération de plusieurs utilisateurs
             case "GetUsers": {
                 String nom = donnees.get("FirstName");
