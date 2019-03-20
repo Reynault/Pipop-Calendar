@@ -768,12 +768,67 @@ public class ApplicationServeur implements Observer {
         return calendriers;
     }
 
+    public HashMap<String, String> modifAdminCalend(String idCalendrier, String email, String emailNouveau) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "TransfertCalendarOwnership");
+
+        return res;
+    }
+
+    public HashMap<String, String> transfererPropriete(String memberName, String eventOwner, String eventName) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "TransfertEventOwnership");
+        try {
+            Utilisateur u = Utilisateur.find(memberName);
+            if (u == null) {
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
+            }
+            else {
+                Evenement e = Evenement.find(eventOwner, eventName);
+                if (e == null) {
+                    res.put("Result", MessageCodeException.C_NOT_FOUND);
+                    res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
+                }
+                else {
+                    if (!e.inEvent(u)) {
+                        res.put("Result", MessageCodeException.C_NOT_FOUND);
+                        res.put("Message", MessageCodeException.M_USER_NOT_IN_EVENT);
+                    }
+                    else {
+                        ArrayList<Utilisateur> ul = new ArrayList<>();
+                        ul.add(u);
+                        this.envoiNotifications(ul);
+                        int requestResult = e.transfererPropriete(u);
+                        if (requestResult == -1) {
+                            res.put("Result", MessageCodeException.C_DB_CONSISTENCY_ERROR);
+                            res.put("Message", MessageCodeException.M_DB_CONSISTENCY_ERROR);
+                        } else {
+                            res.put("Result", MessageCodeException.C_SUCCESS);
+                            res.put("Message", MessageCodeException.M_SUCCESS);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            res.put("Result", MessageCodeException.C_ERROR_BDD);
+            res.put("Message", MessageCodeException.M_BDD_ERROR);
+            e.printStackTrace();
+        } catch (ParseException e) {
+            res.put("Result", MessageCodeException.C_DATE_PARSE);
+            res.put("Message", MessageCodeException.M_DATE_PARSE_ERROR);
+            e.printStackTrace();
+        }
+        return res;
+    }
+
     public static DateFormat getDateFormat() {
         return dateFormat;
     }
 
     public ArrayList<GroupeAmi> rechercherGroupe(String nomG) throws SQLException {
-        return GroupeAmi.find(nomG);
+        //return GroupeAmi.find(nomG);
+        return null;
     }
 
 	/**
@@ -783,15 +838,49 @@ public class ApplicationServeur implements Observer {
 	 * @throws SQLException
 	 */
 	public void verifInvitAmiEvenement(int idG, int idE) throws SQLException {
-	    Connection connect = GestionnaireBDD.getInstance().getConnection();
-	    String request = "SELECT Email FROM groupes_amis WHERE idG=? EXCEPT SELECT Email From utilisateur_evenement WHERE ide=?;";
-	    PreparedStatement prep = connect.prepareStatement(request);
-	    prep.setInt(1, idG);
-	    prep.setInt(2, idE);
-	    ResultSet result = prep.executeQuery();
-	    while(result.next()){
+		Connection connect = GestionnaireBDD.getInstance().getConnection();
+		String request = "SELECT Email FROM groupes_amis WHERE idG=? EXCEPT SELECT Email From utilisateur_evenement WHERE ide=?;";
+		PreparedStatement prep = connect.prepareStatement(request);
+		prep.setInt(1, idG);
+		prep.setInt(2, idE);
+		ResultSet result = prep.executeQuery();
+		while(result.next()){
 			//Invite l'utilisateur à l'événement
-	    }
+		}
+	}
+
+    public HashMap<String, String> supprimerGroupeAmis(String auteur, int id_Groupe) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "DeletFriendGroup");
+        try {
+            //requete pour delet le groupe
+            if (GroupeAmi.delet(id_Groupe)){
+                MessageCodeException.group_not_foud(res);
+            }else{
+                MessageCodeException.success(res);
+            }
+        } catch (SQLException e) {
+            MessageCodeException.bdd_error(res);
+            e.printStackTrace();
+        }
+        return res;
     }
+
+    public HashMap<String, String> supprimerAmis(String user, String amis) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "DeletFriendGroup");
+        try {
+            //requete pour delet le groupe
+            if (Utilisateur.deletAmis(user, amis)){
+                MessageCodeException.amis_not_found(res);
+            }else{
+                MessageCodeException.success(res);
+            }
+        } catch (SQLException e) {
+            MessageCodeException.bdd_error(res);
+            e.printStackTrace();
+        }
+        return res;
+	}
 
 }
