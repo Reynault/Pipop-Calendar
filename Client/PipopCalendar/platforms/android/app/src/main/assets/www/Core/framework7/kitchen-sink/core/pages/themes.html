@@ -79,7 +79,7 @@
             <div class="item-inner">
               <div class="item-label">HEX Color</div>
               <div class="item-input-wrap">
-                <input type="color" value="{{customColor}}"  placeholder="e.g. #ff0000">
+                <input class="color-picker" type="color" value="{{ customColor }}" @input="setCustomColor">
               </div>
             </div>
           </li>

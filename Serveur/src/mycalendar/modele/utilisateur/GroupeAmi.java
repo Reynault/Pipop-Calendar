@@ -29,4 +29,15 @@ public class GroupeAmi {
 		}
 		return groupes;
 	}
+
+	public static Boolean delete(int id_Groupe) throws SQLException{
+	    Connection connection = GestionnaireBDD.getInstance().getConnection();
+	    String request = "DELETE FROM groupes_amis WHERE nom_groupe = ?";
+	    PreparedStatement preparedStatement = connection.prepareStatement(request);
+	    preparedStatement.setInt(1, id_Groupe);
+	    if (preparedStatement.executeUpdate()  == 0){
+	        return false;
+        }
+	    return true;
+    }
 }
