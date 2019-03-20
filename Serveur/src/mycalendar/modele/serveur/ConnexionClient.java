@@ -319,6 +319,14 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encode(rep);
                 break;
             }
+            case "TransfertCalendarOwnership": {
+                String calendarName = donnees.get("Calendar");
+                String oldOwner = donnees.get("OldOwner");
+                String newOwner = donnees.get("NewOwner");
+                rep = ApplicationServeur.getInstance().modifAdminCalend(calendarName, oldOwner, newOwner);
+                result = parseur.encode(rep);
+                break;
+            }
             default: {
                 throw new BadRequestExeption(donnees.get("Request"));
             }

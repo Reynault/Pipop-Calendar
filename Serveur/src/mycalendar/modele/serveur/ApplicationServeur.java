@@ -768,10 +768,34 @@ public class ApplicationServeur implements Observer {
         return calendriers;
     }
 
-    public HashMap<String, String> modifAdminCalend(String idCalendrier, String email, String emailNouveau) {
+    public HashMap<String, String> modifAdminCalend(String nomCalendrier, String email, String emailNouveau) {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "TransfertCalendarOwnership");
-
+        try {
+            int idCalendrier = Calendrier.getCalendrierID(email, nomCalendrier);
+            Calendrier c = Calendrier.find(idCalendrier);
+            if (c == null) {
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
+            }
+            else {
+                if (Utilisateur.find(emailNouveau) == null) {
+                    res.put("Result", MessageCodeException.C_NOT_FOUND);
+                    res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
+                }
+                else {
+                    if (c.modifAdmin(emailNouveau, email) == 0) {
+                        res.put("Result", MessageCodeException.C_SUCCESS);
+                        res.put("Message", MessageCodeException.M_SUCCESS);
+                    } else {
+                        res.put("Result", MessageCodeException.C_DB_CONSISTENCY_ERROR);
+                        res.put("Message", MessageCodeException.M_DB_CONSISTENCY_ERROR);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return res;
     }
 

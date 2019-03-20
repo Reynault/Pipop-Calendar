@@ -53,8 +53,8 @@ public class  ClientTest {
 
     public static void main(String[] args) {
         try{
-            lancerClient("{\"Request\":\"TransfertEventOwnership\",\"Member\":\"squeeze@my.hog\",\"Owner\":\"test@test\"," +
-                    "\"EventName\":\"azeaze\"}", true);
+            lancerClient("{\"Request\":\"TransfertCalendarOwnership\",\"Calendar\":\"Mario Pissing\",\"OldOwner\":\"test@test\"," +
+                    "\"NewOwner\":\"squeeze@my.hog\"}", true);
 
            /* DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date dateP = dateFormat.parse("19/03/2019 16:15");
