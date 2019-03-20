@@ -549,6 +549,43 @@ public class ApplicationServeur implements Observer {
         }
     }
 
+    /**
+     * Ajout d'un utilisateur en ami
+     * @param email1 email de l'utilisateur actif
+     * @param email2 email de l'utilisateur a ajouter
+     */
+    public HashMap<String, String> ajoutAmi(String email1, String email2) throws SQLException {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "AddFriend");
+        if(!GestionnaireBDD.verifierAjoutAmi(email1, email2)){
+            // Les 2 utilisateurs ne sont pas amis, donc on les ajoute
+            if(Utilisateur.ajouterAmi(email1, email2) == 1) {
+                // Les utilisateurs sont devenus amis
+                res.put("Result", MessageCodeException.C_SUCCESS);
+                res.put("Message", MessageCodeException.M_SUCCESS);
+            }
+            else {
+                // Les utilisateurs n'ont pas pu devenir amis
+                res.put("Result", MessageCodeException.C_ERROR_BDD);
+                res.put("Message", MessageCodeException.M_FRIEND_ERROR_BDD);
+            }
+        }
+        else {
+            // Les utilisateurs sont déjà amis
+            res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+            res.put("Message", MessageCodeException.M_FRIEND_ALREADY_EXIST);
+        }
+        System.out.println("ajoutAmi de AppliServ : " + res);
+        return res;
+    }
+
+    /**
+     * Getter sur une liste d'utilisateurs
+     * @param nom nom des utilisateurs a rechercher
+     * @param prenom prenom des utilisateurs a rechercher
+     * @return HashMap correspondant au resultat de la requête
+     *          ainsi qu'a la liste des utilisateurs
+     */
     public HashMap<String, String> getUtilisateurs(String nom, String prenom) {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "GetUsers");
@@ -558,7 +595,7 @@ public class ApplicationServeur implements Observer {
             return res;
         }
         ArrayList<Utilisateur> ul = null;
-            ul = Utilisateur.find(nom, prenom);
+        ul = Utilisateur.find(nom, prenom);
         if (ul.size() == 0) {
             res.put("Result", "NoUsersFound");
         }
@@ -590,7 +627,5 @@ public class ApplicationServeur implements Observer {
     public Calendrier getCalendrier(int id) throws SQLException {
         return Calendrier.find(id);
     }
-
-
 
 }

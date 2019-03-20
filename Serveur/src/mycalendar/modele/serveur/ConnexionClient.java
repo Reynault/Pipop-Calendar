@@ -153,6 +153,12 @@ public class ConnexionClient implements Runnable{
                     result = ApplicationServeur.getInstance().getUtilisateurs(nom, prenom);
                     break;
                 }
+                case "AddFriend": {
+                    String email1 = donnees.get("Email1");
+                    String email2 = donnees.get("Email2");
+                    result = ApplicationServeur.getInstance().ajoutAmi(email1, email2);
+                    break;
+                }
                 default: {
                     // La request ne correspond pas a une demande possible faite au serveur
                     bos.close();

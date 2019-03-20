@@ -15,6 +15,9 @@ public class MessageCodeException {
     public static String M_USER_NOT_FOUND = "User not found.";
     public static String M_USER_ALREADY_EXIST = "User already exists.";
 
+    public static String M_FRIEND_ALREADY_EXIST = "Friend already exists.";
+    public static String M_FRIEND_ERROR_BDD = "Could not insert friend into database.";
+
     public static String M_DATE_ERROR = "Date already passed.";
 
     public static String M_SUCCESS = "Success.";

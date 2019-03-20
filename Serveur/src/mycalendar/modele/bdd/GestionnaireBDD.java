@@ -75,4 +75,26 @@ public class GestionnaireBDD{
         ResultSet rs = prep.getResultSet();
         return rs.next();   // true si un résultat a été trouvé, false sinon
     }
+
+
+    /**
+     * Verification si 2 utilisateurs sont amis
+     * @param email1 email de l'utilisateur actif
+     * @param email2 email de l'utilisateur a ajouter
+     * @return true si l'ami a ete ajoute
+     * @throws SQLException
+     */
+    public static boolean verifierAjoutAmi(String email1, String email2) throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request = "SELECT * FROM Amis WHERE (Email1=? AND Email2=?) OR (Email2=? AND Email1=?) ;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, email1);
+        prep.setString(2, email2);
+        prep.setString(3, email2);
+        prep.setString(4, email1);
+        prep.execute();
+        ResultSet rs = prep.getResultSet();
+        return rs.next();   // true si un résultat a été trouvé, false sinon
+    }
+
 }
