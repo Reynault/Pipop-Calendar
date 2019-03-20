@@ -11,6 +11,6 @@ public class NotifiCalendrier extends Notif {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        return;
     }
 }
