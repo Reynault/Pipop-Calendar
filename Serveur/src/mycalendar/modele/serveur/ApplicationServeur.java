@@ -2,6 +2,7 @@ package mycalendar.modele.serveur;
 
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.calendrier.*;
+import mycalendar.modele.exceptions.BadRequestExeption;
 import mycalendar.modele.exceptions.MessageCodeException;
 import mycalendar.modele.utilisateur.Utilisateur;
 
@@ -93,30 +94,47 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "AddEvent");
         try {
-            calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // Il nous faut l'ID du calendrier pour la suite, pas son nom
-            // nomCalendrier spécifié inexistant : son code d'erreur est 2
-            if (calendrierID == -1) {
-                MessageCodeException.calendar_not_found(res);
-                //res.put("Result", MessageCodeException.C_NOT_FOUND);
-                //res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
-                return res;
-            }
-            if (!this.verifierEvenement(auteur, calendrierID, nom)) { // On vérifie que l'événement n'existe pas déjà
-                // Données invalides : l'événement existe déjà ; son code d'erreur associé est 1
-                MessageCodeException.event_already_exist(res);
-                //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
-                //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
-                return res;
-            }
-            if ( (eventID = this.createEvenement(calendrierID, nom, description, image, datedeb, datefin, lieu, auteur, visible)) < 0) { // On crée l'événement
-                // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
-                MessageCodeException.bdd_event_error(res);
-                //res.put("Result", MessageCodeException.C_ERROR_BDD);
-                //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
+            ArrayList<String> d = new ArrayList<>();
+            d.add(nom);
+            d.add(nomCalendrier);
+            if(Verification.checkEmptyData(d)){
+                if(Verification.checkMail(auteur)) {
+                    calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier); // Il nous faut l'ID du calendrier pour la suite, pas son nom
+                    // nomCalendrier spécifié inexistant : son code d'erreur est 2
+                    if (calendrierID == -1) {
+                        MessageCodeException.calendar_not_found(res);
+                        //res.put("Result", MessageCodeException.C_NOT_FOUND);
+                        //res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
+                        return res;
+                    }
+                    if (!this.verifierEvenement(auteur, calendrierID, nom)) { // On vérifie que l'événement n'existe pas déjà
+                        // Données invalides : l'événement existe déjà ; son code d'erreur associé est 1
+                        MessageCodeException.event_already_exist(res);
+                        //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+                        //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
+                        return res;
+                    }
+                    if ((eventID = this.createEvenement(calendrierID, nom, description, image, datedeb, datefin, lieu, auteur, visible)) < 0) { // On crée l'événement
+                        // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
+                        MessageCodeException.bdd_event_error(res);
+                        //res.put("Result", MessageCodeException.C_ERROR_BDD);
+                        //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
+                        return res;
+                    }
+                }else{
+                    MessageCodeException.invalid_email(res);
+                    return res;
+                }
+            }else{
+                MessageCodeException.empty_data(res);
                 return res;
             }
         } catch (ParseException | SQLException e) {
-            e.printStackTrace();
+            MessageCodeException.date_parse_error(res);
+            return res;
+        } catch (BadRequestExeption e){
+            MessageCodeException.date(res);
+            return res;
         }
         MessageCodeException.success(res);
         //res.put("Result", MessageCodeException.C_SUCCESS);
@@ -167,20 +185,22 @@ public class ApplicationServeur implements Observer {
         Date dateD = dateFormat.parse(datedeb);
         // Date de fin
         Date dateF = dateFormat.parse(datefin);
-        Evenement e;
-        int id;
-        id = Evenement.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
-        if (visible) {
-            e = new EvenementPublic(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
-        }
-        else {
-            e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
-        }
+        if(Verification.checkDate(dateD, dateF)) {
+            Evenement e;
+            int id;
+            id = Evenement.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
+            if (visible) {
+                e = new EvenementPublic(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
+            } else {
+                e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
+            }
 
-        if(e.save()){
-            res = e.getId();
+            if (e.save()) {
+                res = e.getId();
+            }
+        }else{
+            throw new BadRequestExeption("Dates non valides");
         }
-
         return res;
     }
 
@@ -212,7 +232,8 @@ public class ApplicationServeur implements Observer {
                 return res;
             }
         } catch (SQLException | ParseException e1) {
-            e1.printStackTrace();
+            MessageCodeException.date_parse_error(res);
+            return res;
         }
         MessageCodeException.success(res);
         //res.put("Result", MessageCodeException.C_SUCCESS);
@@ -240,33 +261,53 @@ public class ApplicationServeur implements Observer {
             Date dateD = dateFormat.parse(datedeb);
             // Date de fin
             Date dateF = dateFormat.parse(datefin);
+            if(Verification.checkDate(dateD, dateF)){
+                throw new BadRequestExeption("Date non valide");
+            }
             Evenement e = null;
-            e = Evenement.find(idEv);
-            if (e == null) {
-                // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
-                MessageCodeException.event_not_found(res);
-                //res.put("Result", MessageCodeException.C_NOT_FOUND);
-                //res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
+            ArrayList<String> ver = new ArrayList<String>();
+            ver.add(nomE);
+            if(Verification.checkEmptyData(ver)){
+                if(Verification.checkMail(auteur)) {
+                    e = Evenement.find(idEv);
+                    if (e == null) {
+                        // Evénement pas trouvé : il n'existe donc pas d'événement associé avec cet ID ; son code d'erreur est 1
+                        MessageCodeException.event_not_found(res);
+                        //res.put("Result", MessageCodeException.C_NOT_FOUND);
+                        //res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
+                        return res;
+                    }
+                    if (dateD.before(Calendar.getInstance().getTime())) {
+                        // Date déjà passée
+                        MessageCodeException.date(res);
+                        //res.put("Result", MessageCodeException.C_DATE_ERROR);
+                        //res.put("Message", MessageCodeException.M_DATE_ERROR);
+                        return res;
+                    }
+                    if (!e.modify(calendrierID, nomE, description, image, dateD, dateF, lieu, auteur)) {
+                        // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
+                        MessageCodeException.bdd_event_error(res);
+                        //res.put("Result", MessageCodeException.C_ERROR_BDD);
+                        //res.put("Message", MessageCodeException.M_EVENT_ERROR_BDD);
+                        return res;
+                    }
+                }else{
+                    MessageCodeException.invalid_email(res);
+                    return res;
+                }
+            }else{
+                MessageCodeException.empty_data(res);
                 return res;
             }
-            if (dateD.before(Calendar.getInstance().getTime())){
-                // Date déjà passée
-                MessageCodeException.date(res);
-                //res.put("Result", MessageCodeException.C_DATE_ERROR);
-                //res.put("Message", MessageCodeException.M_DATE_ERROR);
-                return res;
-            }
-            if (!e.modify(calendrierID, nomE, description, image, dateD, dateF, lieu, auteur)) {
-                // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
-                MessageCodeException.bdd_event_error(res);
-                //res.put("Result", MessageCodeException.C_ERROR_BDD);
-                //res.put("Message", MessageCodeException.M_EVENT_ERROR_BDD);
-                return res;
-            }
-        }catch (SQLException e1) {
-            e1.printStackTrace();
+        } catch (BadRequestExeption e){
+            MessageCodeException.date(res);
+            return res;
+        } catch(SQLException e1) {
+            MessageCodeException.bdd_error(res);
+            return res;
         } catch (ParseException e) {
-            e.printStackTrace();
+            MessageCodeException.date_parse_error(res);
+            return res;
         }
         MessageCodeException.success(res);
         //res.put("Result", MessageCodeException.C_SUCCESS);
@@ -326,21 +367,27 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<String, String>();
         res.put("Request","SignIn");
         // Vérification de la connexion
-        if(Utilisateur.verifierConnexion(email, mdp)){
-            // Récupération des calendriers de l'utilisateur
-			Connection connect = GestionnaireBDD.getInstance().getConnection();
-			String request = "SELECT * FROM utilisateur_calendrier WHERE Email = ? ;";
-			PreparedStatement prep = connect.prepareStatement(request);
-			prep.setString(1, email);
-			ResultSet result = prep.executeQuery();
-			MessageCodeException.success(res);
-            //res.put("Result", MessageCodeException.C_SUCCESS);
-            //res.put("Message", MessageCodeException.M_SUCCESS);
+        if(Verification.checkMail(email)) {
+            if (Utilisateur.verifierConnexion(email, mdp)) {
+                // Récupération des calendriers de l'utilisateur
+                Connection connect = GestionnaireBDD.getInstance().getConnection();
+                String request = "SELECT * FROM utilisateur_calendrier WHERE Email = ? ;";
+                PreparedStatement prep = connect.prepareStatement(request);
+                prep.setString(1, email);
+                ResultSet result = prep.executeQuery();
+                MessageCodeException.success(res);
+                //res.put("Result", MessageCodeException.C_SUCCESS);
+                //res.put("Message", MessageCodeException.M_SUCCESS);
+            } else {
+                // Utilisateur non trouvé
+                MessageCodeException.user_not_found(res);
+                return res;
+                //res.put("Result", MessageCodeException.C_NOT_FOUND);
+                //res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
+            }
         }else{
-            // Utilisateur non trouvé
-            MessageCodeException.user_not_found(res);
-            //res.put("Result", MessageCodeException.C_NOT_FOUND);
-            //res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
+            MessageCodeException.invalid_email(res);
+            return res;
         }
         return res;
 }
@@ -358,31 +405,32 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<String, String>();
         res.put("Request","SignIn");
         // Vérification de l'inscription
-        switch(Utilisateur.verifierInscription(email, mdp, prenom, nom)){
-            case 1:
-            {
-                // Inscription réussie
-                MessageCodeException.success(res);
-                //res.put("Result", MessageCodeException.C_SUCCESS);
-                //res.put("Message", MessageCodeException.M_SUCCESS);
-                break;
+        if(Verification.checkMail(email)) {
+            switch (Utilisateur.verifierInscription(email, mdp, prenom, nom)) {
+                case 1: {
+                    // Inscription réussie
+                    MessageCodeException.success(res);
+                    //res.put("Result", MessageCodeException.C_SUCCESS);
+                    //res.put("Message", MessageCodeException.M_SUCCESS);
+                    break;
+                }
+                case 0: {
+                    // Utilisateur déjà existant
+                    MessageCodeException.user_already_exist(res);
+                    //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+                    //res.put("Message", MessageCodeException.M_USER_ALREADY_EXIST);
+                    break;
+                }
+                case 2: {
+                    // Cas dans lequel une des données est trop longue
+                    MessageCodeException.size_error(res);
+                    //res.put("Result", MessageCodeException.C_SIZE_ERROR);
+                    //res.put("Message", MessageCodeException.M_SIZE_ERROR);
+                    break;
+                }
             }
-            case 0:
-            {
-                // Utilisateur déjà existant
-                MessageCodeException.user_already_exist(res);
-                //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
-                //res.put("Message", MessageCodeException.M_USER_ALREADY_EXIST);
-                break;
-            }
-            case 2:
-            {
-                // Cas dans lequel une des données est trop longue
-                MessageCodeException.size_error(res);
-                //res.put("Result", MessageCodeException.C_SIZE_ERROR);
-                //res.put("Message", MessageCodeException.M_SIZE_ERROR);
-                break;
-            }
+        }else{
+            MessageCodeException.invalid_email(res);
         }
         return res;
     }
@@ -463,17 +511,29 @@ public class ApplicationServeur implements Observer {
         int id = -1;
         res.put("Request", "CreateCalendar");
         try {
-            if (!this.verifierCalendrier(auteur, nomCalendrier)) { // On vérifie que le calendrier n'existe pas déjà
-                MessageCodeException.calendar_already_exist(res);
-                //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
-                //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
-                return res;
-            }
-            id = this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur);
-            if ( id < 0) { // On crée le calendrier
-                MessageCodeException.bdd_calendar_error(res);
-                //res.put("Result", MessageCodeException.C_ERROR_BDD);
-                //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
+            ArrayList<String> verif = new ArrayList<>();
+            verif.add(nomCalendrier);
+            if(Verification.checkEmptyData(verif)) {
+                if(Verification.checkMail(auteur)) {
+                    if (!this.verifierCalendrier(auteur, nomCalendrier)) { // On vérifie que le calendrier n'existe pas déjà
+                        MessageCodeException.calendar_already_exist(res);
+                        //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+                        //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
+                        return res;
+                    }
+                    id = this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur);
+                    if (id < 0) { // On crée le calendrier
+                        MessageCodeException.bdd_calendar_error(res);
+                        //res.put("Result", MessageCodeException.C_ERROR_BDD);
+                        //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
+                        return res;
+                    }
+                }else{
+                    MessageCodeException.invalid_email(res);
+                    return res;
+                }
+            }else{
+                MessageCodeException.empty_data(res);
                 return res;
             }
         } catch (ParseException | SQLException e) {
@@ -621,31 +681,38 @@ public class ApplicationServeur implements Observer {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "ModifyCalendar");
         // Le calendrier n'existe pas
-        if(!GestionnaireBDD.verifierExistenceCalendrier(id)){
-            MessageCodeException.calendar_not_found(res);
-            //res.put("Result", MessageCodeException.C_NOT_FOUND);
-            //res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
-            return res;
-        }
-        // Aucune modification effectuée
-        else if(Calendrier.modificationCalendrier(id, nom, couleur) == 0) {
-            MessageCodeException.no_change(res);
-            //res.put("Result", MessageCodeException.C_NO_CHANGE);
-            //res.put("Message", MessageCodeException.M_NO_CHANGE);
-            return res;
-        }
-        // Erreur lors de la modification
-        else if(Calendrier.modificationCalendrier(id, nom, couleur) < 0) {
-            MessageCodeException.bdd_calendar_error(res);
-            //res.put("Result", MessageCodeException.C_ERROR_BDD);
-            //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
-        }
-        // La calendrier a bien été modifié
-        else {
-            //envoiNotifications(Calendrier.findInvites(id));
-            MessageCodeException.success(res);
-            //res.put("Result", MessageCodeException.C_SUCCESS);
-            //res.put("Message", MessageCodeException.M_SUCCESS);
+        ArrayList<String> verif = new ArrayList<>();
+        verif.add(nom);
+        verif.add(couleur);
+        if(Verification.checkEmptyData(verif)) {
+            if (!GestionnaireBDD.verifierExistenceCalendrier(id)) {
+                MessageCodeException.calendar_not_found(res);
+                //res.put("Result", MessageCodeException.C_NOT_FOUND);
+                //res.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
+                return res;
+            }
+            // Aucune modification effectuée
+            else if (Calendrier.modificationCalendrier(id, nom, couleur) == 0) {
+                MessageCodeException.no_change(res);
+                //res.put("Result", MessageCodeException.C_NO_CHANGE);
+                //res.put("Message", MessageCodeException.M_NO_CHANGE);
+                return res;
+            }
+            // Erreur lors de la modification
+            else if (Calendrier.modificationCalendrier(id, nom, couleur) < 0) {
+                MessageCodeException.bdd_calendar_error(res);
+                //res.put("Result", MessageCodeException.C_ERROR_BDD);
+                //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
+            }
+            // La calendrier a bien été modifié
+            else {
+                //envoiNotifications(Calendrier.findInvites(id));
+                MessageCodeException.success(res);
+                //res.put("Result", MessageCodeException.C_SUCCESS);
+                //res.put("Message", MessageCodeException.M_SUCCESS);
+            }
+        }else{
+            MessageCodeException.empty_data(res);
         }
         return res;
     }

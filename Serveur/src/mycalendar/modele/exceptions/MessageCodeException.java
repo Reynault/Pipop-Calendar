@@ -35,6 +35,10 @@ public class MessageCodeException {
 
     public static String M_DATE_PARSE_ERROR = "Erreur de date.";
 
+    public static String M_EMPTY_DATA = "Données vides";
+
+    public static String M_INVALID_EMAIL = "Email invalide";
+
     /**
      * Code de retour de la part du serveur
      */
@@ -53,9 +57,23 @@ public class MessageCodeException {
 
     public static String C_DATE_PARSE = "7";
 
+    public static String C_EMPTY_DATA = "9";
+
+    public static String C_INVALID_EMAIL = "10";
+
     public static void success(HashMap<String, String> map) {
         map.put("Result", MessageCodeException.C_SUCCESS);
         map.put("Message", MessageCodeException.M_SUCCESS);
+    }
+
+    public static void invalid_email(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_INVALID_EMAIL);
+        map.put("Message", MessageCodeException.M_INVALID_EMAIL);
+    }
+
+    public static void empty_data(HashMap<String, String> map){
+        map.put("Result", C_EMPTY_DATA);
+        map.put("Message", M_EMPTY_DATA);
     }
 
     public static void date_parse_error(HashMap<String, String> map){
