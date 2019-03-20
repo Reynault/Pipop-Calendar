@@ -767,6 +767,60 @@ public class ApplicationServeur implements Observer {
         return calendriers;
     }
 
+    public HashMap<String, String> modifAdminCalend() {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "TransfertCalendarOwnership");
+
+        return res;
+    }
+
+    public HashMap<String, String> transfererPropriete(String memberName, String eventOwner, String eventName) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "TransfertEventOwnership");
+        try {
+            Utilisateur u = Utilisateur.find(memberName);
+            if (u == null) {
+                res.put("Result", MessageCodeException.C_NOT_FOUND);
+                res.put("Message", MessageCodeException.M_USER_NOT_FOUND);
+            }
+            else {
+                Evenement e = Evenement.find(eventOwner, eventName);
+                if (e == null) {
+                    res.put("Result", MessageCodeException.C_NOT_FOUND);
+                    res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
+                }
+                else {
+                    if (!e.inEvent(u)) {
+                        res.put("Result", MessageCodeException.C_NOT_FOUND);
+                        res.put("Message", MessageCodeException.M_USER_NOT_IN_EVENT);
+                    }
+                    else {
+                        ArrayList<Utilisateur> ul = new ArrayList<>();
+                        ul.add(u);
+                        this.envoiNotifications(ul);
+                        int requestResult = e.transfererPropriete(u);
+                        if (requestResult == -1) {
+                            res.put("Result", MessageCodeException.C_DB_CONSISTENCY_ERROR);
+                            res.put("Message", MessageCodeException.M_DB_CONSISTENCY_ERROR);
+                        } else {
+                            res.put("Result", MessageCodeException.C_SUCCESS);
+                            res.put("Message", MessageCodeException.M_SUCCESS);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            res.put("Result", MessageCodeException.C_ERROR_BDD);
+            res.put("Message", MessageCodeException.M_BDD_ERROR);
+            e.printStackTrace();
+        } catch (ParseException e) {
+            res.put("Result", MessageCodeException.C_DATE_PARSE);
+            res.put("Message", MessageCodeException.M_DATE_PARSE_ERROR);
+            e.printStackTrace();
+        }
+        return res;
+    }
+
     public static DateFormat getDateFormat() {
         return dateFormat;
     }

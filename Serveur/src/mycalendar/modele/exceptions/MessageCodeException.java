@@ -35,6 +35,10 @@ public class MessageCodeException {
 
     public static String M_DATE_PARSE_ERROR = "Erreur de date.";
 
+    public static String M_DB_CONSISTENCY_ERROR = "Database consistency error.";
+
+    public static String M_USER_NOT_IN_EVENT = "User not participating in event.";
+
     /**
      * Code de retour de la part du serveur
      */
@@ -52,6 +56,8 @@ public class MessageCodeException {
     public static String C_NO_CHANGE = "6";
 
     public static String C_DATE_PARSE = "7";
+
+    public static String C_DB_CONSISTENCY_ERROR = "8";
 
     public static void success(HashMap<String, String> map) {
         map.put("Result", MessageCodeException.C_SUCCESS);
