@@ -20,7 +20,9 @@ $(document).ready(function(){
                  var nbTheme = Object.keys(obj.Data).length;
                  console.log(obj["Data"]);
                  for(var i = 0; i<nbTheme; i++){
-                    var p = $("#themeSelectOption").append("<option value='"+obj["Data"][i]+"'>"+obj["Data"][i]+"</option>");
+                    var titre = obj["Data"][i];
+                    var titreFormat = titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase();
+                    var p = $("#themeSelectOption").append("<option value='"+obj["Data"][i]+"'>"+ titreFormat +"</option>");
                  }
               }else{
                 window.plugins.toast.showWithOptions(
