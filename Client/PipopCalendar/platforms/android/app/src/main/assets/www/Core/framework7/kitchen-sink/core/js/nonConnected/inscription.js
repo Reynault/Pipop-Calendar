@@ -2,9 +2,9 @@
 $(document).ready(function(){
   $("#inscriptionBouton").click(function(e){
     app.input.checkEmptyState("#emailInscripInput");
-    app.input.checkEmptyState("mdpInscripInput");
-    app.input.checkEmptyState("mdpInscripInput");
-    app.input.checkEmptyState("mdpInscripInput");
+    app.input.checkEmptyState("#mdpInscripInput");
+    app.input.checkEmptyState("#nomInscripInput");
+    app.input.checkEmptyState("#prenomInscripInput");
     if(!$("#emailInscripInput").val() &&  !$("#mdpInscripInput").val() && !$("#nomInscripInput").val() && !$("#prenomInscripInput").val()){
            window.plugins.toast.showWithOptions({
                   message: "Informations incomplètes",
@@ -50,6 +50,7 @@ $(document).ready(function(){
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
+          timeout: 512,
           async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
@@ -58,7 +59,7 @@ $(document).ready(function(){
                 case "0":
                 {
                   window.location = "user-home.html";
-                  localStorage.setItem("emailUtilisateur",$("#emailInscripInput").val());
+                  localStorage.setItem("emailUtilisateur",$("#nomInscripInput").val());
                   break;
                 }
                 default:
