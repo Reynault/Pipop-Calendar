@@ -50,7 +50,6 @@ $(document).ready(function(){
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
-          timeout: 512,
           async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
@@ -59,7 +58,7 @@ $(document).ready(function(){
                 case "0":
                 {
                   window.location = "user-home.html";
-                  localStorage.setItem("emailUtilisateur",$("#nomInscripInput").val());
+                  localStorage.setItem("emailUtilisateur",$("#emailInscripInput").val());
                   break;
                 }
                 default:

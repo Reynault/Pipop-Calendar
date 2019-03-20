@@ -39,7 +39,6 @@ $(document).ready(function(){
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          timeout: 512,
           async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
