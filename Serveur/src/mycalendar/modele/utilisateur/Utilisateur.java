@@ -48,7 +48,6 @@ public class Utilisateur {
         if(result.next()){
             connexion = true;
         }
-        connect.close();
         return connexion;
     }
 
@@ -101,7 +100,6 @@ public class Utilisateur {
             // Execution de la mise à jour
             retour = prep.executeUpdate();
         }
-        connect.close();
         return retour;
     }
 
@@ -132,15 +130,14 @@ public class Utilisateur {
     public static ArrayList<Calendrier> findCalendriers(String email) throws SQLException {
         ArrayList<Calendrier> calendriers = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-        String request = "SELECT * FROM Calendrier WHERE idc = (SELECT idc FROM utilisateur_calendrier WHERE Email = ? );";
+        String request = "SELECT * FROM `Calendrier` WHERE `idc` IN (SELECT `idc` FROM `utilisateur_calendrier` WHERE `Email` = ? );";
         PreparedStatement prep = connect.prepareStatement(request);
         prep.setString(1, email);
         ResultSet result = prep.executeQuery();
         while(result.next()){
-            calendriers.add(new Calendrier(result.getInt(1), result.getString(2), result.getString(3),
-                    result.getString(4), result.getString(5), email));
+            calendriers.add(new Calendrier(result.getInt(1), result.getString(2), result.getString(4),
+                    result.getString(3), result.getString(5), email));
         }
-        connect.close();
         return calendriers;
     }
 
@@ -152,6 +149,19 @@ public class Utilisateur {
     public int save() throws SQLException{
         int res = 1;
         return res;
+    }
+
+    public static Utilisateur find(String nom) throws SQLException {
+        Utilisateur u = null;
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request = "SELECT * FROM Utilisateur WHERE Email=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, nom);
+        ResultSet result = prep.executeQuery();
+        if (result.next()) {
+            u = new Utilisateur(result.getString("Email"), result.getString("nom"), result.getString("mdp"), result.getString("prenom"));
+        }
+        return u;
     }
 
     /**
@@ -187,7 +197,6 @@ public class Utilisateur {
         while (rs.next()) {
             ul.add(new Utilisateur(rs.getString("Email"), rs.getString("nom"), rs.getString("mdp"), rs.getString("prenom")));
         }
-        connect.close();
         return ul;
     }
 
@@ -214,4 +223,18 @@ public class Utilisateur {
     public String getPrenom() {
         return this.prenom;
     }
+
+    public static Boolean deleteAmis(String user, String amis) throws SQLException {
+        Connection connection = GestionnaireBDD.getInstance().getConnection();
+        String request = "DELETE FROM Amis WHERE Email1=? AND Email2=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(request);
+        preparedStatement.setString(1, user);
+        preparedStatement.setString(2, amis);
+        if (preparedStatement.executeUpdate()  == 0){
+            return false;
+        }
+        return true;
+
+    }
+
 }

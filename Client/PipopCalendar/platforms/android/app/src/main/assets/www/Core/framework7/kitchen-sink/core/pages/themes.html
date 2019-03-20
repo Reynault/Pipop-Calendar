@@ -79,7 +79,7 @@
             <div class="item-inner">
               <div class="item-label">HEX Color</div>
               <div class="item-input-wrap">
-                <input type="text" value="{{customColor}}" @input="setCustomColor" placeholder="e.g. #ff0000">
+                <input class="color-picker" type="color" value="{{ customColor }}" @input="setCustomColor">
               </div>
             </div>
           </li>
@@ -172,6 +172,10 @@
 }
           `;
         }
+
+  console.log("COLOR : " + localStorage.getItem("color"));
+  console.log("THEME : " + localStorage.getItem("theme"));
+  console.log("BARSTYLE : " + localStorage.getItem("barStyle"));
         return styles.trim();
       },
       setLayoutTheme: function (theme) {
@@ -180,6 +184,7 @@
         globalTheme = theme;
         $html.removeClass('theme-dark theme-light').addClass('theme-' + globalTheme);
         self.$setState({ theme: globalTheme });
+        localStorage.setItem("theme", theme);
       },
       setColorTheme: function (color) {
         var self = this;
@@ -188,6 +193,7 @@
         if (currentColorClass) $html.removeClass(currentColorClass[0])
         $html.addClass('color-theme-' + color);
         self.unsetCustomColor();
+        localStorage.setItem("color", color);
       },
       setBarsStyle: function (barsStyle) {
         var self = this;
@@ -200,6 +206,8 @@
         self.$setState({
           customProperties: globalCustomProperties,
         });
+
+        localStorage.setItem("barStyle", barsStyle);
       },
       unsetCustomColor: function () {
         var self = this;
@@ -227,6 +235,8 @@
           self.$setState({
             customProperties: globalCustomProperties,
           });
+          //
+        localStorage.setItem("color", hex);
         } else if (!hex) {
           self.unsetCustomColor();
         } else {
@@ -235,6 +245,8 @@
           self.$setState({
             customProperties: globalCustomProperties,
           });
+          //
+        localStorage.setItem("color", hex);
         }
       },
     }

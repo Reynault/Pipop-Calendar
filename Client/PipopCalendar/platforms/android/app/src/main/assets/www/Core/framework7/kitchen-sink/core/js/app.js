@@ -2,43 +2,36 @@ var app = new Framework7({
   // App root element
   root: '#app',
   // App Name
-  name: 'Pipop Calendar',
-  // Add default routes
-  routes: [
-    {
-      path: '/sign-up/',
-      url: './pages/sign-up.html',
-      name: 'sign-up',
-      on: {
-        pageAfterIn: function (e, page) {
-          console.log("Chargement formulaire");
-          console.log($("#emailInput"));
-          $.ajax({
-            url: "js/sha.js",
-            dataType: "script",
-            cache: true,
-            success:function(msg) {
-              console.log("Success!!");
-            },
-            error:function(msg) {
-              console.log("Error chargement script de cryptage");
-            },
-          })
-          $.ajax({
-            url: "js/inscription.js",
-            dataType: "script",
-            cache: true,
-            success:function(msg) {
-              console.log("Success!!");
-            },
-            error:function(msg) {
-              console.log("Error chargement script inscription");
-            }
-          })
-        }
-      }
-    }
-  ]
+  name: 'Pipop Calendar'
 });
 
-var mainView = app.views.create('.view-main');
+var $$ = Dom7;
+
+var $ptrContent = $$('.ptr-content');
+$ptrContent.on('ptr:refresh', function (e) {
+  // Emulate 2s loading
+  setTimeout(function () {
+    chargerCalendrier(localStorage.getItem("emailUtilisateur"));
+    app.ptr.done(); // or e.detail();
+  }, 2000);
+});
+
+document.addEventListener("backbutton", onBackKeyDown, false);
+
+function onBackKeyDown() {
+  var path = window.location.pathname;
+  var page = path.split("/").pop();
+  if(page != "index.html"){
+    app.dialog.confirm('Are you sure you want to log out?', function () {
+        localStorage.setItem("emailUtilisateur","");
+        window.location = "index.html";
+    });
+  }else{
+    app.dialog.confirm('Do you really want to exit Pipop?', function () {
+            localStorage.setItem("emailUtilisateur","");
+            window.navigator.app.exitApp();
+    });
+  }
+}
+
+var adresse = 'http://a85b6f81.ngrok.io';

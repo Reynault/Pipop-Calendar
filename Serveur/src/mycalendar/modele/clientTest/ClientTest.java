@@ -1,47 +1,68 @@
 package mycalendar.modele.clientTest;
 
+import mycalendar.modele.serveur.ApplicationServeur;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class  ClientTest {
-    public static void main(String[] args) {
+    private static void lancerClient(String requete, boolean post) throws IOException {
         // Création socket
-        int port = 3306;
-        try {
-            InetAddress ip = InetAddress.getByName("localhost");
-            Socket socket = new Socket(ip, port);
-            PrintWriter pred = new PrintWriter(
-                    new BufferedWriter(
-                            new OutputStreamWriter(
-                                    socket.getOutputStream()
-                            )
-                    ),true
-            );
+        int port = 3307;
+        InetAddress ip = InetAddress.getByName(ApplicationServeur.URL);
 
-            BufferedReader bos = new BufferedReader(
-                    new InputStreamReader(
-                            socket.getInputStream()));
+        Socket socket = new Socket(ip, port);
+        PrintWriter pred = new PrintWriter(
+                new BufferedWriter(
+                        new OutputStreamWriter(
+                                socket.getOutputStream()
+                        )
+                ),true
+        );
 
-            //String request = "GET {\"Request\":\"AddEvent\",\"CalendarName\":\"cal_cock\",\"EventName\":\"eb_cock_super\",\"EventDescription\":\"I love cocks\",\"EventPicture\":\"no\",\"EventDate\":\"10:30 24/06/2069\",\"EventLocation\":\"cock_city\",\"EventAuthor\":\"pootis@spenser.tf\",\"EventVisibility\":\"true\"} HTTP/1.1";
-            //String request = "GET {\"Request\":\"DeleteEvent\",\"ID\":\"1\"} HTTP/1.1";
-            //String request = "GET {\"Request\":\"GetUsers\",\"FirstName\":\"devmaster\",\"LastName\":\"devmaster\"} HTTP/1.1";
-            String request = "GET {\"Request\":\"AddFriend\",\"Email1\":\"util@util\",\"Email2\":\"test@test\"} HTTP/1.1";
-            System.out.println("DONNEE ENVOYEE : " + request);
-            pred.println(request);
-            //pred.println("{\"Request\":\"DeleteEvent\",\"ID\":\"6\"}");
-            StringBuilder line = new StringBuilder();
-            line.append("\n\n");
-            String l = bos.readLine();
-            while(l != null){
-                line.append(l+"\n");
-                l = bos.readLine();
-            }
-            System.out.println("DONNEE RECUES :"+line.toString());
-            bos.close();
-            pred.close();
-        }catch(IOException e){
-            System.out.println(e.getMessage());
+        BufferedReader bos = new BufferedReader(
+                new InputStreamReader(
+                        socket.getInputStream()));
+
+        String request = "";
+        if(post){
+            request = "POST / HTTP/1.1\n\r\n"+requete;
+        }else{
+            request = "GET "+requete+" HTTP/1.1";
+        }
+        System.out.println("DONNEE ENVOYEE : " + request);
+        pred.println(request);
+
+        StringBuilder line = new StringBuilder();
+        line.append("\n\n");
+        String l = bos.readLine();
+        while(l != null){
+            line.append(l+"\n");
+            l = bos.readLine();
+        }
+        System.out.println("DONNEE RECUES :"+line.toString());
+        bos.close();
+        pred.close();
+    }
+
+    public static void main(String[] args) {
+        try{
+            lancerClient("{\"Request\":\"TransfertEventOwnership\",\"Member\":\"squeeze@my.hog\",\"Owner\":\"test@test\"," +
+                    "\"EventName\":\"azeaze\"}", true);
+            lancerClient("{\"Request\":\"AddFriend\",\"Email1\":\"util@util\",\"Email2\":\"test@test\"} HTTP/1.1",
+                    false);
+);
+           /* DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date dateP = dateFormat.parse("19/03/2019 16:15");
+            System.out.println(dateP.toString());*/
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,4 +1,5 @@
 
+<!--suppress ALL -->
 <template>
   <div class="page" data-name="calendar-view">
 
@@ -11,37 +12,52 @@
           </a>
         </div>
         <div class="title">TITRE</div>
+        <div class="right">
+          <a href="#" data-popover="#calendar_settings" class="link popover-open">
+            <i class="material-icons">settings</i>
+            <span class="ios-only">Settings</span>
+          </a>
+        </div>
       </div>
     </div>
 
     <div class="fab fab-extended fab-left-bottom">
       <a href="/event-form/">
         <i class="icon f7-icons">add</i>
-        <div class="fab-text">Add event</div>
+        <div id="addEventBouton" class="fab-text">Add event</div>
       </a>
     </div>
 
     <div class="page-content">
 
-      <div class="block-title">Calendar name</div>
+      <div class="popover" id="calendar_settings">
+        <div class="popover-inner">
+          <div class="list">
+            <ul>
+              <li><a class="list-button item-link" href="#">Link 1</a></li>
+              <li><a class="list-button item-link" href="#">Link 2</a></li>
+              <li><a class="list-button item-link" href="#">Link 3</a></li>
+              <li><a class="list-button item-link" href="#">Link 4</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block-title" id="nomCalendrier">Calendar name</div>
       <div class="block block-strong no-padding">
 
         <!-- Mois -->
         <div id="calendar-inline-container"></div>
 
-        <!-- Semaine -->
-        <div class="timeline timeline-horizontal tablet-15">
+        <div id="zoom" class="range-slider">
+          <input type="range" min="20" max="100" step="5" value="30">
+        </div>
+        <!-- Semaine et jour -->
+        <div id="timeline" class="timeline timeline-horizontal col-30">
           <div class="timeline-item">
             <div class="timeline-item-date"><small>MONDAY</small> 11</div>
             <div class="timeline-item-divider"></div>
-            <div class="timeline-item-content">
-              <div class="timeline-item-inner">
-                <div class="timeline-item-title">Sécurité</div>
-                <div class="timeline-item-time">8:00</div>
-                <div class="timeline-item-subtitle"><small>AMPHI 15</small></div>
-                <div class="timeline-item-text">Description</div>
-              </div>
-            </div>
+            <div class="timeline-item-content"></div>
           </div>
           <div class="timeline-item">
             <div class="timeline-item-date"><small>TUESDAY</small> 12</div>
@@ -84,25 +100,39 @@
   return {
     on: {
       pageInit: function (e, page) {
+        var $$ = Dom7;
         var self = this;
         var app = self.$app;
+        var range = app.range.create({
+          el: '#zoom',
+        });
+        $$('#zoom').on('range:change', function (e, r) {
+          $$('#timeline').attr('class', 'timeline timeline-horizontal col-' + r.value);
+        });
         var calendarInline = app.calendar.create({
           containerEl: '#calendar-inline-container',
-          value: [new Date()],
           weekHeader: true,
           events: [
             {
-              date: new Date(),
+              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 13),
+              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 15),
               color: 'blue',
+              title: 'test 1',
+              description: 'bijour'
             },
             {
-              date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5),
+              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5, 8),
+              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5, 18),
               color: 'red',
+              title: 'test 2',
+              description: 'orevoar'
             },
             {
-              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 4),
-              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 6),
+              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 4, 17),
+              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 6, 8),
               color: 'black',
+              title: 'test 3',
+              description: 'vziuehpvzuhvcpuzeohcfuz izeijhcuhc'
             },
           ],
           renderToolbar: function () {
@@ -121,12 +151,181 @@
               '</div>' +
             '</div>';
           },
+          renderMonth: function (d, offset) {
+            var calendar = this;
+            var params = calendar.params;
+            var value = calendar.value;
+            var date = new calendar.DateHandleClass(d);
+            var year = date.getFullYear();
+            var month = date.getMonth();
+
+            if (offset === 'next') {
+              if (month === 11) { date = new calendar.DateHandleClass(year + 1, 0); }
+              else { date = new calendar.DateHandleClass(year, month + 1, 1); }
+            }
+            if (offset === 'prev') {
+              if (month === 0) { date = new calendar.DateHandleClass(year - 1, 11); }
+              else { date = new calendar.DateHandleClass(year, month - 1, 1); }
+            }
+            if (offset === 'next' || offset === 'prev') {
+              month = date.getMonth();
+              year = date.getFullYear();
+            }
+
+            var currentValues = [];
+            var today = new calendar.DateHandleClass().setHours(0, 0, 0, 0);
+            var minDate = params.minDate ? new calendar.DateHandleClass(params.minDate).getTime() : null;
+            var maxDate = params.maxDate ? new calendar.DateHandleClass(params.maxDate).getTime() : null;
+            var rows = 6;
+            var cols = 7;
+            var daysInPrevMonth = calendar.daysInMonth(new calendar.DateHandleClass(date.getFullYear(), date.getMonth()).getTime() - (10 * 24 * 60 * 60 * 1000));
+            var daysInMonth = calendar.daysInMonth(date);
+            var minDayNumber = params.firstDay === 6 ? 0 : 1;
+
+            var monthHtml = '';
+            var dayIndex = 0 + (params.firstDay - 1);
+            var disabled;
+            var hasEvents;
+            var firstDayOfMonthIndex = new calendar.DateHandleClass(date.getFullYear(), date.getMonth()).getDay();
+            if (firstDayOfMonthIndex === 0) { firstDayOfMonthIndex = 7; }
+
+            if (value && value.length) {
+              for (var i = 0; i < value.length; i += 1) {
+                currentValues.push(new calendar.DateHandleClass(value[i]).setHours(0, 0, 0, 0));
+              }
+            }
+
+            for (var row = 1; row <= rows; row += 1) {
+              var rowHtml = '';
+              var loop = function ( col ) {
+                dayIndex += 1;
+                var dayDate = (void 0);
+                var dayNumber = dayIndex - firstDayOfMonthIndex;
+                var addClass = '';
+                if (row === 1 && col === 1 && dayNumber > minDayNumber && params.firstDay !== 1) {
+                  dayIndex -= 7;
+                  dayNumber = dayIndex - firstDayOfMonthIndex;
+                }
+
+                var weekDayIndex = ((col - 1) + params.firstDay > 6)
+                  ? ((col - 1 - 7) + params.firstDay)
+                  : ((col - 1) + params.firstDay);
+
+                if (dayNumber < 0) {
+                  dayNumber = daysInPrevMonth + dayNumber + 1;
+                  addClass += ' calendar-day-prev';
+                  dayDate = new calendar.DateHandleClass(month - 1 < 0 ? year - 1 : year, month - 1 < 0 ? 11 : month - 1, dayNumber).getTime();
+                } else {
+                  dayNumber += 1;
+                  if (dayNumber > daysInMonth) {
+                    dayNumber -= daysInMonth;
+                    addClass += ' calendar-day-next';
+                    dayDate = new calendar.DateHandleClass(month + 1 > 11 ? year + 1 : year, month + 1 > 11 ? 0 : month + 1, dayNumber).getTime();
+                  } else {
+                    dayDate = new calendar.DateHandleClass(year, month, dayNumber).getTime();
+                  }
+                }
+                // Today
+                if (dayDate === today) { addClass += ' calendar-day-today'; }
+
+                // Selected
+                if (params.rangePicker && currentValues.length === 2) {
+                  if (dayDate >= currentValues[0] && dayDate <= currentValues[1]) { addClass += ' calendar-day-selected'; }
+                } else if (currentValues.indexOf(dayDate) >= 0) { addClass += ' calendar-day-selected'; }
+                // Weekend
+                if (params.weekendDays.indexOf(weekDayIndex) >= 0) {
+                  addClass += ' calendar-day-weekend';
+                }
+                // Events
+                var eventsHtml = '';
+                var popup = '';
+                var eventCards = '';
+                var popupClass = '';
+                hasEvents = false;
+                var eventsDates = [];
+                if (params.events && Array.isArray(params.events)) {
+                  params.events.forEach(function (ev) {
+                    eventsDates.push({
+                      from: new Date(ev.from.getFullYear(), ev.from.getMonth(), ev.from.getDate()),
+                      to: new Date(ev.to.getFullYear(), ev.to.getMonth(), ev.to.getDate())
+                    });
+                  });
+                  if (calendar.dateInRange(dayDate, eventsDates)) {
+                    hasEvents = true;
+                  }
+                }
+                if (hasEvents) {
+                  var dateFormat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                  var timeFormat = { hour: 'numeric', minute: '2-digit' };
+                  addClass += ' calendar-day-has-events';
+                  eventsHtml = "\n            <span class=\"calendar-day-events\">\n              <span class=\"calendar-day-event\"></span>\n            </span>\n          ";
+                  if (Array.isArray(params.events)) {
+                    var eventDots = [];
+                    params.events.forEach(function (ev) {
+                      var color = ev.color || '';
+                      var date = {
+                        from: new Date(ev.from.getFullYear(), ev.from.getMonth(), ev.from.getDate()),
+                        to: new Date(ev.to.getFullYear(), ev.to.getMonth(), ev.to.getDate())
+                      };
+                      if (calendar.dateInRange(dayDate, date)){
+                        if (eventDots.indexOf(color) < 0) {
+                          eventDots.push(color);
+                        }
+                        var range = "From " + ev.from.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric' }) + " to " + ev.to.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric' });
+                        if (date.from.getTime() == date.to.getTime()) {
+                          range = "From " + ev.from.toLocaleTimeString('en-GB', timeFormat) + " to " + ev.to.toLocaleTimeString('en-GB', timeFormat);
+                        }
+                        eventCards += "<div class=\"card\">\n              <div class=\"card-header\">" + ev.title + "<i class=\"f7-icons text-color-" + ev.color + "\">circle_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
+                      }
+                    });
+                    dayDate = new calendar.DateHandleClass(dayDate);
+                    var dayYear = dayDate.getFullYear();
+                    var dayMonth = dayDate.getMonth();
+                    popupClass = "popup-open";
+                    eventsHtml = "\n              <span class=\"calendar-day-events\">\n                " + (eventDots.map(function (color) { return ("\n                  <span class=\"calendar-day-event\" style=\"" + (color ? ("background-color: " + color) : '') + "\"></span>\n                ").trim(); }).join('')) + "\n              </span>\n            ";
+                    popup = "<div class=\"popup popup-" + dayYear + "-" + dayMonth + "-" + dayNumber + "\">\n              <div class=\"page\">\n              <div class=\"navbar\">\n              <div class=\"navbar-inner sliding\">\n              <div class=\"left\">\n              <a href=\"#\" class=\"link popup-close\">\n              <i class=\"f7-icons\">close</i>\n              <span class=\"ios-only\">Close</span>\n              </a>\n              </div>\n              <div class=\"title\">" + dayDate.toLocaleDateString('en-GB', dateFormat) + "</div>\n              </div>\n              </div>\n              <div class=\"page-content\">" + eventCards + "\n              </div>\n              </div>\n              </div>";
+                  }
+                }
+                // Custom Ranges
+                if (params.rangesClasses) {
+                  for (var k = 0; k < params.rangesClasses.length; k += 1) {
+                    if (calendar.dateInRange(dayDate, params.rangesClasses[k].range)) {
+                      addClass += " " + (params.rangesClasses[k].cssClass);
+                    }
+                  }
+                }
+                // Disabled
+                disabled = false;
+                if ((minDate && dayDate < minDate) || (maxDate && dayDate > maxDate)) {
+                  disabled = true;
+                }
+                if (params.disabled) {
+                  if (calendar.dateInRange(dayDate, params.disabled)) {
+                    disabled = true;
+                  }
+                }
+                if (disabled) {
+                  addClass += ' calendar-day-disabled';
+                }
+
+                dayDate = new calendar.DateHandleClass(dayDate);
+                var dayYear = dayDate.getFullYear();
+                var dayMonth = dayDate.getMonth();
+                rowHtml += ("<div data-popup=\".popup-" + dayYear + "-" + dayMonth + "-" + dayNumber + "\" data-year=\"" + dayYear + "\" data-month=\"" + dayMonth + "\" data-day=\"" + dayNumber + "\" class=\"" + popupClass + " calendar-day" + addClass + "\" data-date=\"" + dayYear + "-" + dayMonth + "-" + dayNumber + "\">\n            <span class=\"calendar-day-number\">" + dayNumber + eventsHtml + popup + "</span>\n          </div>").trim();
+              };
+
+              for (var col = 1; col <= cols; col += 1) loop( col );
+              monthHtml += "<div class=\"calendar-row\">" + rowHtml + "</div>";
+            }
+            monthHtml = "<div class=\"calendar-month\" data-year=\"" + year + "\" data-month=\"" + month + "\">" + monthHtml + "</div>";
+            return monthHtml;
+          }
         });
       },
       pageBeforeRemove() {
         var self = this;
         self.calendarInline.destroy();
-      },
+      }
     }
   };
 </script>

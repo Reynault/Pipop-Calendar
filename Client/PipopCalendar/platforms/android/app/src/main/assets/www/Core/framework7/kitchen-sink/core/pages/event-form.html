@@ -26,7 +26,7 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Event name</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="name">
+                    <input id="nomEvInput" type="text" name="name">
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
@@ -37,13 +37,23 @@
                 <div class="item-inner">
                   <div class="item-title item-floating-label">Description</div>
                   <div class="item-input-wrap">
-                    <textarea class="resizable" name="desc"></textarea>
+                    <textarea id="descEvInput" class="resizable" name="desc"></textarea>
                     <span class="input-clear-button"></span>
                   </div>
                 </div>
               </div>
             </li>
-
+            <li>
+              <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                  <div class="item-title item-floating-label">Lieu</div>
+                  <div class="item-input-wrap">
+                    <input id="lieuEvInput" type="text" name="lieu">
+                    <span class="input-clear-button"></span>
+                  </div>
+                </div>
+              </div>
+            </li>
             <li>
               <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
@@ -66,7 +76,7 @@
             </li>
 
             <li>
-              <a class="item-link smart-select smart-select-init" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
+              <a class="item-link smart-select smart-select-init" id="couleurSelect" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
                 <select name="color">
                   {{#each colors}}
                     <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
@@ -79,28 +89,10 @@
                 </div>
               </a>
             </li>
-            <li class="media-item">
-              <a id="themeSelect" class="item-link smart-select">
-                <select name="theme" multiple>
-                  <option value="cours">Cours</option>
-                  <option value="activite">Activité</option>
-                  <option value="evenement">Evénement</option>
-                  <option value="voyage">Voyage</option>
-                </select>
-                <div class="item-content">
-                  <div class="item-inner">
-                    <div class="item-title-row">
-                      <div class="item-title">Themes</div>
-                    </div>
-                    <div class="item-text"></div>
-                  </div>
-                </div>
-              </a>
-            </li>
 
             <li>
               <label class="item-checkbox item-content">
-                <input type="checkbox"/>
+                <input id="public" type="checkbox"/>
                 <i class="icon icon-checkbox"></i>
                 <div class="item-inner">
                   <div class="item-title">Public event</div>
@@ -113,7 +105,7 @@
         <div class="list no-hairlines">
           <ul>
             <li>
-              <a href="#" class="item-link list-button button button-outline button-large" >Create / Modify</a>
+              <a href="#" id="creerEvenementBouton" class="item-link list-button button button-outline button-large" >Create / Modify</a>
             </li>
           </ul>
         </div>
@@ -148,6 +140,16 @@
       pageInit: function (e, page) {
         var self = this;
         var app = self.$app;
+        $.ajax({
+            url: "js/chargerTheme.js",
+            dataType: "script",
+            cache: true,
+            success:function(msg) {
+            },
+            error:function(msg) {
+              console.log("Error chargement script de l'enregistreur de nom de calendrier");
+            },
+         });
         var addZero = function(i){ return i < 10 ? '0' + i : i; }
         var intArray = function(start, end, zero){
           var arr = [];

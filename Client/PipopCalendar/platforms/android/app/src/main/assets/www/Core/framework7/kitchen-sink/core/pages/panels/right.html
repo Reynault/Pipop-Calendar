@@ -1,0 +1,53 @@
+<template>
+  <div class="panel panel-right panel-cover">
+    <div class="view view-right" name="right" data-url="/">
+      <div class="page">
+        <div class="navbar no-shadow">
+          <div class="navbar-inner sliding">
+            <div class="title">Social</div>
+          </div>
+        </div>
+        <div class="page-content">
+          <div class="list links-list no-hairlines">
+            <ul>
+              <li>
+                <a href="/notifications/">Notifications <span class="badge">32</span></a>
+              </li>
+              <li>
+                <a href="/friends/">Friends & Groups</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  return {
+    on: {
+      panelOpened: function (event, panel) {
+        if (panel.side == 'right'){
+          var rightView = app.views.create('.view-right', {
+            stackPages: true,
+            routes: [
+              {
+                path: '/friends/',
+                url: './pages/panels/friends.html',
+                name: 'friends',
+              },
+              {
+                path: '/notifications/',
+                url: './pages/panels/notifications.html',
+                name: 'notifications',
+              },
+            ],
+          });
+          app.once('panelClose', function (panel) {
+            app.views.get('.view-right').destroy();
+          });
+        }
+      }
+    }
+  }
+</script>
