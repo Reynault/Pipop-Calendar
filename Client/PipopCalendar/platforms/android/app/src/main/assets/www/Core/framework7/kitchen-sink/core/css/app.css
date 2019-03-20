@@ -76,6 +76,12 @@
   text-transform: lowercase;
 }
 
+.color-picker {
+  width: -webkit-fill-available;
+  border: none;
+  background-color: transparent;
+}
+
 :root {
   --f7-login-screen-blocks-max-width: 80%;
 }
