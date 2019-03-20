@@ -776,8 +776,22 @@ public class ApplicationServeur implements Observer {
         return GroupeAmi.find(nomG);
     }
 
-    public boolean verifInvitAmiEvenement(int idG){
-
+	/**
+	 * Cette méthode vérifie quels utilisateurs d'un groupe n'appartiennent pas à un événement et les invite.
+	 * @param idG L'identifiant du groupe
+	 * @param idE L'identifiant de l'événement
+	 * @throws SQLException
+	 */
+	public void verifInvitAmiEvenement(int idG, int idE) throws SQLException {
+	    Connection connect = GestionnaireBDD.getInstance().getConnection();
+	    String request = "SELECT Email FROM groupes_amis WHERE idG=? EXCEPT SELECT Email From utilisateur_evenement WHERE ide=?;";
+	    PreparedStatement prep = connect.prepareStatement(request);
+	    prep.setInt(1, idG);
+	    prep.setInt(2, idE);
+	    ResultSet result = prep.executeQuery();
+	    while(result.next()){
+			//Invite l'utilisateur à l'événement
+	    }
     }
 
 }
