@@ -53,11 +53,9 @@ public class  ClientTest {
 
     public static void main(String[] args) {
         try{
-            lancerClient("{\"Request\":\"TransfertEventOwnership\",\"Member\":\"squeeze@my.hog\",\"Owner\":\"test@test\"," +
-                    "\"EventName\":\"azeaze\"}", true);
-            lancerClient("{\"Request\":\"AddFriend\",\"Email1\":\"util@util\",\"Email2\":\"test@test\"} HTTP/1.1",
-                    false);
-);
+            //lancerClient("{\"Request\":\"TransfertEventOwnership\",\"Member\":\"squeeze@my.hog\",\"Owner\":\"test@test\"," +
+             //       "\"EventName\":\"azeaze\"}", true);
+            lancerClient("{\"Request\":\"AddFriend\",\"Email1\":\"util@util\",\"Email2\":\"test@test\"}",false);
            /* DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date dateP = dateFormat.parse("19/03/2019 16:15");
             System.out.println(dateP.toString());*/
