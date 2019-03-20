@@ -53,9 +53,17 @@ public class  ClientTest {
 
     public static void main(String[] args) {
         try{
-            lancerClient("{\"Request\":\"AddEvent\",\"CalendarName\":\"TOUTANCLAKOS\",\"EventName\":\"azeaze\"," +
-                    "\"EventDescription\":\"\",\"EventDate\":\"19/03/2019 16:15\",\"EventLocation\":\"\",\"EventAuthor\":" +
-                    "\"test@test\",\"EventVisibility\":\"false\"}", true);
+            /*lancerClient("{\"Request\":\"AddEvent\"," +
+                    "\"CalendarName\":\"qqq\"," +
+                    "\"EventName\":\"welcome\"," +
+                    "\"EventDescription\":\"red\"," +
+                    "\"EventDate\":\"25/03/2019 20:00\"," +
+                    "\"EventDateFin\":\"25/03/2019 18:00\"," +
+                    "\"EventLocation\":\"Jeudi\"," +
+                    "\"EventVisibility\":\"true\"," +
+                    "\"EventAuthor\":\"test@test.com\"}", true);*/
+            lancerClient("{\"Request\":\"TransfertCalendarOwnership\",\"Calendar\":\"Mario Pissing\",\"OldOwner\":\"test@test\"," +
+                    "\"NewOwner\":\"squeeze@my.hog\"}", true);
 
            /* DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date dateP = dateFormat.parse("19/03/2019 16:15");

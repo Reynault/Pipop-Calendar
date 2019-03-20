@@ -132,6 +132,29 @@ public abstract class Evenement extends Observable {
         }
     }
 
+    public static Evenement find(String owner, String eventName) throws SQLException {
+        Evenement e = null;
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request = "SELECT * FROM Evenement WHERE auteur=? AND nomE=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, owner);
+        prep.setString(2, eventName);
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            if (rs.getBoolean("idc")) {
+                e = new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
+                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
+                        rs.getString("auteur"));
+            }
+            else {
+                e = new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
+                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
+                        rs.getString("auteur"));
+            }
+        }
+        return e;
+    }
+
     /**
      * Méthode permettant de récupérer la liste des événements présent dans un calendrier
      *
@@ -280,6 +303,41 @@ public abstract class Evenement extends Observable {
         this.lieu=lieu;
         this.auteur=auteur;
         return save();
+    }
+
+    public static boolean participatesInEvent(Utilisateur user, Evenement event) {
+
+        return false;
+    }
+
+    public int transfererPropriete(Utilisateur user) throws SQLException {
+        int res;
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request = "UPDATE Evenement SET auteur=? WHERE nomE=? AND auteur=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, user.getEmail());
+        prep.setString(2, this.getNomE());
+        prep.setString(3, this.getAuteur());
+        if (prep.executeUpdate() == 1) {
+            res = 0;
+        }
+        else {
+            res = -1;
+        }
+        return res;
+    }
+
+    public boolean inEvent(Utilisateur user) throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request  = "SELECT COUNT(ide) AS nbPar FROM utilisateur_evenement WHERE Email=? AND ide=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, user.getEmail());
+        prep.setInt(2, this.getId());
+        ResultSet rs = prep.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("nbPar") > 0;
+        }
+        return false;
     }
 
     public String getNomE() {

@@ -273,6 +273,13 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encode(rep);
                 break;
             }
+            case "AddFriend": {
+                String email1 = donnees.get("Email1");
+                String email2 = donnees.get("Email2");
+                rep = ApplicationServeur.getInstance().ajoutAmi(email1, email2);
+                result = parseur.encode(rep);
+                break;
+            }
             // Récupération de plusieurs utilisateurs
             case "GetUsers": {
                 String nom = donnees.get("FirstName");
@@ -309,6 +316,22 @@ public class ConnexionClient implements Runnable{
                 String cal = donnees.get("CalendarName");
                 repObj = ApplicationServeur.getInstance().loadEvents(email, cal);
                 result = parseur.encodeObj(repObj);
+                break;
+            }
+            case "TransfertEventOwnership": {
+                String member = donnees.get("Member");
+                String owner = donnees.get("Owner");
+                String event = donnees.get("EventName");
+                rep = ApplicationServeur.getInstance().transfererPropriete(member, owner, event);
+                result = parseur.encode(rep);
+                break;
+            }
+            case "TransfertCalendarOwnership": {
+                String calendarName = donnees.get("Calendar");
+                String oldOwner = donnees.get("OldOwner");
+                String newOwner = donnees.get("NewOwner");
+                rep = ApplicationServeur.getInstance().modifAdminCalend(calendarName, oldOwner, newOwner);
+                result = parseur.encode(rep);
                 break;
             }
             default: {

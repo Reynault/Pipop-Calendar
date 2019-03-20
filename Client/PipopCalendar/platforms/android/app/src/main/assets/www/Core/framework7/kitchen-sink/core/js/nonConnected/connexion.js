@@ -7,7 +7,7 @@ $(document).ready(function(){
     app.input.checkEmptyState("mdpInput");
     if(!$("#emailInput").val() &&  !$("#mdpInput").val()){
        window.plugins.toast.showWithOptions({
-              message: obj["Messsage"],
+              message: obj["Message"],
               duration: 1500, // ms
               position: "bottom",
               addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
