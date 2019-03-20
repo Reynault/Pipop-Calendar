@@ -129,6 +129,19 @@ public class Utilisateur{
         return res;
     }
 
+    public static Utilisateur find(String nom) throws SQLException {
+        Utilisateur u = null;
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request = "SELECT * FROM Utilisateur WHERE Email=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, nom);
+        ResultSet result = prep.executeQuery();
+        if (result.next()) {
+            u = new Utilisateur(result.getString("Email"), result.getString("nom"), result.getString("mdp"), result.getString("prenom"));
+        }
+        return u;
+    }
+
     public static ArrayList<Utilisateur> find(String nom, String prenom) throws SQLException {
         ArrayList<Utilisateur> ul = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
