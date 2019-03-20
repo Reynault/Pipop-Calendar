@@ -311,6 +311,14 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encodeObj(repObj);
                 break;
             }
+            case "TransfertEventOwnership": {
+                String member = donnees.get("Member");
+                String owner = donnees.get("Owner");
+                String event = donnees.get("EventName");
+                rep = ApplicationServeur.getInstance().transfererPropriete(member, owner, event);
+                result = parseur.encode(rep);
+                break;
+            }
             default: {
                 throw new BadRequestExeption(donnees.get("Request"));
             }
