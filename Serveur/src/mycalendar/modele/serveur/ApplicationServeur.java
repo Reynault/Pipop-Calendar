@@ -852,4 +852,21 @@ public class ApplicationServeur implements Observer {
         return res;
     }
 
+    public HashMap<String, String> supprimerAmis(String user, String amis) {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("Request", "DeletFriendGroup");
+        try {
+            //requete pour delet le groupe
+            if (Utilisateur.deletAmis(user, amis)){
+                MessageCodeException.amis_not_found(res);
+            }else{
+                MessageCodeException.success(res);
+            }
+        } catch (SQLException e) {
+            MessageCodeException.bdd_error(res);
+            e.printStackTrace();
+        }
+        return res;
+    }
+
 }

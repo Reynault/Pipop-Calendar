@@ -41,6 +41,8 @@ public class MessageCodeException {
 
     public static String M_USER_NOT_IN_EVENT = "User not participating in event.";
 
+    private static String M_AMIS_NOT_FOUND = "Friend not found.";
+
     /**
      * Code de retour de la part du serveur
      */
@@ -61,7 +63,9 @@ public class MessageCodeException {
 
     public static String C_GROUPE_ERROR = "8";
 
-    public static String C_DB_CONSISTENCY_ERROR = "8";
+    public static String C_DB_CONSISTENCY_ERROR = "11";
+
+    public static String C_AMIS_NOT_FOUND = "12";
 
     public static void success(HashMap<String, String> map) {
         map.put("Result", MessageCodeException.C_SUCCESS);
@@ -141,5 +145,10 @@ public class MessageCodeException {
     public static void group_not_foud(HashMap<String, String> map) {
         map.put("Result", MessageCodeException.C_GROUPE_ERROR);
         map.put("Message", MessageCodeException.M_GROUPE_ERROR);
+    }
+
+    public static void amis_not_found(HashMap<String, String> map) {
+        map.put("Result", MessageCodeException.C_AMIS_NOT_FOUND);
+        map.put("Message", MessageCodeException.M_AMIS_NOT_FOUND);
     }
 }
