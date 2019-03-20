@@ -1,90 +1,175 @@
-<div class="page">
-  <div class="tabs-swipeable-wrap">
-    <div class="tabs">
-      <div class="page-content tab tab-active" id="friends">
+<template>
+  <div class="page">
+    <div class="tabs-swipeable-wrap">
+      <div class="tabs">
+        <div class="page-content tab tab-active" id="friends">
 
-        <div class="navbar no-shadow">
-          <div class="navbar-inner sliding">
-            <div class="left">
-              <a href="#" class="link back">
-                <i class="f7-icons">arrow_left</i>
-                <span class="ios-only">Back</span>
-              </a>
-            </div>
-            <div class="title">Friends</div>
-            <div class="right">
-              <a href="#" class="link">
-                <i class="f7-icons">add</i>
-                <span class="ios-only">Add</span>
-              </a>
+          <div class="navbar no-shadow">
+            <div class="navbar-inner sliding">
+              <div class="left">
+                <a href="#" class="link back">
+                  <i class="f7-icons">arrow_left</i>
+                  <span class="ios-only">Back</span>
+                </a>
+              </div>
+              <div class="title">Friends</div>
+              <div class="right">
+                <a href="#" data-popup="#search_friend" class="link popup-open">
+                  <i class="f7-icons">add</i>
+                  <span class="ios-only">Add</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="list">
-          <ul>
-            <li>
-              <div class="item-content">
-                <div class="item-media">
-                  <i class="f7-icons">person</i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title">
-                    Jean-Michel
+          <div class="list">
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-media">
+                    <i class="f7-icons">person</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">
+                      Jean-Michel
+                    </div>
                   </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
+
         </div>
+        <div class="page-content tab" id="groups">
 
-      </div>
-      <div class="page-content tab" id="groups">
-
-        <div class="navbar no-shadow">
-          <div class="navbar-inner sliding">
-            <div class="left">
-              <a href="#" class="link back">
-                <i class="f7-icons">arrow_left</i>
-                <span class="ios-only">Back</span>
-              </a>
-            </div>
-            <div class="title">Groups</div>
-            <div class="right">
-              <a href="#" class="link">
-                <i class="f7-icons">add</i>
-                <span class="ios-only">New</span>
-              </a>
+          <div class="navbar no-shadow">
+            <div class="navbar-inner sliding">
+              <div class="left">
+                <a href="#" class="link back">
+                  <i class="f7-icons">arrow_left</i>
+                  <span class="ios-only">Back</span>
+                </a>
+              </div>
+              <div class="title">Groups</div>
+              <div class="right">
+                <a href="#" class="link">
+                  <i class="f7-icons">add</i>
+                  <span class="ios-only">New</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="list">
-          <ul>
-            <li>
-              <div class="item-content">
-                <div class="item-media">
-                  <i class="f7-icons">persons</i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title">
-                    Kayak
+          <div class="popup" id="search_friend">
+            <div class="view">
+              <div class="page">
+                <div class="navbar">
+                  <div class="navbar-inner">
+                    <div class="title">Search a friend</div>
+                    <div class="right">
+                      <!-- Link to close popup -->
+                      <a class="link popup-close">
+                        <i class="f7-icons">close</i>
+                      </a>
+                    </div>
+
                   </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-        </div>
 
+                <div class="searchbar-backdrop"></div>
+                <form data-search-container="#users_list" data-search-item="li" data-search-in=".item-title" class="searchbar searchbar-init">
+                  <div class="searchbar-inner">
+                    <div class="searchbar-input-wrap">
+                      <input type="search" placeholder="Search">
+                      <i class="searchbar-icon"></i>
+                      <span class="input-clear-button"></span>
+                    </div>
+                    <span class="searchbar-disable-button">Cancel</span>
+                  </div>
+                </form>
+
+                <div class="page-content">
+                  <div class="list simple-list searchbar-not-found">
+                    <ul>
+                      <li>Nothing found</li>
+                    </ul>
+                  </div>
+                  <div class="list virtual-list media-list searchbar-found" id="users_list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="list">
+            <ul>
+              <li>
+                <div class="item-content">
+                  <div class="item-media">
+                    <i class="f7-icons">persons</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">
+                      Kayak
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="toolbar tabbar toolbar-bottom">
-    <div class="toolbar-inner">
-      <a href="#friends" class="tab-link tab-link-active">Friends</a>
-      <a href="#groups" class="tab-link">Groups</a>
+    <div class="toolbar tabbar toolbar-bottom">
+      <div class="toolbar-inner">
+        <a href="#friends" class="tab-link tab-link-active">Friends</a>
+        <a href="#groups" class="tab-link">Groups</a>
+      </div>
     </div>
-  </div>
 
-</div>
+  </div>
+</template>
+
+<script>
+  return {
+    on: {
+      pageInit: function (e, page) {
+        var items = [];
+        for (var i = 1; i <= 1000; i++) {
+          items.push({
+            title: 'User ' + i
+          });
+        }
+
+        var virtualList = app.virtualList.create({
+          // List Element
+          el: '#users_list',
+          // Pass array with items
+          items: items,
+          // Custom search function for searchbar
+          searchAll: function (query, items) {
+            var found = [];
+            for (var i = 0; i < items.length; i++) {
+              if (items[i].title.toLowerCase().indexOf(query.toLowerCase()) >= 0 || query.trim() === '') found.push(i);
+            }
+            console.log(found);
+            return found; //return array with mathced indexes
+          },
+          // List item Template7 template
+          itemTemplate:
+            '<li>' +
+              '<a href="#" class="item-link item-content">' +
+                '<div class="item-inner">' +
+                  '<div class="item-title-row">' +
+                    '<div class="item-title">{{title}}</div>' +
+                  '</div>' +
+                '</div>' +
+              '</a>' +
+            '</li>',
+          // Item height
+        });
+      }
+    }
+  }
+</script>
