@@ -767,7 +767,7 @@ public class ApplicationServeur implements Observer {
         return calendriers;
     }
 
-    public HashMap<String, String> modifAdminCalend() {
+    public HashMap<String, String> modifAdminCalend(String idCalendrier, String email, String emailNouveau) {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "TransfertCalendarOwnership");
 
