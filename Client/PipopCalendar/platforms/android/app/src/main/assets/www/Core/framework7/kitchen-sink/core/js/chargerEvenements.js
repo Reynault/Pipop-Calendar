@@ -19,13 +19,10 @@ $(document).ready(function(){
               app.preloader.hide();
               console.log(data);
               var obj = JSON.parse(data);
-              console.log(obj);
-              console.log("Err : "+ obj["RESULT"]+"          data : "+obj["MESSAGE"]);
-              if(obj["RESULT"]==0){
-
+              if(obj["Result"]==0){
                 var nbEvents = Object.keys(obj.Data).length;
                 let i = 0;
-                while( i  < nbEvents ){
+                //while( i  < nbEvents ){
 /*                  let date = obj["Data"][i]['Date'].split("-");
                   let dateFin = obj["Data"][i]['DateFin'].split("-");
                   let deb = new Date(date[0], date[1], date[2]);
@@ -34,12 +31,12 @@ $(document).ready(function(){
                     inputEl: '',
                     dateFormat: 'M dd YYYY'
                   });*/
-                }
+                //}
               }else{
-                $("#evenementContainer").empty();
-                var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
-                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Events Found</p></div>").appendTo("#0Evenement");
-                console.log($("#evenementContainer").prop('outerHTML'));
+//                $("#evenementContainer").empty();
+//                var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
+//                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Events Found</p></div>").appendTo("#0Evenement");
+//                console.log($("#evenementContainer").prop('outerHTML'));
                 window.plugins.toast.showWithOptions(
                 {
                    message: ""+obj["Message"],
@@ -59,13 +56,10 @@ $(document).ready(function(){
               }
           },
           error: function(jqXHR, textStatus, errorThrown) {
-              console.log("ERREUR : "+jqXHR);
-              console.log("ERREUR : "+textStatus);
-              console.log("ERREUR : "+errorThrown);
               app.preloader.hide();
-              $("#evenementContainer").empty();
-              var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
-              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connection</p></div>").appendTo("#0Evenement");
+//              $("#evenementContainer").empty();
+//              var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
+//              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connection</p></div>").appendTo("#0Evenement");
               window.plugins.toast.showWithOptions({
                  message: "No network connection or server error",
                  duration: 1500, // ms

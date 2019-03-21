@@ -1,21 +1,19 @@
 package mycalendar.modele.utilisateur;
+
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.calendrier.Calendrier;
-import mycalendar.modele.calendrier.Evenement;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Classe Utilisateur qui représente un utilisateur dans la base de données
  */
 
-public class Utilisateur{
+public class Utilisateur {
 
     private String email, nom, tmp_password, password, prenom;
 
@@ -105,6 +103,30 @@ public class Utilisateur{
         return retour;
     }
 
+    /**
+     * Ajout d'un utilisateur en ami
+     * @param email1 email de l'utilisateur actif
+     * @param email2 email de l'utilisateur a ajouter
+     * @return 1 si l'ami a ete ajoute. 0 sinon
+     * @throws SQLException
+     */
+    public static int ajouterAmi(String email1, String email2) throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request = "INSERT INTO Amis VALUES(?,?);";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, email1);
+        prep.setString(2, email2);
+        int result = prep.executeUpdate();
+        connect.close();
+        return result; // 1 si le tuple a été ajouté
+    }
+
+    /**
+     * Recherche des calendriers appartenant a l'utilisateur
+     * @param email email de l'utilisateur
+     * @return liste des calendriers de l'utilisateur
+     * @throws SQLException
+     */
     public static ArrayList<Calendrier> findCalendriers(String email) throws SQLException {
         ArrayList<Calendrier> calendriers = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
@@ -142,6 +164,13 @@ public class Utilisateur{
         return u;
     }
 
+    /**
+     * Recherche des utilisateurs par nom et prenom
+     * @param nom nom de l'utilisateur
+     * @param prenom prenom de l'utilisateur
+     * @return liste des utilisateurs
+     * @throws SQLException
+     */
     public static ArrayList<Utilisateur> find(String nom, String prenom) throws SQLException {
         ArrayList<Utilisateur> ul = new ArrayList<>();
         Connection connect = GestionnaireBDD.getInstance().getConnection();
@@ -179,10 +208,18 @@ public class Utilisateur{
         return email;
     }
 
+    /**
+     * Getter sur le nom
+     * @return nom de l'utilisateur
+     */
     public String getNom() {
         return this.nom;
     }
 
+    /**
+     * Getter sur le prenom
+     * @return prenom de l'utilisateur
+     */
     public String getPrenom() {
         return this.prenom;
     }
@@ -198,6 +235,16 @@ public class Utilisateur{
         }
         return true;
 
+    }
+
+    public static void invitUtilisateurEvenement(String email, int idEvent) throws SQLException {
+    	Connection connection = GestionnaireBDD.getInstance().getConnection();
+    	String request = "INSERT INTO utilisateur_evenement VALUES(?,?);";
+    	PreparedStatement preparedStatement = connection.prepareStatement(request);
+    	preparedStatement.setString(1, email);
+    	preparedStatement.setInt(2, idEvent);
+	    preparedStatement.executeUpdate();
+	    connection.close();
     }
 
 }

@@ -345,6 +345,20 @@ public class Calendrier {
         return themes;
     }
 
+    public int modifAdmin(String emailNouveau, String email) throws SQLException {
+        this.email = emailNouveau;
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        String request = "UPDATE utilisateur_calendrier SET Email=? WHERE Email=? AND idc=?;";
+        PreparedStatement prep = connect.prepareStatement(request);
+        prep.setString(1, this.email);
+        prep.setString(2, email);
+        prep.setInt(3, this.idC);
+        if (prep.executeUpdate() == 1) {
+            return 0;
+        }
+        return -1;
+    }
+
     public int getIdC() {
         return idC;
     }

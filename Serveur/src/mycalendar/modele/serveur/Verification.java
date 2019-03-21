@@ -1,7 +1,7 @@
 package mycalendar.modele.serveur;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Verification {
     public static boolean checkMail(String mail){
@@ -24,6 +24,6 @@ public class Verification {
     }
 
     public static boolean checkDate(Date deb, Date fin){
-        return deb.after(fin);
+        return fin.after(deb);
     }
 }

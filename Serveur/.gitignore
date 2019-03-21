@@ -1,3 +1,5 @@
 .iml
-.idea
+.idea/
 .class
+/out
+Serveur.iml

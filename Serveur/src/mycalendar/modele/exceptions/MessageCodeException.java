@@ -21,6 +21,9 @@ public class MessageCodeException {
     public static String M_USER_NOT_FOUND = "User not found.";
     public static String M_USER_ALREADY_EXIST = "User already exists.";
 
+    public static String M_FRIEND_ALREADY_EXIST = "Friend already exists.";
+    public static String M_FRIEND_ERROR_BDD = "Could not insert friend into database.";
+
     public static String M_BDD_ERROR = "Erreur de connexion avec la base de données";
 
     public static String M_DATE_ERROR = "Date already passed.";
@@ -34,6 +37,10 @@ public class MessageCodeException {
     public static String M_THEME_NOT_FOUND = "Themes non trouve.";
 
     public static String M_DATE_PARSE_ERROR = "Erreur de date.";
+
+    public static String M_EMPTY_DATA = "Données vides";
+
+    public static String M_INVALID_EMAIL = "Email invalide";
 
     private static String M_GROUPE_ERROR = "Erreur de groupe";
 
@@ -61,6 +68,10 @@ public class MessageCodeException {
 
     public static String C_DATE_PARSE = "7";
 
+    public static String C_EMPTY_DATA = "9";
+
+    public static String C_INVALID_EMAIL = "10";
+
     public static String C_GROUPE_ERROR = "8";
 
     public static String C_DB_CONSISTENCY_ERROR = "11";
@@ -70,6 +81,16 @@ public class MessageCodeException {
     public static void success(HashMap<String, String> map) {
         map.put("Result", MessageCodeException.C_SUCCESS);
         map.put("Message", MessageCodeException.M_SUCCESS);
+    }
+
+    public static void invalid_email(HashMap<String, String> map){
+        map.put("Result", MessageCodeException.C_INVALID_EMAIL);
+        map.put("Message", MessageCodeException.M_INVALID_EMAIL);
+    }
+
+    public static void empty_data(HashMap<String, String> map){
+        map.put("Result", C_EMPTY_DATA);
+        map.put("Message", M_EMPTY_DATA);
     }
 
     public static void date_parse_error(HashMap<String, String> map){

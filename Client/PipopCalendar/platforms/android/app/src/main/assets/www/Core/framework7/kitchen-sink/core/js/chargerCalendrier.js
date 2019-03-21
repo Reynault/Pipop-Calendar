@@ -4,6 +4,7 @@ $(document).ready(function(){
 
   $("body").on('click', '.calend', function(){
     localStorage.setItem("nomCalendrierCourant", $(this).text());
+    localStorage.setItem("idCalendrierCourant", $(this).attr("id"));
   });
 
 });
@@ -28,9 +29,10 @@ $(document).ready(function(){
                  for(var i = 0; i<nbCalendriers; i++){
                    if(i%2==0){
                      var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
-                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
+                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "' id='"+obj["Data"][y]["ID"]+"'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
+
                    }else{
-                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
+                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] +  "' id='"+obj["Data"][y]["ID"]+"'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
                    }
                    y++;
                  }

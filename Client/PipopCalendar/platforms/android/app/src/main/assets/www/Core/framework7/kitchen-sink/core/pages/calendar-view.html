@@ -11,7 +11,7 @@
             <span class="ios-only">Back</span>
           </a>
         </div>
-        <div class="title">TITRE</div>
+        <div class="title titreCalendrier"></div>
         <div class="right">
           <a href="#" data-popover="#calendar_settings" class="link popover-open">
             <i class="material-icons">settings</i>
@@ -30,20 +30,18 @@
 
     <div class="page-content">
 
+      <div class="block-title titreCalendrier" id="nomCalendrier"></div>
       <div class="popover" id="calendar_settings">
         <div class="popover-inner">
           <div class="list">
             <ul>
-              <li><a class="list-button item-link" href="#">Link 1</a></li>
-              <li><a class="list-button item-link" href="#">Link 2</a></li>
-              <li><a class="list-button item-link" href="#">Link 3</a></li>
-              <li><a class="list-button item-link" href="#">Link 4</a></li>
+              <li><a class="list-button item-link" href="/calendar-form-edit/" id="modifCalendrierBouton">Edit</a></li>
+              <li><a class="list-button item-link" href="#" id="supprCalendrierBouton">Delete</a></li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="block-title" id="nomCalendrier">Calendar name</div>
       <div class="block block-strong no-padding">
 
         <!-- Mois -->
@@ -322,10 +320,16 @@
           }
         });
       },
+      pageAfterIn(){
+        var titre = localStorage.getItem('nomCalendrierCourant');
+        $(".titreCalendrier").text(titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase());
+
+      },
       pageBeforeRemove() {
         var self = this;
         self.calendarInline.destroy();
       }
     }
   };
+
 </script>
