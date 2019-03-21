@@ -955,8 +955,7 @@ public class ApplicationServeur implements Observer {
     }
 
     public ArrayList<GroupeAmi> rechercherGroupe(String nomG) throws SQLException {
-        //return GroupeAmi.find(nomG);
-        return null;
+        return GroupeAmi.find(nomG);
     }
 
 	/**
@@ -974,6 +973,7 @@ public class ApplicationServeur implements Observer {
 		ResultSet result = prep.executeQuery();
 		while(result.next()){
 			//Invite l'utilisateur à l'événement
+            Utilisateur.invitUtilisateurEvenement(result.getString(1), idE);
 		}
 	}
 

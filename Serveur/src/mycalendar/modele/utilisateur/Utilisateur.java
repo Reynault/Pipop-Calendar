@@ -237,4 +237,14 @@ public class Utilisateur {
 
     }
 
+    public static void invitUtilisateurEvenement(String email, int idEvent) throws SQLException {
+    	Connection connection = GestionnaireBDD.getInstance().getConnection();
+    	String request = "INSERT INTO utilisateur_evenement VALUES(?,?);";
+    	PreparedStatement preparedStatement = connection.prepareStatement(request);
+    	preparedStatement.setString(1, email);
+    	preparedStatement.setInt(2, idEvent);
+	    preparedStatement.executeUpdate();
+	    connection.close();
+    }
+
 }
