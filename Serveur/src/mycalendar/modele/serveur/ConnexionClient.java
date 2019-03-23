@@ -1,7 +1,9 @@
 package mycalendar.modele.serveur;
 
 import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.calendrier.Message;
 import mycalendar.modele.exceptions.BadRequestExeption;
+import mycalendar.modele.exceptions.MessageCodeException;
 import mycalendar.modele.exceptions.NoRequestException;
 
 import java.io.*;
@@ -166,15 +168,19 @@ public class ConnexionClient implements Runnable{
      */
     private String createReponse(HashMap<String, String> donnees) throws BadRequestExeption, SQLException {
         String result = "";
-        HashMap<String, String> rep;
+        HashMap<String, String> rep = new HashMap<>();
         HashMap<String, Object> repObj;
         ParseurJson parseur = ParseurJson.getInstance();
-        switch (donnees.get("Request")) {
+        String email = donnees.get("Email");
+        String mdp = donnees.get("Mdp");
+        String request = donnees.get("Request");
+        // Traitement de la requête
+        switch (request) {
             // Authentification
             case "SignIn": {
                 rep = ApplicationServeur.getInstance().authentification(
-                        donnees.get("Email"),
-                        donnees.get("Mdp")
+                        email,
+                        mdp
                 );
                 result = parseur.encode(rep);
                 break;
@@ -182,173 +188,215 @@ public class ConnexionClient implements Runnable{
             // Inscription
             case "SignUp": {
                 rep = ApplicationServeur.getInstance().inscription(
-                        donnees.get("Email"),
-                        donnees.get("Mdp"),
+                        email,
+                        mdp,
                         donnees.get("Prenom"),
                         donnees.get("Nom")
                 );
                 result = parseur.encode(rep);
                 break;
             }
-            // Ajout d'un événement
-            case "AddEvent": {
-                String calendarName = donnees.get("CalendarName");
-                String eventName = donnees.get("EventName");
-                String eventDescription = donnees.get("EventDescription");
-                String image = "";
-                String eventDateDeb = donnees.get("EventDate");
-                String eventDateFin = donnees.get("EventDateFin");
-                String eventLocation = donnees.get("EventLocation");
-                String eventColor = donnees.get("EventColor");
-                String eventAuthor = donnees.get("EventAuthor");
-                boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
-                rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription,
-                        image , eventDateDeb, eventDateFin, eventLocation,  eventColor,eventAuthor, eventVisibility);
-                result = parseur.encode(rep);
-                break;
+        }
+
+        // Vérification de l'existence d'un utilisateur
+        if(Verification.checkPassword(email, mdp)){
+            switch (request) {
+                // Ajout d'un événement
+                case "AddEvent": {
+                    String calendarName = donnees.get("CalendarName");
+                    String eventName = donnees.get("EventName");
+                    String eventDescription = donnees.get("EventDescription");
+                    String image = "";
+                    String eventDateDeb = donnees.get("EventDate");
+                    String eventDateFin = donnees.get("EventDateFin");
+                    String eventLocation = donnees.get("EventLocation");
+                    String eventColor = donnees.get("EventColor");
+                    String eventAuthor = donnees.get("EventAuthor");
+                    if (Verification.checkCalendarByName(email, calendarName)) {
+                        boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
+                        rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription,
+                                image, eventDateDeb, eventDateFin, eventLocation, eventAuthor, eventColor, eventVisibility);
+                    } else {
+                        MessageCodeException.calendar_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                // Suppression d'un événement
+                case "DeleteEvent": {
+                    int idEv = Integer.parseInt(donnees.get("ID"));
+                    if (Verification.checkEvent(email, idEv)) {
+                        rep = ApplicationServeur.getInstance().suppressionEvenement(idEv);
+                    } else {
+                        MessageCodeException.event_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                // Modification d'un événement
+                case "ModifyEvent": {
+                    int idevent = Integer.parseInt(donnees.get("IdEvent"));
+                    String idCalendar = donnees.get("IdCalendar");
+                    String eventName = donnees.get("EventName");
+                    String eventDescription = donnees.get("EventDescription");
+                    String eventPicture = donnees.get("EventPicture");
+                    String eventDate = donnees.get("EventDate");
+                    String eventDateFin = donnees.get("EventDateFin");
+                    String eventLocation = donnees.get("EventLocation");
+                    String eventColor = donnees.get("EventColor");
+                    String eventAuthor = donnees.get("EventAuthor");
+                    if (Verification.checkEvent(email, idevent)) {
+                        rep = ApplicationServeur.getInstance().modificationEvenement
+                                (idevent, Integer.parseInt(idCalendar), eventName, eventDescription, eventPicture,
+                                        eventDate, eventDateFin, eventLocation, eventColor, eventAuthor);
+                    } else {
+                        MessageCodeException.event_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                // Consultation d'un événement
+                case "ConsultEvent": {
+                    String idevent = donnees.get("IdEvent");
+                    if (Verification.checkEvent(email, Integer.parseInt(idevent))) {
+                        rep = ApplicationServeur.getInstance().consultationEvenement(idevent);
+                    } else {
+                        MessageCodeException.event_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                // Consultation d'un calendrier
+                case "CreateCalendar": {
+                    String nom = donnees.get("Nom");
+                    String desc = donnees.get("Description");
+                    String couleur = donnees.get("Couleur");
+                    String theme = donnees.get("Theme");
+                    String auteur = donnees.get("Auteur");
+                    rep = ApplicationServeur.getInstance().creationCalendrier(nom, desc, couleur, theme, auteur);
+                    result = parseur.encode(rep);
+                    break;
+                }
+                case "DeleteCalendar": {
+                    int idCalendar = Integer.parseInt(donnees.get("IDCalendar"));
+                    boolean b = Boolean.parseBoolean(
+                            donnees.get("SuppEv")
+                    );
+                    if (Verification.checkCalendar(email, idCalendar)) {
+                        rep = ApplicationServeur.getInstance().suppressionCalendrier(email, idCalendar, b);
+                    } else {
+                        MessageCodeException.calendar_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                case "ModifyCalendar": {
+                    int idCalendar = Integer.parseInt(donnees.get("IdCalendar"));
+                    String nom = donnees.get("Nom");
+                    String couleur = donnees.get("Couleur");
+                    if (Verification.checkCalendar(email, idCalendar)) {
+                        rep = ApplicationServeur.getInstance().modificationCalendrier(
+                                idCalendar,
+                                nom,
+                                couleur
+                        );
+                    } else {
+                        MessageCodeException.calendar_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                case "AddFriend": {
+                    String email2 = donnees.get("Email2");
+                    rep = ApplicationServeur.getInstance().ajoutAmi(email, email2);
+                    result = parseur.encode(rep);
+                    break;
+                }
+                // Récupération de plusieurs utilisateurs
+                case "GetUsers": {
+                    String nom = donnees.get("FirstName");
+                    String prenom = donnees.get("LastName");
+                    repObj = ApplicationServeur.getInstance().getUtilisateurs(nom, prenom);
+                    result = parseur.encodeObj(repObj);
+                    break;
+                }
+                // Chargement d'un calendrier et de ses événements
+                case "ConsultCalendar": {
+                    int id = Integer.parseInt(donnees.get("ID"));
+                    if(Verification.checkCalendar(email, id)) {
+                        rep = ApplicationServeur.getInstance().consultCalendar(
+                                id
+                        );
+                    }else{
+                        MessageCodeException.calendar_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                // Chargement de la liste des calendriers d'un utilisateur
+                case "LoadCalendars": {
+                    repObj = ApplicationServeur.getInstance().loadCalendars(
+                            email
+                    );
+                    result = parseur.encodeObj(repObj);
+                    break;
+                }
+                case "GetTheme": {
+                    repObj = ApplicationServeur.getInstance().getThemes();
+                    result = parseur.encodeObj(repObj);
+                    break;
+                }
+                case "LoadEvents": {
+                    String cal = donnees.get("CalendarName");
+                    if(Verification.checkCalendarByName(email, cal)) {
+                        repObj = ApplicationServeur.getInstance().loadEvents(email, cal);
+                    }else{
+                        repObj = new HashMap<>();
+                        repObj.put("Result", MessageCodeException.C_NOT_FOUND);
+                        repObj.put("Message", MessageCodeException.M_CALENDAR_NOT_FOUND);
+                    }
+                    result = parseur.encodeObj(repObj);
+                    break;
+                }
+                case "TransfertEventOwnership": {
+                    String member = donnees.get("Member");
+                    String owner = donnees.get("Owner");
+                    String event = donnees.get("EventName");
+                    if(Verification.checkEventByName(email, event)) {
+                        rep = ApplicationServeur.getInstance().transfererPropriete(member, owner, event);
+                    }else{
+                        MessageCodeException.event_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                case "TransfertCalendarOwnership": {
+                    String calendarName = donnees.get("Calendar");
+                    String oldOwner = donnees.get("OldOwner");
+                    String newOwner = donnees.get("NewOwner");
+                    if(Verification.checkEventByName(email, calendarName)) {
+                        rep = ApplicationServeur.getInstance().modifAdminCalend(calendarName, oldOwner, newOwner);
+                    }else{
+                        MessageCodeException.calendar_not_found(rep);
+                    }
+                    result = parseur.encode(rep);
+                    break;
+                }
+                case "ModifyAccount": {
+                    String nom = donnees.get("Nom");
+                    String prenom = donnees.get("Prenom");
+                    String newmdp = donnees.get("NewMdp");
+                    rep = ApplicationServeur.getInstance().modifierCompte(email, nom, prenom, mdp);
+                    result = parseur.encode(rep);
+                    break;
+                }
+                default: {
+                    throw new BadRequestExeption(donnees.get("Request"));
+                }
             }
-            // Suppression d'un événement
-            case "DeleteEvent": {
-                int idEv = Integer.parseInt(donnees.get("ID"));
-                rep = ApplicationServeur.getInstance().suppressionEvenement(idEv);
-                result = parseur.encode(rep);
-                break;
-            }
-            // Modification d'un événement
-            case "ModifyEvent": {
-                String idevent = donnees.get("IdEvent");
-                String idCalendar = donnees.get("IdCalendar");
-                String eventName = donnees.get("EventName");
-                String eventDescription = donnees.get("EventDescription");
-                String eventPicture = donnees.get("EventPicture");
-                String eventDate = donnees.get("EventDate");
-                String eventDateFin = donnees.get("EventDateFin");
-                String eventLocation = donnees.get("EventLocation");
-                String eventColor = donnees.get("EventColor");
-                String eventAuthor = donnees.get("EventAuthor");
-                rep = ApplicationServeur.getInstance().modificationEvenement
-                        (Integer.parseInt(idevent), Integer.parseInt(idCalendar),eventName, eventDescription, eventPicture,
-                                eventDate, eventDateFin, eventLocation, eventColor, eventAuthor);
-                result = parseur.encode(rep);
-                break;
-            }
-            // Consultation d'un événement
-            case "ConsultEvent": {
-                String idevent = donnees.get("IdEvent");
-                rep = ApplicationServeur.getInstance().consultationEvenement(idevent);
-                result = parseur.encode(rep);
-                break;
-            }
-            // Consultation d'un calendrier
-            case "CreateCalendar":
-            {
-                String nom = donnees.get("Nom");
-                String desc = donnees.get("Description");
-                String couleur = donnees.get("Couleur");
-                String theme = donnees.get("Theme");
-                String auteur = donnees.get("Auteur");
-                rep = ApplicationServeur.getInstance().creationCalendrier(nom, desc, couleur, theme, auteur);
-                result = parseur.encode(rep);
-                break;
-            }
-            case "DeleteCalendar":
-            {
-                String email = donnees.get("Email");
-                int idCalendar = Integer.parseInt(donnees.get("IDCalendar"));
-                boolean b = Boolean.parseBoolean(
-                        donnees.get("SuppEv")
-                );
-                rep = ApplicationServeur.getInstance().suppressionCalendrier(email, idCalendar, b);
-                result = parseur.encode(rep);
-                break;
-            }
-            case "ModifyCalendar":
-            {
-                int idCalendar = Integer.parseInt(donnees.get("IdCalendar"));
-                String nom = donnees.get("Nom");
-                String couleur = donnees.get("Couleur");
-                rep = ApplicationServeur.getInstance().modificationCalendrier(
-                        idCalendar,
-                        nom,
-                        couleur
-                );
-                result = parseur.encode(rep);
-                break;
-            }
-            case "AddFriend": {
-                String email1 = donnees.get("Email1");
-                String email2 = donnees.get("Email2");
-                rep = ApplicationServeur.getInstance().ajoutAmi(email1, email2);
-                result = parseur.encode(rep);
-                break;
-            }
-            // Récupération de plusieurs utilisateurs
-            case "GetUsers": {
-                String nom = donnees.get("FirstName");
-                String prenom = donnees.get("LastName");
-                repObj = ApplicationServeur.getInstance().getUtilisateurs(nom, prenom);
-                result = parseur.encodeObj(repObj);
-                break;
-            }
-            // Chargement d'un calendrier et de ses événements
-            case "ConsultCalendar": {
-                int id = Integer.parseInt(donnees.get("ID"));
-                rep = ApplicationServeur.getInstance().consultCalendar(
-                        id
-                );
-                result = parseur.encode(rep);
-                break;
-            }
-            // Chargement de la liste des calendriers d'un utilisateur
-            case "LoadCalendars": {
-                String email = donnees.get("Email");
-                repObj = ApplicationServeur.getInstance().loadCalendars(
-                        email
-                );
-                result = parseur.encodeObj(repObj);
-                break;
-            }
-            case "GetTheme":{
-                repObj = ApplicationServeur.getInstance().getThemes();
-                result = parseur.encodeObj(repObj);
-                break;
-            }
-            case "LoadEvents": {
-                String email = donnees.get("Mail");
-                String cal = donnees.get("CalendarName");
-                repObj = ApplicationServeur.getInstance().loadEvents(email, cal);
-                result = parseur.encodeObj(repObj);
-                break;
-            }
-            case "TransfertEventOwnership": {
-                String member = donnees.get("Member");
-                String owner = donnees.get("Owner");
-                String event = donnees.get("EventName");
-                rep = ApplicationServeur.getInstance().transfererPropriete(member, owner, event);
-                result = parseur.encode(rep);
-                break;
-            }
-            case "TransfertCalendarOwnership": {
-                String calendarName = donnees.get("Calendar");
-                String oldOwner = donnees.get("OldOwner");
-                String newOwner = donnees.get("NewOwner");
-                rep = ApplicationServeur.getInstance().modifAdminCalend(calendarName, oldOwner, newOwner);
-                result = parseur.encode(rep);
-                break;
-            }
-            case "ModifyAccount":
-            {
-                String email = donnees.get("Email");
-                String nom = donnees.get("Nom");
-                String prenom = donnees.get("Prenom");
-                String mdp = donnees.get("Password");
-                rep = ApplicationServeur.getInstance().modifierCompte(email, nom, prenom, mdp);
-                result = parseur.encode(rep);
-                break;
-            }
-            default: {
-                throw new BadRequestExeption(donnees.get("Request"));
-            }
+        }else{
+            MessageCodeException.user_not_found(rep);
+            result = parseur.encode(rep);
         }
         return result;
     }
