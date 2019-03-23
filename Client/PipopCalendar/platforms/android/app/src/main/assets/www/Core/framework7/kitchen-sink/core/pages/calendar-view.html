@@ -35,7 +35,7 @@
         <div class="popover-inner">
           <div class="list">
             <ul>
-              <li><a class="list-button item-link" href="/calendar-form-edit/" id="modifCalendrierBouton">Edit</a></li>
+              <li><a class="list-button item-link" href="">Edit</a></li>
               <li><a class="list-button item-link" href="#" id="supprCalendrierBouton">Delete</a></li>
             </ul>
           </div>
@@ -97,10 +97,24 @@
 <script>
   return {
     on: {
+      pageBeforIn: function(e,page){
+
+      },
       pageInit: function (e, page) {
         var $$ = Dom7;
         var self = this;
         var app = self.$app;
+        $.ajax({
+          url: "js/chargerEvenements.js",
+          dataType: "script",
+          cache: true,
+          async:false,
+          success:function(msg) {
+          },
+          error:function(msg) {
+            console.log("Error chargement script de chargement d'événements");
+          }
+        });
         var range = app.range.create({
           el: '#zoom',
         });
@@ -110,29 +124,7 @@
         var calendarInline = app.calendar.create({
           containerEl: '#calendar-inline-container',
           weekHeader: true,
-          events: [
-            {
-              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 13),
-              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 15),
-              color: 'blue',
-              title: 'test 1',
-              description: 'bijour'
-            },
-            {
-              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5, 8),
-              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5, 18),
-              color: 'red',
-              title: 'test 2',
-              description: 'orevoar'
-            },
-            {
-              from: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 4, 17),
-              to: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 6, 8),
-              color: 'black',
-              title: 'test 3',
-              description: 'vziuehpvzuhvcpuzeohcfuz izeijhcuhc'
-            },
-          ],
+          dateFormat: 'yyyy-mm-dd',
           renderToolbar: function () {
             return '<div class="toolbar calendar-custom-toolbar no-shadow">' +
               '<div class="toolbar-inner">' +
@@ -321,9 +313,16 @@
         });
       },
       pageAfterIn(){
+        var self = this;
+        var app = self.$app;
+        console.log(eventFromServer);
         var titre = localStorage.getItem('nomCalendrierCourant');
         $(".titreCalendrier").text(titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase());
+        var calendarInline = app.calendar.get();
+        console.log(calendarInline);
+        calendarInline.params.events = eventFromServer;
 
+        calendarInline.update();
       },
       pageBeforeRemove() {
         var self = this;

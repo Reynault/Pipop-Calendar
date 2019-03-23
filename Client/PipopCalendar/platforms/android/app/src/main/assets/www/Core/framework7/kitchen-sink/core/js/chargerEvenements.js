@@ -1,9 +1,8 @@
-$(document).ready(function(){
+//$(document).ready(function(){
+var eventFromServer = [];
+chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
 
-   chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
-
-});
-
+//});
 
   function chargerEvenements(email, calendrier){
       var arr = {"Request":"LoadEvents","Mail":email,"CalendarName":calendrier};
@@ -14,29 +13,42 @@ $(document).ready(function(){
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: true,
+          async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               console.log(data);
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
                 var nbEvents = Object.keys(obj.Data).length;
-                let i = 0;
-                //while( i  < nbEvents ){
-/*                  let date = obj["Data"][i]['Date'].split("-");
-                  let dateFin = obj["Data"][i]['DateFin'].split("-");
-                  let deb = new Date(date[0], date[1], date[2]);
-                  let fin = new Date(dateFin[0], dateFin[1], dateFin[2]);
-                  let calendarEvents = app.calendar.create({
-                    inputEl: '',
-                    dateFormat: 'M dd YYYY'
-                  });*/
-                //}
+                var objData = obj["Data"];
+                for(var i=0; i < nbEvents; i++){
+                console.log(objData[i]["Date"]);
+                  var dateDeb = {
+                    year: new Date(objData[i]["Date"]).getFullYear(),
+                    month: new Date(objData[i]["Date"]).getMonth(),
+                    day: new Date(objData[i]["Date"]).getDate(),
+                    hour: new Date(objData[i]["Date"]).getHours(),
+                    min: new Date(objData[i]["Date"]).getMinutes()
+                  };
+
+                  var dateFin ={
+                    year: new Date(objData[i]["DateFin"]).getFullYear(),
+                    month: new Date(objData[i]["DateFin"]).getMonth(),
+                    day: new Date(objData[i]["DateFin"]).getDate(),
+                    hour: new Date(objData[i]["DateFin"]).getHours(),
+                    min: new Date(objData[i]["DateFin"]).getMinutes()
+                  };
+
+                  var t = {
+                    from: new Date(dateDeb.year, dateDeb.month, dateDeb.day,dateDeb.day,dateDeb.hour,dateDeb.min),
+                    to: new Date(dateFin.year, dateFin.month,dateFin.day, dateFin.day, dateFin.hour, dateFin.min),
+                    color: ''+objData[i]["EventColor"],
+                    title: ''+objData[i]["EventName"],
+                    description: ''+objData[i]["Description"]
+                  };
+                  eventFromServer.push(t);
+                }
               }else{
-//                $("#evenementContainer").empty();
-//                var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
-//                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Events Found</p></div>").appendTo("#0Evenement");
-//                console.log($("#evenementContainer").prop('outerHTML'));
                 window.plugins.toast.showWithOptions(
                 {
                    message: ""+obj["Message"],
@@ -57,9 +69,6 @@ $(document).ready(function(){
           },
           error: function(jqXHR, textStatus, errorThrown) {
               app.preloader.hide();
-//              $("#evenementContainer").empty();
-//              var p = $("#evenementContainer").append("<p id='0Evenement' class='row'>");
-//              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connection</p></div>").appendTo("#0Evenement");
               window.plugins.toast.showWithOptions({
                  message: "No network connection or server error",
                  duration: 1500, // ms

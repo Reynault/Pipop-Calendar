@@ -33,7 +33,7 @@
          var app = self.$app;
          $('#deconnexionBouton').on('click', function (e) {
            console.log("LOGOUT");
-           app.dialog.confirm('Voulez-vous vous déconnecter?', function () {
+           app.dialog.confirm('Are you sure you want to log out?', function () {
               window.location = "index.html";
               localStorage.setItem("emailUtilisateur","");
             });

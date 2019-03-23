@@ -91,21 +91,10 @@ var mainView = app.views.create('.view-main', {
       on:{
         pageAfterIn: function (e, page) {
            $.ajax({
-             url: "js/chargerEvenements.js",
-             dataType: "script",
-             cache: true,
-             success:function(msg) {
-             },
-             error:function(msg) {
-               console.log("Error chargement script de chargement d'événements");
-             },
-           });
-           $.ajax({
              url: "js/supprimerCalendrier.js",
              dataType: "script",
              cache: true,
              success:function(msg) {
-              console.log("Successsss!");
              },
              error:function(msg) {
                console.log("Error chargement script de suppression de calendrier");
