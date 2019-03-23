@@ -24,6 +24,9 @@ public class MessageCodeException {
     public static String M_FRIEND_ALREADY_EXIST = "Friend already exists.";
     public static String M_FRIEND_ERROR_BDD = "Could not insert friend into database.";
 
+    public static String M_GROUP_ALREADY_EXIST = "Friends group already exists.";
+
+
     public static String M_BDD_ERROR = "Erreur de connexion avec la base de données";
 
     public static String M_DATE_ERROR = "Date already passed.";

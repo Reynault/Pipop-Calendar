@@ -765,6 +765,30 @@ public class ApplicationServeur implements Observer {
     }
 
     /**
+     * Creation d'un groupe d'amis
+     * @param amis liste des amis a ajouter
+     * @param nomGroupe nom du groupe
+     * @return HashMap correspondant au resultat de la requête
+     * @throws SQLException
+     */
+    //TODO Création d'un groupe d'amis
+    public HashMap<String, Object> creerNouveauGroupeAmis(ArrayList<String> amis, String nomGroupe) throws SQLException {
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("Request", "CreateFriendsGroup");
+        ArrayList<GroupeAmi> groupe = GroupeAmi.find(nomGroupe);
+        if(groupe.size() != 0){
+            res.put("Result", MessageCodeException.C_ALREADY_EXIST);
+            res.put("Message", MessageCodeException.M_GROUP_ALREADY_EXIST);
+        }
+        else{
+            // Groupe inexistant, il peut être créé
+            GroupeAmi groupeAmi = new GroupeAmi(amis, nomGroupe);
+            groupeAmi.save();
+        }
+        return res;
+    }
+
+    /**
      * Getter sur une liste d'utilisateurs
      * @param nom nom des utilisateurs a rechercher
      * @param prenom prenom des utilisateurs a rechercher
