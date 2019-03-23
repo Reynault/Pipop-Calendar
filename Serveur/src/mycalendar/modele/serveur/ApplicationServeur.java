@@ -90,7 +90,7 @@ public class ApplicationServeur implements Observer {
      * @param visible visibilité des événements auprès des autres utilisateurs
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
-    public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String datedeb, String datefin, String lieu, String auteur, boolean visible) {
+    public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur, boolean visible) {
         int calendrierID, eventID = -1;
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "AddEvent");
@@ -115,7 +115,7 @@ public class ApplicationServeur implements Observer {
                         //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                         return res;
                     }
-                    if ((eventID = this.createEvenement(calendrierID, nom, description, image, datedeb, datefin, lieu, auteur, visible)) < 0) { // On crée l'événement
+                    if ((eventID = this.createEvenement(calendrierID, nom, description, image, datedeb, datefin, lieu, couleur, auteur, visible)) < 0) { // On crée l'événement
                         // Pas possible d'insérer le nouvel événement dans la base : erreur de cohérence ; son code d'erreur associé est 3
                         MessageCodeException.bdd_event_error(res);
                         //res.put("Result", MessageCodeException.C_ERROR_BDD);
@@ -180,7 +180,7 @@ public class ApplicationServeur implements Observer {
      * @return 1 si la création s'est bien passé, 0 sinon
      * @throws ParseException
      */
-    private int createEvenement(int calendrierID, String nom, String description, String image, String datedeb, String datefin, String lieu, String auteur, boolean visible) throws ParseException, SQLException {
+    private int createEvenement(int calendrierID, String nom, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur, boolean visible) throws ParseException, SQLException {
         int res = -1;
         // Date de début
         Date dateD = dateFormat.parse(datedeb);
@@ -191,9 +191,9 @@ public class ApplicationServeur implements Observer {
             int id;
             id = Evenement.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
             if (visible) {
-                e = new EvenementPublic(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
+                e = new EvenementPublic(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, couleur, auteur);
             } else {
-                e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, auteur);
+                e = new EvenementPrive(id + 1, calendrierID, nom, description, image, dateD, dateF, lieu, couleur, auteur);
             }
 
             if (e.save()) {
@@ -254,7 +254,7 @@ public class ApplicationServeur implements Observer {
      * @param auteur l'auteur de l'événement modifier
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
-    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, String datedeb, String datefin, String lieu, String auteur){
+    public HashMap<String, String>  modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur){
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "ModifyEvent");
         try {
@@ -285,7 +285,7 @@ public class ApplicationServeur implements Observer {
                         //res.put("Message", MessageCodeException.M_DATE_ERROR);
                         return res;
                     }
-                    if (!e.modify(calendrierID, nomE, description, image, dateD, dateF, lieu, auteur)) {
+                    if (!e.modify(calendrierID, nomE, description, image, dateD, dateF, lieu, couleur, auteur)) {
                         // Pas de suppression de l'événement dans la BDD : problème de cohérence ; son code d'erreur est 2
                         MessageCodeException.bdd_event_error(res);
                         //res.put("Result", MessageCodeException.C_ERROR_BDD);
@@ -844,14 +844,14 @@ public class ApplicationServeur implements Observer {
                 HashMap<String, String> events;
                 for (int j = 0 ; j < donnees.size() ; j++){
                     Evenement u = donnees.get(j);
-                    events  = new HashMap<>();
-                    events.put("EventID", ""+u.getId());
+                    events = new HashMap<>();
                     events.put("EventName", u.getNomE());
                     events.put("Description", u.getDescription());
                     events.put("Picture", u.getImage());
                     events.put("Date", u.getDatedeb().toString());
                     events.put("DateFin", u.getDatefin().toString());
                     events.put("EventLocation", u.getLieu());
+                    events.put("EventColor", u.getCouleur());
                     events.put("EventAuthor", u.getAuteur());
                     evenements.put("" + j, events);
                 }

@@ -199,10 +199,11 @@ public class ConnexionClient implements Runnable{
                 String eventDateDeb = donnees.get("EventDate");
                 String eventDateFin = donnees.get("EventDateFin");
                 String eventLocation = donnees.get("EventLocation");
+                String eventColor = donnees.get("EventColor");
                 String eventAuthor = donnees.get("EventAuthor");
                 boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
                 rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription,
-                        image , eventDateDeb, eventDateFin, eventLocation, eventAuthor, eventVisibility);
+                        image , eventDateDeb, eventDateFin, eventLocation, eventAuthor, eventColor, eventVisibility);
                 result = parseur.encode(rep);
                 break;
             }
@@ -223,10 +224,11 @@ public class ConnexionClient implements Runnable{
                 String eventDate = donnees.get("EventDate");
                 String eventDateFin = donnees.get("EventDateFin");
                 String eventLocation = donnees.get("EventLocation");
+                String eventColor = donnees.get("EventColor");
                 String eventAuthor = donnees.get("EventAuthor");
                 rep = ApplicationServeur.getInstance().modificationEvenement
                         (Integer.parseInt(idevent), Integer.parseInt(idCalendar),eventName, eventDescription, eventPicture,
-                                eventDate, eventDateFin, eventLocation, eventAuthor);
+                                eventDate, eventDateFin, eventLocation, eventColor, eventAuthor);
                 result = parseur.encode(rep);
                 break;
             }

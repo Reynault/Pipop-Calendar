@@ -26,6 +26,7 @@ public abstract class Evenement extends Observable {
     private Date datedeb;
     private Date datefin;
     private String lieu;
+    private String couleur;
     private String auteur;
 
     protected boolean visibilite;
@@ -46,7 +47,7 @@ public abstract class Evenement extends Observable {
      * @param lieu
      * @param auteur
      */
-    public Evenement(int id, int calID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String auteur) {
+    public Evenement(int id, int calID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String couleur, String auteur) {
         this.idEv = id;
         this.calendrierID = calID;
         this.nomE = nom;
@@ -55,6 +56,7 @@ public abstract class Evenement extends Observable {
         this.datedeb = datedeb;
         this.datefin = datefin;
         this.lieu = lieu;
+        this.couleur = couleur;
         this.auteur = auteur;
         this.messages = new ArrayList<>();
         this.droits = new ArrayList<>();
@@ -75,7 +77,7 @@ public abstract class Evenement extends Observable {
     public boolean save() throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
-            String request = "INSERT INTO Evenement VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            String request = "INSERT INTO Evenement VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement prep = connect.prepareStatement(request);
             prep.setInt(1, this.idEv);
             prep.setInt(2, this.calendrierID);
@@ -88,7 +90,8 @@ public abstract class Evenement extends Observable {
             prep.setString(7, this.image);
             prep.setString(8, this.lieu);
             prep.setString(9, this.auteur);
-            prep.setBoolean(10, this.visibilite);
+            prep.setString(10, this.auteur);
+            prep.setBoolean(11, this.visibilite);
             if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
                 return false;
             }
@@ -120,11 +123,11 @@ public abstract class Evenement extends Observable {
             if (rs.next()) {
                 if (rs.getBoolean("idc")) {
                     return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
+                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
                             rs.getString("auteur"));
                 } else {
                     return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
+                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
                             rs.getString("auteur"));
                 }
             }
@@ -143,12 +146,12 @@ public abstract class Evenement extends Observable {
         if (rs.next()) {
             if (rs.getBoolean("idc")) {
                 e = new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
+                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
                         rs.getString("auteur"));
             }
             else {
                 e = new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),
+                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
                         rs.getString("auteur"));
             }
         }
@@ -176,10 +179,10 @@ public abstract class Evenement extends Observable {
             while (rs.next()) {
                 if (rs.getBoolean("idc")) {
                     events.add(new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("auteur")));
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("couleur"),rs.getString("auteur")));
                 } else {
                     events.add(new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("auteur")));
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),rs.getString("couleur"), rs.getString("auteur")));
                 }
             }
         }
@@ -284,6 +287,7 @@ public abstract class Evenement extends Observable {
         res.put("date", datedeb.toString());
         res.put("datefin", datefin.toString());
         res.put("lieu", lieu);
+        res.put("couleur", couleur);
         res.put("auteur", auteur);
         return res;
     }
@@ -293,7 +297,7 @@ public abstract class Evenement extends Observable {
      * @return false si erreur lors de l'exécution de la requête, true sinon
      * @throws SQLException
      */
-    public boolean modify(int calendrierID, String nomE, String description, String image, Date datedeb, Date datefin, String lieu, String auteur) throws SQLException {
+    public boolean modify(int calendrierID, String nomE, String description, String image, Date datedeb, Date datefin, String lieu,String couleur, String auteur) throws SQLException {
         this.calendrierID=calendrierID;
         this.nomE=nomE;
         this.description=description;
@@ -301,6 +305,7 @@ public abstract class Evenement extends Observable {
         this.datedeb=datedeb;
         this.datefin=datefin;
         this.lieu=lieu;
+        this.couleur = couleur;
         this.auteur=auteur;
         return save();
     }
@@ -368,4 +373,7 @@ public abstract class Evenement extends Observable {
         return this.auteur;
     }
 
+    public String getCouleur() {
+        return this.couleur;
+    }
 }
