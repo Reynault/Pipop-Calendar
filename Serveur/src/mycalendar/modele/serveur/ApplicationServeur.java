@@ -723,7 +723,7 @@ public class ApplicationServeur implements Observer {
     private void envoiNotifications(ArrayList<Utilisateur> alu) throws ParseException {
         System.out.println("envoie notif avant");
         //String date = LocalDate.now().format(DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy"));  // HH MM JJ MM AAAA
-        Date date = dateFormat.parse("01:01 11/11/2019");
+        //Date date = dateFormat.parse("01:01 11/11/2019");
         System.out.println("après avoir récup la date");
         for(Utilisateur u : alu) {
             //TODO Modifier l'id

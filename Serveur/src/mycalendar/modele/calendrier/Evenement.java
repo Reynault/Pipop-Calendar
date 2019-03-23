@@ -123,11 +123,11 @@ public abstract class Evenement extends Observable {
             if (rs.next()) {
                 if (rs.getBoolean("idc")) {
                     return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),rs.getString("couleur"),
                             rs.getString("auteur"));
                 } else {
                     return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
+                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),rs.getString("couleur"),
                             rs.getString("auteur"));
                 }
             }
