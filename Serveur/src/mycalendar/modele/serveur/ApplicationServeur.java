@@ -11,14 +11,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 /**
  * Application Serveur qui met en attente le serveur des requêtes des clients
@@ -1083,6 +1081,48 @@ public class ApplicationServeur implements Observer {
             MessageCodeException.success(res);
         }catch (SQLException e){
             // En cas d'erreur bdd, affichage de l'erreur dans le message rendu
+            MessageCodeException.bdd_error(res);
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public HashMap<String, String> modifierGroupe(String email, int idG, String nomGroupe, ArrayList<String> users){
+        HashMap<String, String> res = new HashMap<>();
+        ArrayList<String> verif = new ArrayList<>();
+        verif.add(nomGroupe);
+        try {
+            if (Verification.checkEmptyData(verif)) {
+                if (Verification.checkFriends(email, users)) {
+                    // Si les données ne sont pas vides, et si les utilisateurs existent
+                    // On peut modifier les données du groupe d'amis
+
+                    // Récupération du groupe
+                   GroupeAmi g =  GroupeAmi.find(idG);
+                   if(g != null){
+                       // Sauvegarde du nom du groupe
+                       g.setNom_groupe(nomGroupe);
+                       if(!g.save_nom()){
+                           throw new SQLException();
+                       }
+                       // Sauvegarde des utilisateurs
+                       if(!g.save_users(users)){
+                           throw new SQLException();
+                       }
+                   }else{
+                       MessageCodeException.group_not_found(res);
+                       return res;
+                   }
+                }else{
+                    MessageCodeException.user_not_found(res);
+                    return res;
+                }
+            } else {
+                MessageCodeException.empty_data(res);
+                return res;
+            }
+            MessageCodeException.success(res);
+        }catch (SQLException e){
             MessageCodeException.bdd_error(res);
             e.printStackTrace();
         }

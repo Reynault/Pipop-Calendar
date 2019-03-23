@@ -5,6 +5,7 @@ import mycalendar.modele.calendrier.Message;
 import mycalendar.modele.exceptions.BadRequestExeption;
 import mycalendar.modele.exceptions.MessageCodeException;
 import mycalendar.modele.exceptions.NoRequestException;
+import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.io.*;
 import java.net.Socket;
@@ -386,6 +387,20 @@ public class ConnexionClient implements Runnable{
                             String prenom = donnees.get("Prenom");
                             String newmdp = donnees.get("NewMdp");
                             rep = ApplicationServeur.getInstance().modifierCompte(email, nom, prenom, mdp);
+                            result = parseur.encode(rep);
+                            break;
+                        }
+                        case "ModifyGroup":
+                        {
+                            int idGroup = Integer.parseInt(donnees.get("GroupId"));
+                            String newName = donnees.get("NewName");
+                            ArrayList<String> liste = ParseurJson.getInstance().getUsers(donnees);
+                            // Vérification de l'existence du groupe pour cet utilisateur
+                            if(Verification.checkGroup(email, idGroup)){
+                                rep = ApplicationServeur.getInstance().modifierGroupe(email, idGroup, newName, liste);
+                            }else{
+                                MessageCodeException.group_not_found(rep);
+                            }
                             result = parseur.encode(rep);
                             break;
                         }

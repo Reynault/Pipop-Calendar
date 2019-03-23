@@ -2,8 +2,13 @@ package mycalendar.modele.serveur;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import mycalendar.modele.utilisateur.Utilisateur;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Classe Parseur JSON qui sert de façade sur la librairie GSON qui permet de coder et de décoder
@@ -47,6 +52,20 @@ public class ParseurJson {
     public String encodeObj(HashMap<String, Object> param){
         String json = gson.toJson(param);
         return json;
+    }
+
+    /**
+     * Méthode qui permet de récupérer une liste d'utilisateurs
+     * @param users liste des données
+     * @return liste des utilisteurs
+     * @throws SQLException
+     */
+    public ArrayList<String> getUsers(HashMap<String, String> users) throws SQLException {
+        ArrayList<String> res = new ArrayList<>();
+        for(int i = 0; i < users.size()-5; i++){
+            res.add(users.get(i+""));
+        }
+        return res;
     }
 
     public String encode(HashMap<String, String> param){

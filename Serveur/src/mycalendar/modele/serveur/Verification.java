@@ -1,6 +1,8 @@
 package mycalendar.modele.serveur;
 
+import jdk.jshell.execution.Util;
 import mycalendar.modele.bdd.GestionnaireBDD;
+import mycalendar.modele.utilisateur.Utilisateur;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -179,5 +181,43 @@ public class Verification {
      */
     public static boolean checkDate(Date deb, Date fin){
         return fin.after(deb);
+    }
+
+    /**
+     * Méthode qui permet de vérifier si des utilisateurs existent ou non
+     * @param u les utilisateurs à vérifier
+     * @return booléen
+     * @throws SQLException
+     */
+    public static boolean checkFriends(String email, ArrayList<String> u) throws SQLException{
+        Connection connect = GestionnaireBDD.getConnection();
+        String request = "SELECT * FROM Amis WHERE Email1 = ? AND Email2 = ?";
+        PreparedStatement statement;
+        ResultSet res;
+        for(String user : u){
+            statement = connect.prepareStatement(request);
+            statement.setString(1, email);
+            statement.setString(2, user);
+            res = statement.executeQuery();
+            // si aucuns résultats, alors un utilisateur n'existe pas
+            if(!res.next()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean checkGroup(String email, int idG) throws SQLException{
+        Connection connection = GestionnaireBDD.getConnection();
+        String request = "SELECT * FROM groupes_amis WHERE Email = ? AND idG = ?";
+        PreparedStatement statement = connection.prepareStatement(request);
+        statement.setString(1, email);
+        statement.setInt(2, idG);
+        ResultSet res = statement.executeQuery();
+        // SI pas de groupe, pas ok
+        if(!res.next()){
+            return false;
+        }
+        return true;
     }
 }

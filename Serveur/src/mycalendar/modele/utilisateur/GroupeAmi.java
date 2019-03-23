@@ -13,12 +13,8 @@ public class GroupeAmi {
 	private String nom_groupe;
 	private ArrayList<String> amis;
 
-	/**
-	 * Constructeur
-	 * @param em email du createur
-	 * @param nomG nom du groupe
-	 */
-	public GroupeAmi(String em, String nomG){
+	public GroupeAmi(int idG, String em, String nomG){
+	    this.idG = idG;
 		this.email = em;
 		this.nom_groupe = nomG;
 	}
@@ -47,7 +43,7 @@ public class GroupeAmi {
 		prep.setString(1, nomG);
 		ResultSet result = prep.executeQuery();
 		while(result.next()){
-			groupes.add(new GroupeAmi(result.getString(2), result.getString(3)));
+			groupes.add(new GroupeAmi(result.getInt(1), result.getString(2), result.getString(3)));
 		}
 		return groupes;
 	}
@@ -85,10 +81,23 @@ public class GroupeAmi {
 
 	/**
 	 * Suppression d'un groupe d'amis
-	 * @param id_Groupe id du groupe a supprimer
+	 * @param idG id du groupe a supprimer
 	 * @return true si le groupe a ete supprime
 	 * @throws SQLException
 	 */
+	public static GroupeAmi find(int idG) throws SQLException{
+	    Connection connec = GestionnaireBDD.getConnection();
+	    GroupeAmi group = null;
+	    String request = "SELECT * FROM groupes_amis WHERE idG = ?";
+	    PreparedStatement statement = connec.prepareStatement(request);
+	    statement.setInt(1, idG);
+	    ResultSet res = statement.executeQuery();
+	    if(res.next()){
+	        group = new GroupeAmi(res.getInt(1), res.getString(2), res.getString(3));
+        }
+        return group;
+    }
+
 	public static Boolean delete(int id_Groupe) throws SQLException{
 	    Connection connection = GestionnaireBDD.getInstance().getConnection();
 	    String request = "DELETE FROM groupes_amis WHERE nom_groupe = ?";
@@ -98,5 +107,85 @@ public class GroupeAmi {
 	        return false;
         }
 	    return true;
+    }
+
+    public boolean save_nom() throws SQLException{
+	    Connection connection = GestionnaireBDD.getInstance().getConnection();
+        String request = "UPDATE groupes_amis SET nom_groupe = ? WHERE idG = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(request);
+        preparedStatement.setString(1, nom_groupe);
+        preparedStatement.setInt(2, idG);
+        if (preparedStatement.executeUpdate()  == 0){
+            return false;
+        }
+	    return true;
+    }
+
+    public boolean save_users(ArrayList<String> u) throws SQLException{
+        Connection connection = GestionnaireBDD.getInstance().getConnection();
+        String request;
+        PreparedStatement statement;
+        ResultSet rs;
+
+        // Suppression des anciens utilisateurs
+        request = "SELECT * FROM amis_groupe WHERE idG = ?";
+        statement = connection.prepareStatement(request);
+        statement.setInt(1, idG);
+        rs = statement.executeQuery();
+        // Pour tous les utilisateurs déjà présents
+        while(rs.next()){
+            boolean trouve = false;
+            // On regarde dans la liste si l'utilisateur existe toujours dans la liste
+            for(String user : u){
+                if(user.equals(rs.getString("Email"))){
+                    trouve = true;
+                }
+            }
+            // Si l'utilisateur n'existe plus, on le supprime
+            if(!trouve){
+                delete_user(rs.getString("Email"));
+            }
+        }
+
+        // Ajout des nouveaux utilisateurs
+        for(String user : u){
+            request = "SELECT * FROM amis_groupe WHERE idG = ? AND Email = ?";
+            statement = connection.prepareStatement(request);
+            statement.setInt(1, idG);
+            statement.setString(2, user);
+            rs = statement.executeQuery();
+            if(!rs.next()){
+                // S'il n'y a pas de résultats, cela signifie qu'il n'y a pas cet utilisateur
+                request = "INSERT INTO amis_groupe VALUES(?, ?)";
+                statement = connection.prepareStatement(request);
+                statement.setString(1, user);
+                statement.setInt(2, idG);
+                if(statement.executeUpdate() == 0){
+                    return false;
+                }
+            }
+        }
+	    return true;
+    }
+
+    /**
+     * Méthode de suppression d'un individu dans un groupe
+     * @param email l'individu à supprimer
+     * @return un booléen qui indique s'il y a eu une erreur
+     * @throws SQLException
+     */
+    public boolean delete_user(String email) throws SQLException{
+	    Connection connection = GestionnaireBDD.getConnection();
+	    String request = "DELETE FROM amis_groupe WHERE Email = ?";
+	    PreparedStatement statement = connection.prepareStatement(request);
+	    statement.setString(1, email);
+	    if(statement.executeUpdate() == 0) {
+            return false;
+        }
+	    return true;
+    }
+
+    public void setNom_groupe(String nom_groupe) {
+        this.nom_groupe = nom_groupe;
     }
 }
