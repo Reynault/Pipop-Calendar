@@ -845,6 +845,7 @@ public class ApplicationServeur implements Observer {
                 for (int j = 0 ; j < donnees.size() ; j++){
                     Evenement u = donnees.get(j);
                     events = new HashMap<>();
+                    events.put("EventID", ""+u.getId());
                     events.put("EventName", u.getNomE());
                     events.put("Description", u.getDescription());
                     events.put("Picture", u.getImage());
