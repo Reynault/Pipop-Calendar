@@ -1,8 +1,5 @@
-//$(document).ready(function(){
 var eventFromServer = [];
 chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
-
-//});
 
   function chargerEvenements(email, calendrier){
       var arr = {"Request":"LoadEvents","Mail":email,"CalendarName":calendrier};
@@ -22,26 +19,9 @@ chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem
                 var nbEvents = Object.keys(obj.Data).length;
                 var objData = obj["Data"];
                 for(var i=0; i < nbEvents; i++){
-                console.log(objData[i]["Date"]);
-                  var dateDeb = {
-                    year: new Date(objData[i]["Date"]).getFullYear(),
-                    month: new Date(objData[i]["Date"]).getMonth(),
-                    day: new Date(objData[i]["Date"]).getDate(),
-                    hour: new Date(objData[i]["Date"]).getHours(),
-                    min: new Date(objData[i]["Date"]).getMinutes()
-                  };
-
-                  var dateFin ={
-                    year: new Date(objData[i]["DateFin"]).getFullYear(),
-                    month: new Date(objData[i]["DateFin"]).getMonth(),
-                    day: new Date(objData[i]["DateFin"]).getDate(),
-                    hour: new Date(objData[i]["DateFin"]).getHours(),
-                    min: new Date(objData[i]["DateFin"]).getMinutes()
-                  };
-
                   var t = {
-                    from: new Date(dateDeb.year, dateDeb.month, dateDeb.day,dateDeb.day,dateDeb.hour,dateDeb.min),
-                    to: new Date(dateFin.year, dateFin.month,dateFin.day, dateFin.day, dateFin.hour, dateFin.min),
+                    from: new Date(objData[i]["Date"]),
+                    to: new Date(objData[i]["DateFin"]),
                     color: ''+objData[i]["EventColor"],
                     title: ''+objData[i]["EventName"],
                     description: ''+objData[i]["Description"]

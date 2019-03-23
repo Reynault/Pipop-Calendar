@@ -59,6 +59,20 @@ $(document).ready(function(){
               let obj = JSON.parse(data);
               if(obj["Result"]==0){
                 app.views.main.router.back( "calendar-view.html" , {reloadPrevious: true, ignoreCache: true, reload: true} );
+                var calendarInline = app.calendar.get();
+                $.ajax({
+                          url: "js/chargerEvenements.js",
+                          dataType: "script",
+                          cache: true,
+                          async:false,
+                          success:function(msg) {
+                          },
+                          error:function(msg) {
+                            console.log("Error chargement script de chargement d'événements");
+                          }
+                });
+                calendarInline.params.events = eventFromServer;
+                calendarInline.update();
                 window.plugins.toast.showWithOptions({
                     message: ""+obj["Message"],
                     duration: 1500, // ms
