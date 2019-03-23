@@ -841,9 +841,11 @@ public class ApplicationServeur implements Observer {
             int calendrierID = Calendrier.getCalendrierID(auteur, nomCalendrier);
             ArrayList<Evenement> donnees = Evenement.find(calendrierID, auteur);
             if (donnees.size() > 0) {
-                HashMap<String, String> events = new HashMap<>();
+                HashMap<String, String> events;
                 for (int j = 0 ; j < donnees.size() ; j++){
                     Evenement u = donnees.get(j);
+                    events  = new HashMap<>();
+                    events.put("EventID", ""+u.getId());
                     events.put("EventName", u.getNomE());
                     events.put("Description", u.getDescription());
                     events.put("Picture", u.getImage());
