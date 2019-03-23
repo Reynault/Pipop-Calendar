@@ -10,7 +10,7 @@ $(document).ready(function(){
       console.log("ModifierCalendrier");
       // Ne pas oublier de crypter les données
       // Ne pas oublier de vérifier les données
-      var arr = {"Request":"DeleteEvent", "ID": ide};
+      var arr = {"Request":"DeleteEvent", "ID": ide,"Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log(JSON.stringify(arr));
       $.ajax({
           url: adresse,

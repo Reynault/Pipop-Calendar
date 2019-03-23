@@ -9,7 +9,7 @@ $(document).ready(function(){
 
   function supprimerCalendrier(id, email){
       app.popover.get("#calendar_settings").close(true);
-      var arr = {"Request":"DeleteCalendar","Email":email, "IDCalendar": id, "SuppEv":"true"};
+      var arr = {"Request":"DeleteCalendar","Email":email, "IDCalendar": id, "SuppEv":"true", "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({

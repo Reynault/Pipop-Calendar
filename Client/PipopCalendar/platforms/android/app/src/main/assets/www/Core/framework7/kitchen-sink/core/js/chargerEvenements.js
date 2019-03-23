@@ -2,7 +2,7 @@ var eventFromServer = [];
 chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
 
   function chargerEvenements(email, calendrier){
-      var arr = {"Request":"LoadEvents","Mail":email,"CalendarName":calendrier};
+      var arr = {"Request":"LoadEvents","Email":email,"CalendarName":calendrier, "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({

@@ -47,7 +47,7 @@ $(document).ready(function(){
   function creerEvenement(nomCal, nomEv, descEv, dateEv, dateFin, lieuEv, auteurEv, visibiliteEv){
       var smartSelectCouleurTheme = app.smartSelect.get('#couleurSelectTheme');
       var arr = {"Request":"AddEvent", "CalendarName": nomCal, "EventName": nomEv, "EventDescription": descEv,
-               "EventDate": dateEv, "EventDateFin": dateFin, "EventLocation": lieuEv, "EventAuthor": auteurEv, "EventVisibility": String(visibiliteEv), "EventColor": smartSelectCouleurTheme.getValue()};
+               "EventDate": dateEv, "EventDateFin": dateFin, "EventLocation": lieuEv, "EventAuthor": auteurEv, "EventVisibility": String(visibiliteEv), "EventColor": smartSelectCouleurTheme.getValue(),"Mdp":localStorage.getItem("mdpUtilisateur")};
       $.ajax({
           url: adresse,
           type: 'POST',

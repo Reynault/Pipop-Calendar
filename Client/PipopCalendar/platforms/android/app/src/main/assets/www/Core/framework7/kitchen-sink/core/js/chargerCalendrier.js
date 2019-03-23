@@ -10,7 +10,7 @@ $(document).ready(function(){
 });
 
   function chargerCalendrier(email){
-      var arr = {"Request":"LoadCalendars","Email":email};
+      var arr = {"Request":"LoadCalendars","Email":email, "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({

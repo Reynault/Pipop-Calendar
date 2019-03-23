@@ -60,11 +60,13 @@ $(document).ready(function(){
                 {
                   window.location = "user-home.html";
                   localStorage.setItem("emailUtilisateur",$("#emailInscripInput").val());
+                  localStorage.setItem("mdpUtilisateur",hash);
                   break;
                 }
                 default:
                 {
                   localStorage.setItem("emailUtilisateur","");
+                  localStorage.setItem("mdpUtilisateur","");
                   window.plugins.toast.showWithOptions({
                     message: ""+obj["Message"],
                     duration: 1500, // ms

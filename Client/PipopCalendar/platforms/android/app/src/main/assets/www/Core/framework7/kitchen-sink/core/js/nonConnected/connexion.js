@@ -47,6 +47,7 @@ $(document).ready(function(){
               if(obj["Result"]==0){
 //                app.views.main.router.navigate("/user-home/");
                 localStorage.setItem("emailUtilisateur",$("#emailInput").val());
+                localStorage.setItem("mdpUtilisateur", hash);
                 window.location = "user-home.html";
               }else{
               localStorage.setItem("emailUtilisateur","");
@@ -73,11 +74,9 @@ $(document).ready(function(){
                 }
           },
           error: function(jqXHR, textStatus, errorThrown) {
-              console.log("ERREUR : "+jqXHR);
-              console.log("ERREUR : "+textStatus);
-              console.log("ERREUR : "+errorThrown);
               app.preloader.hide();
               localStorage.setItem("emailUtilisateur","");
+              localStorage.setItem("mdpUtilisateur","");
               window.plugins.toast.showWithOptions(
                   {
                     message: ""+obj["Message"],

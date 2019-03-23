@@ -33,7 +33,7 @@ $(document).ready(function(){
       console.log("ModifierCalendrier");
       // Ne pas oublier de crypter les données
       // Ne pas oublier de vérifier les données
-      var arr = {"Request":"ModifyCalendar", "idc": idc, "nameC": nomc, "couleur": couleur};
+      var arr = {"Request":"ModifyCalendar", "idc": idc, "nameC": nomc, "couleur": couleur,"Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log(JSON.stringify(arr));
       $.ajax({
           url: adresse,
