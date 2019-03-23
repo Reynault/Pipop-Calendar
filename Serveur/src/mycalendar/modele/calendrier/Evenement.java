@@ -89,7 +89,7 @@ public abstract class Evenement extends Observable {
             prep.setString(6, this.description);
             prep.setString(7, this.image);
             prep.setString(8, this.lieu);
-            prep.setString(9, this.auteur);
+            prep.setString(9, this.couleur);
             prep.setString(10, this.auteur);
             prep.setBoolean(11, this.visibilite);
             if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème

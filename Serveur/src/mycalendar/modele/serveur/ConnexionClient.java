@@ -203,7 +203,7 @@ public class ConnexionClient implements Runnable{
                 String eventAuthor = donnees.get("EventAuthor");
                 boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
                 rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription,
-                        image , eventDateDeb, eventDateFin, eventLocation, eventAuthor, eventColor, eventVisibility);
+                        image , eventDateDeb, eventDateFin, eventLocation,  eventColor,eventAuthor, eventVisibility);
                 result = parseur.encode(rep);
                 break;
             }
@@ -333,6 +333,16 @@ public class ConnexionClient implements Runnable{
                 String oldOwner = donnees.get("OldOwner");
                 String newOwner = donnees.get("NewOwner");
                 rep = ApplicationServeur.getInstance().modifAdminCalend(calendarName, oldOwner, newOwner);
+                result = parseur.encode(rep);
+                break;
+            }
+            case "ModifyAccount":
+            {
+                String email = donnees.get("Email");
+                String nom = donnees.get("Nom");
+                String prenom = donnees.get("Prenom");
+                String mdp = donnees.get("Password");
+                rep = ApplicationServeur.getInstance().modifierCompte(email, nom, prenom, mdp);
                 result = parseur.encode(rep);
                 break;
             }
