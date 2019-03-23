@@ -261,7 +261,7 @@
                         if (date.from.getTime() == date.to.getTime()) {
                           range = "From " + ev.from.toLocaleTimeString('en-GB', timeFormat) + " to " + ev.to.toLocaleTimeString('en-GB', timeFormat);
                         }
-                        eventCards += "<div class=\"card\">\n              <div class=\"card-header\">" + ev.title + "<i class=\"f7-icons text-color-" + ev.color + "\">circle_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
+                        eventCards += "<div class=\"card\">\n <div class=\"card-header bg-color-gray color-white\"> <div class=\"right\"><a href=\"#\" data-popover=\"#evenement_settings"+ev.idEvent+"\" class=\"link popover-open\"><i class=\"material-icons\">more_vertical</i><span class=\"ios-only\"></span></a></div><div class=\"popover\" id=\"evenement_settings"+ev.idEvent+"\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton"+ev.idEvent+"\">Delete</a></li></ul></div></div></div></div>             <div class=\"card-header\">" + ev.title + "<i class=\"f7-icons text-color-" + ev.color + "\">circle_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
                       }
                     });
                     dayDate = new calendar.DateHandleClass(dayDate);
@@ -270,6 +270,7 @@
                     popupClass = "popup-open";
                     eventsHtml = "\n              <span class=\"calendar-day-events\">\n                " + (eventDots.map(function (color) { return ("\n                  <span class=\"calendar-day-event bg-color-" + color + "\" style=\"\"></span>\n                ").trim(); }).join('')) + "\n              </span>\n            ";
                     popup = "<div class=\"popup popup-" + dayYear + "-" + dayMonth + "-" + dayNumber + "\">\n              <div class=\"page\">\n              <div class=\"navbar\">\n              <div class=\"navbar-inner sliding\">\n              <div class=\"left\">\n              <a href=\"#\" class=\"link popup-close\">\n              <i class=\"f7-icons\">close</i>\n              <span class=\"ios-only\">Close</span>\n              </a>\n              </div>\n              <div class=\"title\">" + dayDate.toLocaleDateString('en-GB', dateFormat) + "</div>\n              </div>\n              </div>\n              <div class=\"page-content\">" + eventCards + "\n              </div>\n              </div>\n              </div>";
+
                   }
                 }
                 // Custom Ranges

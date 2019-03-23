@@ -1,33 +1,26 @@
-$(document).ready(function(){
 
-  console.log("Envoi de données au serveur");
-  $("#supprimerEvenementBouton").click(function(e){
-    e.preventDefault();
-    supprimerEvenement($("#idEvInput").val());
-  });
+supprimerEvenement(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
 
-  function supprimerEvenement(ide){
-      console.log("ModifierCalendrier");
-      // Ne pas oublier de crypter les données
-      // Ne pas oublier de vérifier les données
-      var arr = {"Request":"DeleteEvent", "ID": ide,"Mdp":localStorage.getItem("mdpUtilisateur")};
-      console.log(JSON.stringify(arr));
+  function supprimerEvenement(email, calendrier){
+      var arr = {"Request":"LoadEvents","Email":email,"CalendarName":calendrier, "Mdp":localStorage.getItem("mdpUtilisateur")};
+      console.log("JSON : "+JSON.stringify(arr));
+      app.preloader.show();
       $.ajax({
           url: adresse,
-          type: 'POST',
+          type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: true,
+          async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
-              let obj = JSON.parse(data);
+              console.log(data);
+              var obj = JSON.parse(data);
               if(obj["Result"]==0){
-                //window.location = "user-home.html";
-		//TODO Redirection vers la page du calendrier
+
               }else{
                 window.plugins.toast.showWithOptions(
                 {
-                   message: "Suppression Evenement Echouée",
+                   message: ""+obj["Message"],
                    duration: 1500, // ms
                    position: "bottom",
                    addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
@@ -41,29 +34,24 @@ $(document).ready(function(){
                    }
                   }
                  );
+              }
           },
           error: function(jqXHR, textStatus, errorThrown) {
-	    window.plugins.toast.showWithOptions(
-                {
-                   message: "Erreur connexion serveur",
-                   duration: 1500, // ms
-                   position: "bottom",
-                   addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
-                   styling: {
-                     opacity: 0.75, // 0.0 (transparent) to 1.0 (opaque). Default 0.8
-                     backgroundColor: '#FF0000', // make sure you use #RRGGBB. Default #333333
-                     textSize: 12, // Default is approx. 13.
-                     cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
-                     horizontalPadding: 22, // iOS default 16, Android default 50
-                     verticalPadding: 20 // iOS default 12, Android default 30
-                   }
-                  }
-                 );
-              console.log("ERREUR : "+jqXHR);
-              console.log("ERREUR : "+textStatus);
-              console.log("ERREUR : "+errorThrown);
+              app.preloader.hide();
+              window.plugins.toast.showWithOptions({
+                 message: "No network connection or server error",
+                 duration: 1500, // ms
+                 position: "bottom",
+                 addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
+                 styling: {
+                       opacity: 0.75, // 0.0 (transparent) to 1.0 (opaque). Default 0.8
+                       backgroundColor: '#FF0000', // make sure you use #RRGGBB. Default #333333
+                       textSize: 12, // Default is approx. 13.
+                       cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
+                       horizontalPadding: 20, // iOS default 16, Android default 50
+                       verticalPadding: 16 // iOS default 12, Android default 30
+                     }
+               });
           }
       });
   }
-
-});

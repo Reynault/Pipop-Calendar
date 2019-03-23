@@ -22,9 +22,10 @@ chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem
                   var t = {
                     from: new Date(objData[i]["Date"]),
                     to: new Date(objData[i]["DateFin"]),
-                    color: ''+objData[i]["EventColor"],
+                    color: objData[i]["EventColor"],
                     title: ''+objData[i]["EventName"],
-                    description: ''+objData[i]["Description"]
+                    description: ''+objData[i]["Description"],
+                    idEvent: ''+objData[i]["EventID"]
                   };
                   eventFromServer.push(t);
                 }
