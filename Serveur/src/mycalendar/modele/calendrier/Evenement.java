@@ -177,12 +177,14 @@ public abstract class Evenement extends Observable {
             prep.execute();
             ResultSet rs = prep.getResultSet();
             while (rs.next()) {
+                Date deb = rs.getTimestamp("datedeb");
+                Date fin = rs.getTimestamp("datefin");
                 if (rs.getBoolean("idc")) {
                     events.add(new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"), rs.getString("couleur"),rs.getString("auteur")));
+                            rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"), rs.getString("couleur"),rs.getString("auteur")));
                 } else {
                     events.add(new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),rs.getString("couleur"), rs.getString("auteur")));
+                            rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"),rs.getString("couleur"), rs.getString("auteur")));
                 }
             }
         }
