@@ -97,9 +97,6 @@
 <script>
   return {
     on: {
-      pageBeforIn: function(e,page){
-
-      },
       pageInit: function (e, page) {
         var $$ = Dom7;
         var self = this;
@@ -108,10 +105,10 @@
           url: "js/chargerEvenements.js",
           dataType: "script",
           cache: true,
-          async:false,
-          success:function(msg) {
+          async: false,
+          success: function(msg) {
           },
-          error:function(msg) {
+          error: function(msg) {
             console.log("Error chargement script de chargement d'événements");
           }
         });
@@ -271,7 +268,7 @@
                     var dayYear = dayDate.getFullYear();
                     var dayMonth = dayDate.getMonth();
                     popupClass = "popup-open";
-                    eventsHtml = "\n              <span class=\"calendar-day-events\">\n                " + (eventDots.map(function (color) { return ("\n                  <span class=\"calendar-day-event\" style=\"" + (color ? ("background-color: " + color) : '') + "\"></span>\n                ").trim(); }).join('')) + "\n              </span>\n            ";
+                    eventsHtml = "\n              <span class=\"calendar-day-events\">\n                " + (eventDots.map(function (color) { return ("\n                  <span class=\"calendar-day-event bg-color-" + color + "\" style=\"\"></span>\n                ").trim(); }).join('')) + "\n              </span>\n            ";
                     popup = "<div class=\"popup popup-" + dayYear + "-" + dayMonth + "-" + dayNumber + "\">\n              <div class=\"page\">\n              <div class=\"navbar\">\n              <div class=\"navbar-inner sliding\">\n              <div class=\"left\">\n              <a href=\"#\" class=\"link popup-close\">\n              <i class=\"f7-icons\">close</i>\n              <span class=\"ios-only\">Close</span>\n              </a>\n              </div>\n              <div class=\"title\">" + dayDate.toLocaleDateString('en-GB', dateFormat) + "</div>\n              </div>\n              </div>\n              <div class=\"page-content\">" + eventCards + "\n              </div>\n              </div>\n              </div>";
                   }
                 }
