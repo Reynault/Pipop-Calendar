@@ -336,6 +336,16 @@ public class ConnexionClient implements Runnable{
                 result = parseur.encode(rep);
                 break;
             }
+            case "ModifyAccount":
+            {
+                String email = donnees.get("Email");
+                String nom = donnees.get("Nom");
+                String prenom = donnees.get("Prenom");
+                String mdp = donnees.get("Password");
+                rep = ApplicationServeur.getInstance().modifierCompte(email, nom, prenom, mdp);
+                result = parseur.encode(rep);
+                break;
+            }
             default: {
                 throw new BadRequestExeption(donnees.get("Request"));
             }

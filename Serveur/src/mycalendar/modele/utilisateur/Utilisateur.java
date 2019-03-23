@@ -146,9 +146,23 @@ public class Utilisateur {
      * dans la base de données
      * @return un entier indiquant le message de retour
      */
-    public int save() throws SQLException{
-        int res = 1;
-        return res;
+    public boolean save() throws SQLException{
+        // Connexion à la bdd
+        Connection connect = GestionnaireBDD.getConnection();
+        // Préparation de la requete
+        String request = "UPDATE Utilisateur SET nom = ?, tmp_mdp = ?, mdp = ?, prenom = ? WHERE email = ?";
+        PreparedStatement statement = connect.prepareStatement(request);
+        // Paramètrage
+        statement.setString(1, nom);
+        statement.setString(2, tmp_password);
+        statement.setString(3, password);
+        statement.setString(4, prenom);
+        statement.setString(5, email);
+        // Execution
+        if (statement.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
+            return false;
+        }
+        return true;
     }
 
     public static Utilisateur find(String nom) throws SQLException {
@@ -247,4 +261,19 @@ public class Utilisateur {
 	    connection.close();
     }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setTmp_password(String tmp_password) {
+        this.tmp_password = tmp_password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
 }

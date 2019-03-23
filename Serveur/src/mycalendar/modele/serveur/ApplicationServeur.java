@@ -1013,4 +1013,55 @@ public class ApplicationServeur implements Observer {
         return res;
 	}
 
+    /**
+     * Méthode qui permet de modifier un compte utilisateur
+     * @param email l'email de l'utilisateur
+     * @param nom le nouveau nom
+     * @param prenom le nouveau prénom
+     * @param mdp le nouveau mot de passe
+     * @return Une hashmap contenant les données à envoyer au client
+     */
+	public HashMap<String, String> modifierCompte(String email, String nom, String prenom, String mdp){
+	    // Init des variables : Liste des données et hashmap de retour
+	    HashMap<String, String> res = new HashMap<>();
+	    ArrayList<String> donnees = new ArrayList<>();
+	    // Test si les valeurs sont vides
+	    donnees.add(email);
+	    donnees.add(nom);
+	    donnees.add(prenom);
+	    donnees.add(mdp);
+	    try {
+            if (Verification.checkEmptyData(donnees)) {
+                // Test de la validité du mail de l'utilisateur
+                if (Verification.checkMail(email)) {
+                    // Récup de l'utilisateur
+                    Utilisateur u = Utilisateur.find(email);
+                    if(u != null){
+                        // Application des nouvelles valeurs
+                        u.setNom(nom);
+                        u.setPrenom(prenom);
+                        u.setPassword(mdp);
+                        u.save();
+                        // Partie de retourne des valeurs en fonction des param
+                    }else{
+                        MessageCodeException.user_not_found(res);
+                        return res;
+                    }
+                } else {
+                    MessageCodeException.invalid_email(res);
+                    return res;
+                }
+            } else {
+                MessageCodeException.empty_data(res);
+                return res;
+            }
+            MessageCodeException.success(res);
+        }catch (SQLException e){
+	        // En cas d'erreur bdd, affichage de l'erreur dans le message rendu
+	        MessageCodeException.bdd_error(res);
+	        e.printStackTrace();
+        }
+        return res;
+    }
+
 }
