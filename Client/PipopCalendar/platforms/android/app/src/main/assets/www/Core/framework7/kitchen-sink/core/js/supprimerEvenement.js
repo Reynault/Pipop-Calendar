@@ -1,8 +1,12 @@
+$(document).ready(function(e){
+  $("a[id^=supprEventBouton]").click(function(e){
+    e.preventDefault();
+    supprimerEvenement(localStorage.getItem("emailUtilisateur"),$(this).attr('id').substring(16));
+  });
 
-supprimerEvenement(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
-
-  function supprimerEvenement(email, calendrier){
-      var arr = {"Request":"LoadEvents","Email":email,"CalendarName":calendrier, "Mdp":localStorage.getItem("mdpUtilisateur")};
+  function supprimerEvenement(email, id){
+      app.popover.get("#evenement_settings"+id).close(true);
+      var arr = {"Request":"DeleteEvent","Email":email,"ID":id, "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -16,7 +20,36 @@ supprimerEvenement(localStorage.getItem("emailUtilisateur"), localStorage.getIte
               console.log(data);
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
-
+                $("#evenement_card"+id).remove();
+                var calendarInline = app.calendar.get();
+                console.log(calendarInline);
+                $.ajax({
+                  url: "js/chargerEvenements.js",
+                  dataType: "script",
+                  cache: true,
+                  async: false,
+                  success: function(msg) {
+                  },
+                  error: function(msg) {
+                    console.log("Error chargement script de chargement d'événements");
+                  }
+                });
+                calendarInline.params.events = eventFromServer;
+                calendarInline.update();
+                window.plugins.toast.showWithOptions({
+                  message: ""+obj["Message"],
+                  duration: 1500, // ms
+                  position: "bottom",
+                  addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
+                  styling: {
+                    opacity: 0.75, // 0.0 (transparent) to 1.0 (opaque). Default 0.8
+                    backgroundColor: '#00FF00', // make sure you use #RRGGBB. Default #333333
+                    textSize: 12, // Default is approx. 13.
+                    cornerRadius: 16, // minimum is 0 (square). iOS default 20, Android default 100
+                    horizontalPadding: 22, // iOS default 16, Android default 50
+                    verticalPadding: 20 // iOS default 12, Android default 30
+                  }
+                });
               }else{
                 window.plugins.toast.showWithOptions(
                 {
@@ -55,3 +88,4 @@ supprimerEvenement(localStorage.getItem("emailUtilisateur"), localStorage.getIte
           }
       });
   }
+});
