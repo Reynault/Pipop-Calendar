@@ -272,8 +272,7 @@ public class ConnexionClient implements Runnable{
                             String desc = donnees.get("Description");
                             String couleur = donnees.get("Couleur");
                             String theme = donnees.get("Theme");
-                            String auteur = donnees.get("Auteur");
-                            rep = ApplicationServeur.getInstance().creationCalendrier(nom, desc, couleur, theme, auteur);
+                            rep = ApplicationServeur.getInstance().creationCalendrier(nom, desc, couleur, theme, email);
                             result = parseur.encode(rep);
                             break;
                         }
