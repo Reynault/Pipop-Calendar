@@ -84,6 +84,7 @@ public class ApplicationServeur implements Observer {
      * @param datedeb date de début
      * @param datefin date de fin
      * @param lieu lieu à lequel l'événement va se dérouler
+     * @param couleur couleur liée à l'événement
      * @param auteur créateur de l'événement
      * @param visible visibilité des événements auprès des autres utilisateurs
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé

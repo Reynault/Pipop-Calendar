@@ -214,7 +214,7 @@ public class ConnexionClient implements Runnable{
                             if (Verification.checkCalendarByName(email, calendarName)) {
                                 boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
                                 rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription,
-                                        image, eventDateDeb, eventDateFin, eventLocation, email, eventColor, eventVisibility);
+                                        image, eventDateDeb, eventDateFin, eventLocation, eventColor, email, eventVisibility);
                             } else {
                                 MessageCodeException.calendar_not_found(rep);
                             }

@@ -59,12 +59,34 @@ public class  ClientTest {
                     "\"ID\":\"73\"" +
                     "}", true);*/
             //String email, int idC, boolean b
-            lancerClient("{\"Request\":\"DeleteCalendar\"," +
+            /*lancerClient("{\"Request\":\"DeleteCalendar\"," +
                     "\"Email\":\"test@test\","+
                     "\"Mdp\":\"ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff\","+
                     "\"IdCalendar\":\"8\","+
                     "\"SuppCal\":\"true\"" +
+                    "}", true);*/
+            lancerClient("{\"Request\":\"AddEvent\"," +
+                    "\"CalendarName\":\"TOUTENKLAKOS\","+
+                    "\"EventName\":\"77\","+
+                    "\"EventDescription\":\"77\","+
+                    "\"EventDate\":\"26/03/2019 20:00\"," +
+                    "\"EventDateFin\":\"26/03/2019 22:00\"," +
+                    "\"EventLocation\":\"77\"," +
+                    "\"EventVisibility\":\"false\"," +
+                    "\"Email\":\"test@test.com\"," +
+                    "\"EventColor\":\"deeppurple\"," +
+                    "\"Mdp\":\"ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff\""+
                     "}", true);
+            /*
+            String calendarName = donnees.get("CalendarName");
+                            String eventName = donnees.get("EventName");
+                            String eventDescription = donnees.get("EventDescription");
+                            String image = "";
+                            String eventDateDeb = donnees.get("EventDate");
+                            String eventDateFin = donnees.get("EventDateFin");
+                            String eventLocation = donnees.get("EventLocation");
+                            String eventColor = donnees.get("EventColor");
+             */
         } catch (IOException e) {
             e.printStackTrace();
         }
