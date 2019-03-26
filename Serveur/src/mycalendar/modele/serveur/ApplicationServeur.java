@@ -593,8 +593,6 @@ public class ApplicationServeur implements Observer {
      * @return Hashmap indiquant si la requête s'est bien déroulée et si non, l'erreur associé
      */
     public HashMap<String, String>  suppressionCalendrier(String email, int idC, boolean b) {
-
-
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "DeleteCalendar");
         try {
@@ -602,13 +600,10 @@ public class ApplicationServeur implements Observer {
            if(b) {
                //on veut recuperer la liste des evenements appartenant au calendrier
                // dans le but de les supprimer
-               ArrayList<Evenement> events = null;
+               ArrayList<Evenement> events;
                events = Evenement.find(idC, email);
                if (events.size() == 0) {
-                   MessageCodeException.event_not_found(res);
-                   //res.put("Result", MessageCodeException.C_NOT_FOUND);
-                   //res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
-                   return res;
+                   // On ne supprime pas d'événements
                } else {
                    // pour chaque evenement , on recherche les calendriers associés
                    for (Evenement e : events) {
@@ -625,7 +620,6 @@ public class ApplicationServeur implements Observer {
                }
                // on cherche le calendrier dans la base et le supprime
                Calendrier c = Calendrier.find(idC);
-
                if (!c.delete()) {
                    MessageCodeException.bdd_calendar_error(res);
                    //res.put("Result", MessageCodeException.C_ERROR_BDD);
@@ -633,22 +627,25 @@ public class ApplicationServeur implements Observer {
                    return res;
                }
            }
-               // b a false quand on veut juste supprimer le calendrier, sans supprimer les evenements
-               else{
-                   // on cherche le calendrier dans la base et le supprime
-                   Calendrier c = Calendrier.find(idC);
-
-                   if (!c.delete()) {
-                       MessageCodeException.bdd_calendar_error(res);
-                       //res.put("Result", MessageCodeException.C_ERROR_BDD);
-                       //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
-                       return res;
-                   }
+           // b a false quand on veut juste supprimer le calendrier, sans supprimer les evenements
+           else{
+               // on cherche le calendrier dans la base et le supprime
+               Calendrier c = Calendrier.find(idC);
+               if (!c.delete()) {
+                   System.out.println("On a PAS réussi à suppr le calendrier");
+                   MessageCodeException.bdd_calendar_error(res);
+                   //res.put("Result", MessageCodeException.C_ERROR_BDD);
+                   //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
+                   return res;
                }
-           } catch (SQLException e1) {
-               e1.printStackTrace();
-           } catch (ParseException e) {
-               e.printStackTrace();
+               else {
+                   System.out.println("On a réussi à suppr le calendrier");
+               }
+           }
+        } catch (SQLException e1) {
+           e1.printStackTrace();
+        } catch (ParseException e) {
+           e.printStackTrace();
         }
         MessageCodeException.success(res);
         //res.put("Result", MessageCodeException.C_SUCCESS);
@@ -774,13 +771,17 @@ public class ApplicationServeur implements Observer {
         HashMap<String, Object> res = new HashMap<>();
         res.put("Request", "CreateFriendsGroup");
         ArrayList<GroupeAmi> groupe = GroupeAmi.find(nomGroupe);
+
         if(groupe.size() != 0){
             res.put("Result", MessageCodeException.C_ALREADY_EXIST);
             res.put("Message", MessageCodeException.M_GROUP_ALREADY_EXIST);
         }
         else{
             // Groupe inexistant, il peut être créé
-            GroupeAmi groupeAmi = new GroupeAmi(amis, nomGroupe);
+            int id = GroupeAmi.getHighestID(); // On récupère l'ID de l'événement le plus élevé afin de créer un ID unique
+            // Création des associations groupe - membres
+            GroupeAmi groupeAmi = new GroupeAmi(id+1, amis);
+            //GroupeAmi groupeAmi = new GroupeAmi(amis, nomGroupe);
             groupeAmi.save();
         }
         return res;

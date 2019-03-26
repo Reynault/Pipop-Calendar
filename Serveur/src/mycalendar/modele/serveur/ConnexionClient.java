@@ -277,10 +277,9 @@ public class ConnexionClient implements Runnable{
                             break;
                         }
                         case "DeleteCalendar": {
-                            int idCalendar = Integer.parseInt(donnees.get("IDCalendar"));
-                            boolean b = Boolean.parseBoolean(
-                                    donnees.get("SuppEv")
-                            );
+                            System.out.println("Je suis dans le cas pour suppr");
+                            int idCalendar = Integer.parseInt(donnees.get("IdCalendar"));
+                            boolean b = Boolean.parseBoolean(donnees.get("SuppCal"));
                             if (Verification.checkCalendar(email, idCalendar)) {
                                 rep = ApplicationServeur.getInstance().suppressionCalendrier(email, idCalendar, b);
                             } else {
