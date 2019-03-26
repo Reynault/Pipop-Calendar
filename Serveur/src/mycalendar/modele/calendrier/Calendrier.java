@@ -319,13 +319,14 @@ public class Calendrier {
     public boolean delete() throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
         {
-            String request = "DELETE FROM Calendrier WHERE idC=? AND nomC=? AND description=? AND couleur=? AND theme=?;";
+            String request = "DELETE FROM Calendrier WHERE idc=? AND nomC=? AND description=? AND couleur=? AND theme=?;";
             PreparedStatement prep = connect.prepareStatement(request);
             prep.setInt(1, this.idC);
-            prep.setString(3, this.nomC);
+            prep.setString(2, this.nomC);
+            // Inversés car prob de constructeur... on évite de tout toucher
             prep.setString(4, this.description.toString());
             prep.setString(3, this.couleur);
-            prep.setString(4, this.theme);
+            prep.setString(5, this.theme);
             if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
                 return false;
             }

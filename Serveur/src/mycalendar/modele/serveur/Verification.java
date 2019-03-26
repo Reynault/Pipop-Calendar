@@ -1,6 +1,5 @@
 package mycalendar.modele.serveur;
 
-import jdk.jshell.execution.Util;
 import mycalendar.modele.bdd.GestionnaireBDD;
 import mycalendar.modele.utilisateur.Utilisateur;
 

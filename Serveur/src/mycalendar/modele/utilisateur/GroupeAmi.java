@@ -13,6 +13,13 @@ public class GroupeAmi {
 	private String nom_groupe;
 	private ArrayList<String> amis;
 
+
+	/**
+	 * Constructeur d'un groupe
+	 * @param idG id du groupe
+	 * @param em email du createur
+	 * @param nomG nom du groupe
+	 */
 	public GroupeAmi(int idG, String em, String nomG){
 	    this.idG = idG;
 		this.email = em;
@@ -20,13 +27,33 @@ public class GroupeAmi {
 	}
 
 	/**
-	 * Constructeur
+	 * Constructeur de l'association groupe - membre
+	 * @param idG id du groupe d'amis
 	 * @param amis amis qui vont appartenir au groupe
-	 * @param nomG nom du groupe
 	 */
-	public GroupeAmi(ArrayList<String> amis, String nomG) {
+	public GroupeAmi(int idG, ArrayList<String> amis) {
+		this.idG = idG;
 		this.amis = amis;
-		this.nom_groupe = nomG;
+	}
+
+
+	/**
+	 * Getter sur l'ID le plus eleve des groupes d'amis
+	 * @return id le plus eleve des groupes d'amis
+	 * throws SQLException
+	 */
+	public static int getHighestID() throws SQLException{
+		Connection connect = GestionnaireBDD.getInstance().getConnection();
+		{
+			String request = "SELECT MAX(idG) AS max FROM groupes_amis;";
+			PreparedStatement prep = connect.prepareStatement(request);
+			prep.execute();
+			ResultSet rs = prep.getResultSet();
+			if (rs.next()) {
+				return rs.getInt("max");
+			}
+			return -1;
+		}
 	}
 
 	/**

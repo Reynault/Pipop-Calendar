@@ -46,17 +46,24 @@ public class  ClientTest {
             line.append(l+"\n");
             l = bos.readLine();
         }
-        System.out.println("DONNEE RECUES :"+line.toString());
+        System.out.println("DONNEE RECUE :"+line.toString());
         bos.close();
         pred.close();
     }
 
     public static void main(String[] args) {
         try{
-            lancerClient("{\"Request\":\"DeleteEvent\"," +
+            /*lancerClient("{\"Request\":\"DeleteEvent\"," +
                     "\"Email\":\"test@test.com\","+
                     "\"Mdp\":\"ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff\","+
                     "\"ID\":\"73\"" +
+                    "}", true);*/
+            //String email, int idC, boolean b
+            lancerClient("{\"Request\":\"DeleteCalendar\"," +
+                    "\"Email\":\"test@test\","+
+                    "\"Mdp\":\"ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff\","+
+                    "\"IdCalendar\":\"8\","+
+                    "\"SuppCal\":\"true\"" +
                     "}", true);
         } catch (IOException e) {
             e.printStackTrace();
