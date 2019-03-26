@@ -121,13 +121,15 @@ public abstract class Evenement extends Observable {
             prep.execute();
             ResultSet rs = prep.getResultSet();
             if (rs.next()) {
+                Date deb = rs.getTimestamp("datedeb");
+                Date fin = rs.getTimestamp("datefin");
                 if (rs.getBoolean("idc")) {
                     return new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),rs.getString("couleur"),
+                            rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"),rs.getString("couleur"),
                             rs.getString("auteur"));
                 } else {
                     return new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                            rs.getString("description"), rs.getString("image"), rs.getDate("datedeb"), rs.getDate("datefin"), rs.getString("lieu"),rs.getString("couleur"),
+                            rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"),rs.getString("couleur"),
                             rs.getString("auteur"));
                 }
             }
@@ -144,14 +146,16 @@ public abstract class Evenement extends Observable {
         prep.setString(2, eventName);
         ResultSet rs = prep.executeQuery();
         if (rs.next()) {
+            Date deb = rs.getTimestamp("datedeb");
+            Date fin = rs.getTimestamp("datefin");
             if (rs.getBoolean("idc")) {
                 e = new EvenementPublic(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
+                        rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"),rs.getString("couleur"),
                         rs.getString("auteur"));
             }
             else {
                 e = new EvenementPrive(rs.getInt("ide"), rs.getInt("idc"), rs.getString("nomE"),
-                        rs.getString("description"), rs.getString("image"), rs.getTime("datedeb"), rs.getTime("datefin"), rs.getString("lieu"),rs.getString("couleur"),
+                        rs.getString("description"), rs.getString("image"), deb, fin, rs.getString("lieu"),rs.getString("couleur"),
                         rs.getString("auteur"));
             }
         }
