@@ -211,11 +211,10 @@ public class ConnexionClient implements Runnable{
                             String eventDateFin = donnees.get("EventDateFin");
                             String eventLocation = donnees.get("EventLocation");
                             String eventColor = donnees.get("EventColor");
-                            String eventAuthor = donnees.get("EventAuthor");
                             if (Verification.checkCalendarByName(email, calendarName)) {
                                 boolean eventVisibility = Boolean.parseBoolean(donnees.get("EventVisibility"));
                                 rep = ApplicationServeur.getInstance().creationEvenement(calendarName, eventName, eventDescription,
-                                        image, eventDateDeb, eventDateFin, eventLocation, eventAuthor, eventColor, eventVisibility);
+                                        image, eventDateDeb, eventDateFin, eventLocation, email, eventColor, eventVisibility);
                             } else {
                                 MessageCodeException.calendar_not_found(rep);
                             }
@@ -244,11 +243,10 @@ public class ConnexionClient implements Runnable{
                             String eventDateFin = donnees.get("EventDateFin");
                             String eventLocation = donnees.get("EventLocation");
                             String eventColor = donnees.get("EventColor");
-                            String eventAuthor = donnees.get("EventAuthor");
                             if (Verification.checkEvent(email, idevent)) {
                                 rep = ApplicationServeur.getInstance().modificationEvenement
                                         (idevent, Integer.parseInt(idCalendar), eventName, eventDescription, eventPicture,
-                                                eventDate, eventDateFin, eventLocation, eventColor, eventAuthor);
+                                                eventDate, eventDateFin, eventLocation, eventColor, email);
                             } else {
                                 MessageCodeException.event_not_found(rep);
                             }
@@ -358,10 +356,9 @@ public class ConnexionClient implements Runnable{
                         }
                         case "TransfertEventOwnership": {
                             String member = donnees.get("Member");
-                            String owner = donnees.get("Owner");
                             String event = donnees.get("EventName");
                             if (Verification.checkEventByName(email, event)) {
-                                rep = ApplicationServeur.getInstance().transfererPropriete(member, owner, event);
+                                rep = ApplicationServeur.getInstance().transfererPropriete(member, email, event);
                             } else {
                                 MessageCodeException.event_not_found(rep);
                             }
@@ -370,10 +367,9 @@ public class ConnexionClient implements Runnable{
                         }
                         case "TransfertCalendarOwnership": {
                             String calendarName = donnees.get("Calendar");
-                            String oldOwner = donnees.get("OldOwner");
                             String newOwner = donnees.get("NewOwner");
                             if (Verification.checkEventByName(email, calendarName)) {
-                                rep = ApplicationServeur.getInstance().modifAdminCalend(calendarName, oldOwner, newOwner);
+                                rep = ApplicationServeur.getInstance().modifAdminCalend(calendarName, email, newOwner);
                             } else {
                                 MessageCodeException.calendar_not_found(rep);
                             }
@@ -383,7 +379,6 @@ public class ConnexionClient implements Runnable{
                         case "ModifyAccount": {
                             String nom = donnees.get("Nom");
                             String prenom = donnees.get("Prenom");
-                            String newmdp = donnees.get("NewMdp");
                             rep = ApplicationServeur.getInstance().modifierCompte(email, nom, prenom, mdp);
                             result = parseur.encode(rep);
                             break;

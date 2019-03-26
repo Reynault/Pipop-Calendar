@@ -27,7 +27,7 @@ public class MessageCodeException {
     public static String M_GROUP_ALREADY_EXIST = "Friends group already exists.";
 
 
-    public static String M_BDD_ERROR = "Erreur de connexion avec la base de données";
+    public static String M_BDD_ERROR = "Connection error with database.";
 
     public static String M_DATE_ERROR = "Date already passed.";
 
@@ -37,15 +37,15 @@ public class MessageCodeException {
 
     public static String M_SIZE_ERROR = "Data size error.";
 
-    public static String M_THEME_NOT_FOUND = "Themes non trouve.";
+    public static String M_THEME_NOT_FOUND = "Themes not found.";
 
-    public static String M_DATE_PARSE_ERROR = "Erreur de date.";
+    public static String M_DATE_PARSE_ERROR = "Date error.";
 
-    public static String M_EMPTY_DATA = "Données vides";
+    public static String M_EMPTY_DATA = "Empty data.";
 
-    public static String M_INVALID_EMAIL = "Email invalide";
+    public static String M_INVALID_EMAIL = "Invalid email.";
 
-    private static String M_GROUPE_ERROR = "Erreur de groupe";
+    private static String M_GROUPE_ERROR = "Group error.";
 
     public static String M_DB_CONSISTENCY_ERROR = "Database consistency error.";
 
