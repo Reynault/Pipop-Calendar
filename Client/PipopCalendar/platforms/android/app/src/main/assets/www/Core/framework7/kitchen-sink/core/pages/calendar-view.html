@@ -340,22 +340,9 @@
         var titre = localStorage.getItem('nomCalendrierCourant');
         $(".titreCalendrier").text(titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase());
         var calendarInline = appSelf.calendar.get();
-        console.log("Calendrier code : "+ calendarInline);
+
         calendarInline.params.events = eventFromServer;
         calendarInline.update();
-        if(localStorage.getItem("eventWasOpen")==1){
-           localStorage.setItem("eventWasOpen",0);
-           console.log("POPU Class : "+".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave"));
-            console.log("Popup code : "+appSelf.popup.get(".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave")));//.open();
-            var t = appSelf.popup.create({
-              el: $(".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave")),
-              on: {
-                close: function(){
-                  localStorage.setItem("eventWasOpen",0);
-                },
-              },
-            }).open();
-        }
         $.ajax({
           url: "js/supprimerEvenement.js",
           dataType: "script",
@@ -386,7 +373,19 @@
             console.log("Error chargement script de suppression d'evenement");
           },
         });
+        if(localStorage.getItem("eventWasOpen")==1){
+           localStorage.setItem("eventWasOpen",0);
+           var t = appSelf.popup.create({
+             el: $(".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave")),
+             on: {
+               close: function(){
+                 localStorage.setItem("eventWasOpen",0);
+               },
+             },
+           }).open();
+           calendarInline.update();
 
+        }
         localStorage.setItem("eventWasOpen",0);
       },
       pageBeforeRemove() {
