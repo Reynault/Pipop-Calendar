@@ -1,0 +1,101 @@
+@startuml
+skinparam class {
+   BackgroundColor AliceBlue
+   ArrowColor DarkTurquoise
+   BorderColor Turquoise
+}
+
+skinparam stereotypeCBackgroundColor DarkTurquoise
+skinparam stereotypeIBackgroundColor Magenta
+skinparam stereotypeABackgroundColor Yellow
+
+package "serveur.mycalendar.modele" #F0F0F0 {
+
+
+package exceptions #E0E0E0 {
+
+   class BadRequestException {
+      {field}private final String message
+      public BadRequestExeption(String request)
+      public String getMessage()
+   }
+
+   class ExceptionLimiteAtteinte {
+      public String getMessage()
+   }
+   
+   class MessageCodeException {
+      {field}{static}public static String M_CALENDAR_NOT_FOUND
+      {field}{static}public static String M_CALENDAR_ALREADY_EXIST
+      {field}{static}public static String M_CALENDAR_ERROR_BDD
+      {field}{static}public static String M_EVENT_ALREADY_EXIST
+      {field}{static}public static String M_EVENT_ERROR_BDD
+      {field}{static}public static String M_EVENT_NOT_FOUND 
+      {field}{static}public static String M_USER_NOT_FOUND
+      {field}{static}public static String M_USER_ALREADY_EXIST 
+      {field}{static}public static String M_FRIEND_ALREADY_EXIST
+      {field}{static}public static String M_FRIEND_ERROR_BDD
+      {field}{static}public static String M_GROUP_ALREADY_EXIST
+      {field}{static}public static String M_BDD_ERROR
+      {field}{static}public static String M_DATE_ERROR
+      {field}{static}public static String M_SUCCESS
+      {field}{static}public static String M_NO_CHANGE
+      {field}{static}public static String M_SIZE_ERROR 
+      {field}{static}public static String M_THEME_NOT_FOUND
+      {field}{static}public static String M_DATE_PARSE_ERROR
+      {field}{static}public static String M_EMPTY_DATA
+      {field}{static}public static String M_INVALID_EMAIL
+      {field}{static}private static String M_GROUPE_ERROR
+      {field}{static}public static String M_DB_CONSISTENCY_ERROR
+      {field}{static}public static String M_USER_NOT_IN_EVENT
+      {field}{static}private static String M_AMIS_NOT_FOUND
+      {field}{static}public static String C_NOT_FOUND
+      {field}{static}public static String C_ALREADY_EXIST 
+      {field}{static}public static String C_ERROR_BDD
+      {field}{static}public static String C_DATE_ERROR
+      {field}{static}public static String C_SUCCESS
+      {field}{static}public static String C_SIZE_ERROR
+      {field}{static}public static String C_NO_CHANGE
+      {field}{static}public static String C_DATE_PARSE
+      {field}{static}public static String C_EMPTY_DATA
+      {field}{static}public static String C_INVALID_EMAIL
+      {field}{static}public static String C_GROUPE_ERROR
+      {field}{static}public static String C_DB_CONSISTENCY_ERROR
+      {field}{static}public static String C_AMIS_NOT_FOUND
+      {static}public static void success(HashMap<String, String> map)
+      {static}public static void invalid_email(HashMap<String, String> map)
+      {static}public static void empty_data(HashMap<String, String> map)
+      {static}public static void date_parse_error(HashMap<String, String> map)
+      {static}public static void theme_not_found(HashMap<String, String> map)
+      {static}public static void bdd_error(HashMap<String, String> map)
+      {static}public static void user_not_found(HashMap<String, String> map)
+      {static}public static void event_already_exist(HashMap<String, String> map)
+      {static}public static void bdd_calendar_error(HashMap<String, String> map)
+      {static}public static void no_change(HashMap<String, String> map)
+      {static}public static void calendar_not_found(HashMap<String, String> map)
+      {static}public static void event_not_found(HashMap<String, String> map)
+      {static}public static void calendar_already_exist(HashMap<String, String> map)
+      {static}public static void size_error(HashMap<String, String> map)
+      {static}public static void user_already_exist(HashMap<String, String> map)
+      {static}public static void bdd_event_error(HashMap<String, String> map)
+      {static}public static void date(HashMap<String, String> map)
+      {static}public static void group_not_found(HashMap<String, String> map)
+      {static}public static void amis_not_found(HashMap<String, String> map)
+   }
+
+   class MessageException {
+   }
+
+   class NoRequestException {
+      public String getMessage()
+   }
+
+}
+
+BadRequestException --|> RuntimeException
+ExceptionLimiteAtteinte --|> RuntimeException
+NoRequestException --|> RuntimeException
+
+}
+
+@enduml

@@ -1,0 +1,421 @@
+@startuml
+skinparam class {
+   BackgroundColor AliceBlue
+   ArrowColor DarkTurquoise
+   BorderColor Turquoise
+}
+
+skinparam stereotypeCBackgroundColor DarkTurquoise
+skinparam stereotypeIBackgroundColor Magenta
+skinparam stereotypeABackgroundColor Yellow
+
+package "serveur.mycalendar.modele" #F0F0F0 {
+
+
+package calendrier #E0E0E0 {
+
+   class Calendrier {
+      {field}private int idc
+      {field}private String nomC
+      {field}private String couleur
+      {field}private String theme
+      {field}private String email
+      public Calendrier(int idCalendar, String nom, String coul, String desc, String themes, String auteur)
+      public void consulterCalendrier(int id)
+      {static}public static int modificationCalendrier(int id, String nom, String couleur)
+      {static}public static int getHighestID()
+      public ArrayList<Evenement> getEvenements()
+      public String getNomCalendrier()
+      public boolean contient(Evenement e)
+      {static}public static int getCalendrierID(String nomUtilisateur, String nomCalendrier)
+      public void deleteEvent(Evenement e)
+      {static}public static ArrayList<Utilisateur> findInvites(int id)
+      {static}public static Calendrier find(int idC)
+      {static}public static ArrayList<Calendrier> find(Evenement e, int idEv)
+      public boolean save()
+      public boolean delete()
+      {static}public static ArrayList<String> getThemes()
+      public int modifAdmin(String emailNouveau, String email)
+      public int getIdC()
+      public StringBuilder getDescription()
+      public String getCouleur()
+      public String getTheme()
+   }
+
+   abstract class Evenement {
+      {field}private int idEv
+      {field}private int calendrierID
+      {field}private String nomE
+      {field}private String description
+      {field}private String image
+      {field}private String lieu
+      {field}private String couleur
+      {field}private String auteur
+      {field}private boolean visibilite
+      public Evenement(int id, int calID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String couleur, String auteur)
+      public void prevenirVues()
+      public boolean save()
+      {static}public static Evenement find(int idEv)
+      {static}public static Evenement find(String owner, String eventName)
+      {static}public static ArrayList<Evenement> find(int idc, String Email)
+      {static}public static int getHighestID()
+      public boolean delete()
+      public ArrayList<Utilisateur> findInvites()
+      public int getId()
+      public boolean getAdmin()
+      public HashMap<String, String> consult()
+      public boolean modify(int calendrierID, String nomE, String description, String image, Date datedeb, Date datefin, String lieu,String couleur, String auteur)
+      {static}public static boolean participatesInEvent(Utilisateur user, Evenement event)
+      public int transfererPropriete(Utilisateur user)
+      public boolean inEvent(Utilisateur user)
+      public String getNomE()
+      public String getDescription()
+      public String getImage()
+      public Date getDatedeb()
+      public Date getDatefin()
+      public String getLieu()
+      public String getAuteur()
+      public String getCouleur()
+   }
+
+   class EvenementPrive {
+      public EvenementPrive(int id, int calendrierID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String couleur, String auteur)
+   }
+
+   class EvenementPublic {
+      public EvenementPublic(int id, int calendrierID, String nom, String description, String image, Date datedeb, Date datefin, String lieu,String couleur, String auteur)
+   }
+
+   class Message {
+   }
+
+}
+
+
+package bdd #E0E0E0 {
+
+   class GestionnaireBDD <<(S, #FF7700)>> {
+      {field}{static}private static GestionnaireBDD instance
+      {field}{static}private static String userName
+      {field}{static}private static String password
+      {field}{static}private static String serverName
+      {field}{static}private static String portNumber
+      {field}{static}private static String name
+      {field}{static}private static String url
+      private GestionnaireBDD()
+      {static}public static synchronized GestionnaireBDD getInstance()
+      {static}public static Connection getConnection()
+      public void createConnection()
+      public void closeConnection()
+      public void setNomDB(String nomDb)
+      {static}public static String getName()
+      {static}public static boolean verifierExistenceCalendrier(int idc)
+      {static}public static boolean verifierAjoutAmi(String email1, String email2)
+   }
+
+}
+
+
+package droits #E0E0E0 {
+
+   abstract class Droit {
+   }
+
+   class Admin {
+   }
+
+   class Inviter {
+   }
+
+   class Modifier {
+   }
+
+   class Retirer {
+   }
+
+}
+
+
+package serveur #E0E0E0 {
+
+   class ApplicationServeur <<(S, #FF7700)>> {
+      {field}{static}private static ApplicationServeur instance
+      {field}{static}public static int PORT_NUMBER
+      {field}{static}public static int NB_BACKLOG
+      {field}{static}public static String URL
+      private ApplicationServeur()
+      {static}public static ApplicationServeur getInstance()
+      public void launchServer()
+      public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur, boolean visible)
+      private boolean verifierEvenement(String email, int calendrierID, String nom)
+      private int createEvenement(int calendrierID, String nom, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur, boolean visible)
+      public HashMap<String, String> suppressionEvenement(int idEv)
+      public HashMap<String, String> modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur)
+      public HashMap<String, String> consultationEvenement(String idEV)
+      public HashMap<String, String> authentification(String email, String mdp)
+      public HashMap<String, String> inscription(String email, String mdp, String prenom, String nom)
+      public HashMap<String, Object> loadCalendars(String email)
+      public HashMap<String, String> consultCalendar(int idCalendrier)
+      public HashMap<String, String> creationCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur)
+      private boolean verifierCalendrier(String email, String nomCalendrier)
+      private int creerCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur)
+      public HashMap<String, String>  suppressionCalendrier(String email, int idC, boolean b)
+      private ArrayList<Calendrier> getCalendars(Evenement e)
+      public HashMap<String, String> modificationCalendrier(int id, String nom, String couleur, String theme, String description)
+      private void envoiNotifications(ArrayList<Utilisateur> alu)
+      public HashMap<String, String> ajoutAmi(String email1, String email2)
+      public HashMap<String, Object> creerNouveauGroupeAmis(ArrayList<String> amis, String nomGroupe)
+      public HashMap<String, Object> getUtilisateurs(String nom, String prenom)
+      public Calendrier getCalendrier(int id)
+      public HashMap<String, Object> getThemes()
+      public HashMap<String, Object> loadEvents(String auteur, String nomCalendrier)
+      public HashMap<String, String> modifAdminCalend(String nomCalendrier, String email, String emailNouveau)
+      public HashMap<String, String> transfererPropriete(String memberName, String eventOwner, String eventName)
+      {static}public static DateFormat getDateFormat()
+      public ArrayList<GroupeAmi> rechercherGroupe(String nomG)
+      public void verifInvitAmiEvenement(int idG, int idE)
+      public HashMap<String, String> supprimerGroupeAmis(String auteur, int id_Groupe)
+      public HashMap<String, String> supprimerAmis(String user, String amis)
+      public HashMap<String, String> modifierCompte(String email, String nom, String prenom, String mdp)
+      public HashMap<String, String> modifierGroupe(String email, int idG, String nomGroupe, ArrayList<String> users)
+      public void update(Observable o, Object arg)
+   }
+
+   class ConnexionClient {
+      {field}private httpVersion
+      {field}private method
+      public ConnexionClient(Socket socket)
+      public void run()
+      private HashMap<String, String> formateRequest()
+      private String createReponse(HashMap<String, String> donnees)
+      private void sendResponse(String reponse)
+      private void closeAll()
+   }
+
+   class ParseurJson <<(S, #FF7700)>> {
+      {field}{static}private static ParseurJson instance
+      private ParseurJson()
+      {static}public static ParseurJson getInstance()
+      public HashMap<String, String> decode(String json)
+      public String encodeObj(HashMap<String, Object> param)
+      public ArrayList<String> getUsers(HashMap<String, String> users)
+      public String encode(HashMap<String, String> param)
+   }
+
+   class Verification {
+      {static}public static boolean checkMail(String mail)
+      {static}public static boolean checkPassword(String email, String password)
+      {static}public static boolean checkCalendar(String email, int id)
+      {static}public static boolean checkCalendarByName(String email, String name)
+      {static}public static boolean checkEventByName(String email, String nom)
+      {static}public static boolean checkEvent(String email, int id)
+      {static}public static boolean checkEmptyData(ArrayList<String> donnees)
+      {static}public static boolean checkDate(Date deb, Date fin)
+      {static}public static boolean checkFriends(String email, ArrayList<String> u)
+      {static}public static boolean checkGroup(String email, int idG)
+   }
+
+}
+
+
+package utilisateur #E0E0E0 {
+
+   class GroupeAmi {
+      {field}private int idG
+      {field}private String email
+      {field}private String nomGroupe
+      {field}private String[] amis
+      public GroupeAmi(int idG, String em, String nomG)
+      public GroupeAmi(ArrayList<String> amis, String nomG)
+      {static}public static ArrayList<GroupeAmi> find(String nomG)
+      public boolean save()
+      {static}public static GroupeAmi find(int idG)
+      {static}public static Boolean delete(int idGroupe)
+      public boolean saveNom()
+      public boolean saveUsers(ArrayList<String> u)
+      public boolean deleteUser(String email)
+      public void setNomGroupe(String nomGroupe)
+   }
+
+   class Invitation {
+      {field}protected int idE
+      public Invitation(int id, String email, String type, String message, Date time, int idE)
+      public boolean save()
+      {static}public static ArrayList<Invitation> find(String Email)
+      public void update(Observable observable, Object o)
+   }
+
+   abstract class Notif {
+      {field}protected int idN
+      {field}protected String email
+      {field}protected String type
+      {field}protected String messageN
+      public Notif(int id, String email, String type, String message, Date time)
+   }
+
+   class NotifiCalendrier {
+      public NotifiCalendrier(int id, String email, String type, String message, Date time)
+      public void update(Observable o, Object arg)
+   }
+
+   class NotifiEvenement {
+      {field}protected int idE
+      public NotifiEvenement(int id, String email, String type, String message, Date time, int idE)
+      public boolean save()
+      {static}public static ArrayList<NotifiEvenement> find(String Email)
+      public void update(Observable observable, Object o)
+   }
+
+   class Utilisateur {
+      {field}private email
+      {field}private nom
+      {field}private tmpPassword
+      {field}private password
+      {field}private prenom
+      public Utilisateur(String email, String nom, String password, String prenom)
+      {static}public static boolean verifierConnexion(String email, String password)
+      {static}public static int verifierInscription(String email, String mdp, String prenom, String nom)
+      {static}public static int ajouterAmi(String email1, String email2)
+      {static}public static ArrayList<Calendrier> findCalendriers(String email)
+      public boolean save()
+      {static}public static Utilisateur find(String nom)
+      {static}public static ArrayList<Utilisateur> find(String nom, String prenom)
+      public String getEmail()
+      public String getNom()
+      public String getPrenom()
+      {static}public static boolean deleteAmis(String user, String amis)
+      {static}public static void invitUtilisateurEvenement(String email, int idEvent)
+      public void setNom(String nom)
+      public void setTmpPassword(String tmp_password)
+      public void setPassword(String password)
+      public void setPrenom(String prenom)
+   }
+
+}
+
+
+package exceptions #E0E0E0 {
+
+   class BadRequestException {
+      {field}private final String message
+      public BadRequestExeption(String request)
+      public String getMessage()
+   }
+
+   class ExceptionLimiteAtteinte {
+      public String getMessage()
+   }
+   
+   class MessageCodeException {
+      {field}{static}public static String M_CALENDAR_NOT_FOUND
+      {field}{static}public static String M_CALENDAR_ALREADY_EXIST
+      {field}{static}public static String M_CALENDAR_ERROR_BDD
+      {field}{static}public static String M_EVENT_ALREADY_EXIST
+      {field}{static}public static String M_EVENT_ERROR_BDD
+      {field}{static}public static String M_EVENT_NOT_FOUND 
+      {field}{static}public static String M_USER_NOT_FOUND
+      {field}{static}public static String M_USER_ALREADY_EXIST 
+      {field}{static}public static String M_FRIEND_ALREADY_EXIST
+      {field}{static}public static String M_FRIEND_ERROR_BDD
+      {field}{static}public static String M_GROUP_ALREADY_EXIST
+      {field}{static}public static String M_BDD_ERROR
+      {field}{static}public static String M_DATE_ERROR
+      {field}{static}public static String M_SUCCESS
+      {field}{static}public static String M_NO_CHANGE
+      {field}{static}public static String M_SIZE_ERROR 
+      {field}{static}public static String M_THEME_NOT_FOUND
+      {field}{static}public static String M_DATE_PARSE_ERROR
+      {field}{static}public static String M_EMPTY_DATA
+      {field}{static}public static String M_INVALID_EMAIL
+      {field}{static}private static String M_GROUPE_ERROR
+      {field}{static}public static String M_DB_CONSISTENCY_ERROR
+      {field}{static}public static String M_USER_NOT_IN_EVENT
+      {field}{static}private static String M_AMIS_NOT_FOUND
+      {field}{static}public static String C_NOT_FOUND
+      {field}{static}public static String C_ALREADY_EXIST 
+      {field}{static}public static String C_ERROR_BDD
+      {field}{static}public static String C_DATE_ERROR
+      {field}{static}public static String C_SUCCESS
+      {field}{static}public static String C_SIZE_ERROR
+      {field}{static}public static String C_NO_CHANGE
+      {field}{static}public static String C_DATE_PARSE
+      {field}{static}public static String C_EMPTY_DATA
+      {field}{static}public static String C_INVALID_EMAIL
+      {field}{static}public static String C_GROUPE_ERROR
+      {field}{static}public static String C_DB_CONSISTENCY_ERROR
+      {field}{static}public static String C_AMIS_NOT_FOUND
+      {static}public static void success(HashMap<String, String> map)
+      {static}public static void invalid_email(HashMap<String, String> map)
+      {static}public static void empty_data(HashMap<String, String> map)
+      {static}public static void date_parse_error(HashMap<String, String> map)
+      {static}public static void theme_not_found(HashMap<String, String> map)
+      {static}public static void bdd_error(HashMap<String, String> map)
+      {static}public static void user_not_found(HashMap<String, String> map)
+      {static}public static void event_already_exist(HashMap<String, String> map)
+      {static}public static void bdd_calendar_error(HashMap<String, String> map)
+      {static}public static void no_change(HashMap<String, String> map)
+      {static}public static void calendar_not_found(HashMap<String, String> map)
+      {static}public static void event_not_found(HashMap<String, String> map)
+      {static}public static void calendar_already_exist(HashMap<String, String> map)
+      {static}public static void size_error(HashMap<String, String> map)
+      {static}public static void user_already_exist(HashMap<String, String> map)
+      {static}public static void bdd_event_error(HashMap<String, String> map)
+      {static}public static void date(HashMap<String, String> map)
+      {static}public static void group_not_found(HashMap<String, String> map)
+      {static}public static void amis_not_found(HashMap<String, String> map)
+   }
+
+   class MessageException {
+   }
+
+   class NoRequestException {
+      public String getMessage()
+   }
+
+}
+
+abstract class Observable {
+}
+
+interface Observer {
+
+}
+
+interface Runnable {
+}
+
+Calendrier -- "*" Evenement
+Calendrier -- "1" StringBuilder
+Evenement --|> Observable
+Evenement -- "2" Date
+Evenement -- "*" Message
+Evenement -- "*" Droit
+EvenementPrive --|> Evenement
+EvenementPublic --|> Evenement
+Invitation --|> Notif
+Notif ..|> Observer
+Notif --"1" Date
+NotifiCalendrier --|> Notif
+NotifiEvenement --|> Notif
+Admin --|> Droit
+Inviter --|> Droit
+Modifier --|> Droit
+Retirer --|> Droit
+GestionnaireBDD -- "2" Properties
+GestionnaireBDD -- "1" Connection
+ApplicationServeur ..|> Observer
+ApplicationServeur -- "1" Socket
+ApplicationServeur -- "1" ServerSocket
+ApplicationServeur -- "1" dateFormat
+ConnexionClient ..|> Runnable
+ConnexionClient -- "1" Socket
+ConnexionClient -- "1" PrintWriter
+ConnexionClient -- "1" BufferedWriter
+ParseurJson -- "1" Gson
+BadRequestException --|> RuntimeException
+ExceptionLimiteAtteinte --|> RuntimeException
+NoRequestException --|> RuntimeException
+
+}
+
+@enduml

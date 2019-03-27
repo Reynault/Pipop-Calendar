@@ -675,13 +675,15 @@ public class ApplicationServeur implements Observer {
      * @return Hashmap indiquant si la requête s'est bien déroulée ou sinon l'erreur associée
      * @throws SQLException
      */
-    public HashMap<String, String> modificationCalendrier(int id, String nom, String couleur) throws SQLException {
+    public HashMap<String, String> modificationCalendrier(int id, String nom, String couleur, String theme, String description) throws SQLException {
         HashMap<String, String> res = new HashMap<>();
         res.put("Request", "ModifyCalendar");
         // Le calendrier n'existe pas
         ArrayList<String> verif = new ArrayList<>();
         verif.add(nom);
         verif.add(couleur);
+        verif.add(theme);
+        verif.add(description);
         if(Verification.checkEmptyData(verif)) {
             if (!GestionnaireBDD.verifierExistenceCalendrier(id)) {
                 MessageCodeException.calendar_not_found(res);
@@ -690,14 +692,14 @@ public class ApplicationServeur implements Observer {
                 return res;
             }
             // Aucune modification effectuée
-            else if (Calendrier.modificationCalendrier(id, nom, couleur) == 0) {
+            else if (Calendrier.modificationCalendrier(id, nom, couleur, theme, description) == 0) {
                 MessageCodeException.no_change(res);
                 //res.put("Result", MessageCodeException.C_NO_CHANGE);
                 //res.put("Message", MessageCodeException.M_NO_CHANGE);
                 return res;
             }
             // Erreur lors de la modification
-            else if (Calendrier.modificationCalendrier(id, nom, couleur) < 0) {
+            else if (Calendrier.modificationCalendrier(id, nom, couleur, theme, description) < 0) {
                 MessageCodeException.bdd_calendar_error(res);
                 //res.put("Result", MessageCodeException.C_ERROR_BDD);
                 //res.put("Message", MessageCodeException.M_CALENDAR_ERROR_BDD);
