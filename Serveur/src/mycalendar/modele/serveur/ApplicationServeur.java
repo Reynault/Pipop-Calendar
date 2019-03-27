@@ -36,7 +36,7 @@ public class ApplicationServeur implements Observer {
     // Socket du client en cours
     private Socket socket;
 
-    private static DateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    private static DateFormat dateFormat= new SimpleDateFormat("DD/MM/YYYY HH:MM");
 
     // Instance unique
     private static ApplicationServeur instance = new ApplicationServeur();
@@ -262,7 +262,7 @@ public class ApplicationServeur implements Observer {
             Date dateD = dateFormat.parse(datedeb);
             // Date de fin
             Date dateF = dateFormat.parse(datefin);
-            if(Verification.checkDate(dateD, dateF)){
+            if(!Verification.checkDate(dateD, dateF)){
                 throw new BadRequestExeption("Date non valide");
             }
             Evenement e = null;
@@ -276,13 +276,6 @@ public class ApplicationServeur implements Observer {
                         MessageCodeException.event_not_found(res);
                         //res.put("Result", MessageCodeException.C_NOT_FOUND);
                         //res.put("Message", MessageCodeException.M_EVENT_NOT_FOUND);
-                        return res;
-                    }
-                    if (dateD.before(Calendar.getInstance().getTime())) {
-                        // Date déjà passée
-                        MessageCodeException.date(res);
-                        //res.put("Result", MessageCodeException.C_DATE_ERROR);
-                        //res.put("Message", MessageCodeException.M_DATE_ERROR);
                         return res;
                     }
                     if (!e.modify(calendrierID, nomE, description, image, dateD, dateF, lieu, couleur, auteur)) {
