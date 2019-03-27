@@ -324,8 +324,8 @@ public class Calendrier {
             prep.setInt(1, this.idC);
             prep.setString(2, this.nomC);
             // Inversés car prob de constructeur... on évite de tout toucher
-            prep.setString(4, this.description.toString());
-            prep.setString(3, this.couleur);
+            prep.setString(3, this.description.toString());
+            prep.setString(4, this.couleur);
             prep.setString(5, this.theme);
             if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
                 return false;

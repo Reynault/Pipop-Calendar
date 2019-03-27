@@ -36,7 +36,7 @@ public class ApplicationServeur implements Observer {
     // Socket du client en cours
     private Socket socket;
 
-    private static DateFormat dateFormat= new SimpleDateFormat("DD/MM/YYYY HH:MM");
+    private static DateFormat dateFormat= new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     // Instance unique
     private static ApplicationServeur instance = new ApplicationServeur();
