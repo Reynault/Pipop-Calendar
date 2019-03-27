@@ -1,0 +1,90 @@
+<template>
+  <div class="page" data-name="profil-settings">
+    <div class="navbar no-shadow">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a id="backToHome" class="link back">
+            <i class="f7-icons">arrow_left</i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">Profil settings</div>
+      </div>
+    </div>
+    <div class="page-content">
+
+      <form class="card elevation-4">
+        <div class="card-header">Your informations</div>
+        <div class="card-content list">
+          <ul>
+            <li class="item-content item-input item-input-outline">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">First name</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="firstname">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input item-input-outline">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">Last name</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="lastname">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="list-button button button-large">Save changes</button>
+        </div>
+      </form>
+
+      <form class="card elevation-4">
+        <div class="card-header">Your password</div>
+        <p class="block-footer">Leave the fields blank if you don't want to change your password.</p>
+        <div class="card-content list">
+          <ul>
+            <li class="item-content item-input item-input-outline">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">New password</div>
+                <div class="item-input-wrap">
+                  <input type="password" name="newpassword">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input item-input-outline">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">Confirm new password</div>
+                <div class="item-input-wrap">
+                  <input type="password" name="confirmnewpassword">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input item-input-outline">
+              <div class="item-inner">
+                <div class="item-title item-floating-label">Enter previous password</div>
+                <div class="item-input-wrap">
+                  <input type="password" name="previouspassword">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="list-button button button-large">Save changes</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</template>
+<script>
+  return {
+    on: {
+      pageInit: function(email){
+
+      }
+    }
+  }
+</script>
