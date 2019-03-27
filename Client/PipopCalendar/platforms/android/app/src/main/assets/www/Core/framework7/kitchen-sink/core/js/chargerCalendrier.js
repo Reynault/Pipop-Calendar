@@ -22,7 +22,8 @@ chargerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getIt
                 $("#descriptionCalendrierForm").val(""+obj["Description"]);
                 app.input.checkEmptyState("#descriptionCalendrierForm");
                 //Set The Theme
-                $("#couleurSelect option[value=\""+obj["Couleur"]+"\"]").attr('selected',true);
+                app.smartSelect.get("#couleurSelect").setValue(obj["Couleur"]);
+//                $("#couleurSelect option[value=\""+obj["Couleur"]+"\"]").attr('selected',true);
                 $("#themeSelect option[value=\""+obj["Theme"]+"\"]").attr('selected',true);
               }else{
                 window.plugins.toast.showWithOptions(
