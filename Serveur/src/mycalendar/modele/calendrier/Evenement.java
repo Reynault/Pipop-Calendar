@@ -76,7 +76,7 @@ public abstract class Evenement extends Observable {
      */
     public boolean save() throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-        {
+        try {
             String request = "INSERT INTO Evenement VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement prep = connect.prepareStatement(request);
             prep.setInt(1, this.idEv);
@@ -100,7 +100,35 @@ public abstract class Evenement extends Observable {
             prep.setString(1, this.auteur);
             prep.setInt(2, this.idEv);
             prep.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
+    }
 
+    public boolean save_update() throws SQLException {
+        Connection connect = GestionnaireBDD.getInstance().getConnection();
+        try {
+            String request = "UPDATE Evenement SET auteur=?, nomE=?, datedeb=?, datefin=?, description=?, image=?, lieu=?, couleur=?, visibilite=?  WHERE ide=? AND idc=?;";
+            PreparedStatement prep = connect.prepareStatement(request);
+            prep.setInt(10, this.idEv);
+            prep.setInt(11, this.calendrierID);
+            prep.setString(2, this.nomE);
+            java.sql.Timestamp t = new java.sql.Timestamp(this.datedeb.getTime());
+            prep.setTimestamp(3, t);
+            t = new java.sql.Timestamp(this.datefin.getTime());
+            prep.setTimestamp(4, t);
+            prep.setString(5, this.description);
+            prep.setString(6, this.image);
+            prep.setString(7, this.lieu);
+            prep.setString(8, this.couleur);
+            prep.setString(1, this.auteur);
+            prep.setBoolean(9, this.visibilite);
+            if (prep.executeUpdate() == 0) { // Pas de nouvelles lignes insérées lors de l'exécution de la requête, il y a donc un problème
+                return false;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
         }
         return true;
     }
@@ -313,7 +341,7 @@ public abstract class Evenement extends Observable {
         this.lieu=lieu;
         this.couleur = couleur;
         this.auteur=auteur;
-        return save();
+        return save_update();
     }
 
     public static boolean participatesInEvent(Utilisateur user, Evenement event) {
