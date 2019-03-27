@@ -262,7 +262,9 @@ public class ApplicationServeur implements Observer {
             Date dateD = dateFormat.parse(datedeb);
             // Date de fin
             Date dateF = dateFormat.parse(datefin);
+            System.out.println(dateD.before(dateF));
             if(!Verification.checkDate(dateD, dateF)){
+                System.out.println("oui ?");
                 throw new BadRequestExeption("Date non valide");
             }
             Evenement e = null;

@@ -58,8 +58,8 @@ public class  ClientTest {
                             "\"IdEvent\":\"76\"," +
                             "\"EventName\":\"TESTModif\"," +
                             "\"EventDescription\":\"test\"," +
-                            "\"EventDate\":\"27/03/2019 22:26\"," +
-                            "\"EventDateFin\":\"27/03/2019 23:26\"," +
+                            "\"EventDate\":\"27/03/2019 23:06\"," +
+                            "\"EventDateFin\":\"27/03/2019 23:09\"," +
                             "\"EventLocation\":\"testtest\"," +
                             "\"EventVisibility\":\"false\"," +
                             "\"EventColor\":\"deeppurple\"," +
