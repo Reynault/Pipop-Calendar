@@ -3,9 +3,10 @@ $(document).ready(function(){
   $("#inscriptionBouton").click(function(e){
     app.input.checkEmptyState("#emailInscripInput");
     app.input.checkEmptyState("#mdpInscripInput");
+    app.input.checkEmptyState("#confirmInscripInput");
     app.input.checkEmptyState("#nomInscripInput");
     app.input.checkEmptyState("#prenomInscripInput");
-    if(!$("#emailInscripInput").val() &&  !$("#mdpInscripInput").val() && !$("#nomInscripInput").val() && !$("#prenomInscripInput").val()){
+    if($("#confirmInscripInput").val() != $("#mdpInscripInput").val() || (!$("#emailInscripInput").val() && !$("#confirmInscripInput").val() && !$("#mdpInscripInput").val() && !$("#nomInscripInput").val() && !$("#prenomInscripInput").val())){
            window.plugins.toast.showWithOptions({
                   message: "Informations incomplètes",
                   duration: 1500, // ms

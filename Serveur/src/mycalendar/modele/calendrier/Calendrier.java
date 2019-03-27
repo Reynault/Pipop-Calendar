@@ -64,15 +64,15 @@ public class Calendrier {
      * @return nombre de lignes modifiees (0 si echec)
      * @throws SQLException
      */
-    public static int modificationCalendrier(int id, String nom, String couleur) throws SQLException {
+    public static int modificationCalendrier(int id, String nom, String couleur, String theme, String description) throws SQLException {
         Connection connect = GestionnaireBDD.getInstance().getConnection();
-        System.out.println("ModificationCalendrier avant");
-        String SQLprep = "update Calendrier set nomC=?, couleur=? where idc=?;";
-        System.out.println("ModificationCalendrier après");
+        String SQLprep = "update Calendrier set nomC=?, couleur=?, theme=?, description=? where idc=?;";
         PreparedStatement prep = connect.prepareStatement(SQLprep);
         prep.setString(1, nom);
         prep.setString(2, couleur);
-        prep.setInt(3, id);
+        prep.setString(3, theme);
+        prep.setString(4, description);
+        prep.setInt(5, id);
         return prep.executeUpdate();  // Le nombre de lignes modifiées
     }
 
@@ -225,7 +225,7 @@ public class Calendrier {
                 prep.execute();
                 ResultSet rst = prep.getResultSet();
                       if(rst.next()){
-                            return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("description"), rs.getString("couleur"), rs.getString("theme"),rst.getString("Email"));
+                            return new Calendrier(rs.getInt("idC"),rs.getString("nomC"), rs.getString("couleur"), rs.getString("description"), rs.getString("theme"),rst.getString("Email"));
                                       }
             }
             return null;

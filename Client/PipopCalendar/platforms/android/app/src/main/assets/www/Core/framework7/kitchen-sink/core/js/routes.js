@@ -24,9 +24,9 @@ var mainView = app.views.create('.view-main', {
       name: 'themes'
     },
 		{
-      path: '/personnal-info/',
-      componentUrl: './pages/personnal-info.html',
-      name: 'personnal-info'
+      path: '/profil-settings/',
+      componentUrl: './pages/profil-settings.html',
+      name: 'profil-settings'
     },
     {
       path: '/preloaderTheme/',

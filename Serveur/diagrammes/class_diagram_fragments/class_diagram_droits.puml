@@ -1,0 +1,42 @@
+@startuml
+skinparam class {
+   BackgroundColor AliceBlue
+   ArrowColor DarkTurquoise
+   BorderColor Turquoise
+}
+
+skinparam stereotypeCBackgroundColor DarkTurquoise
+skinparam stereotypeIBackgroundColor Magenta
+skinparam stereotypeABackgroundColor Yellow
+
+package "serveur.mycalendar.modele" #F0F0F0 {
+
+
+package droits #E0E0E0 {
+
+   abstract class Droit {
+   }
+
+   class Admin {
+   }
+
+   class Inviter {
+   }
+
+   class Modifier {
+   }
+
+   class Retirer {
+   }
+
+}
+
+
+Admin --|> Droit
+Inviter --|> Droit
+Modifier --|> Droit
+Retirer --|> Droit
+
+}
+
+@enduml

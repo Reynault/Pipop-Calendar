@@ -1,0 +1,108 @@
+@startuml
+skinparam class {
+   BackgroundColor AliceBlue
+   ArrowColor DarkTurquoise
+   BorderColor Turquoise
+}
+
+skinparam stereotypeCBackgroundColor DarkTurquoise
+skinparam stereotypeIBackgroundColor Magenta
+skinparam stereotypeABackgroundColor Yellow
+
+package "serveur.mycalendar.modele" #F0F0F0 {
+
+
+package calendrier #E0E0E0 {
+
+   class Calendrier {
+      {field}private int idc
+      {field}private String nomC
+      {field}private String couleur
+      {field}private String theme
+      {field}private String email
+      public Calendrier(int idCalendar, String nom, String coul, String desc, String themes, String auteur)
+      public void consulterCalendrier(int id)
+      {static}public static int modificationCalendrier(int id, String nom, String couleur, String theme, String description)
+      {static}public static int getHighestID()
+      public ArrayList<Evenement> getEvenements()
+      public String getNomCalendrier()
+      public boolean contient(Evenement e)
+      {static}public static int getCalendrierID(String nomUtilisateur, String nomCalendrier)
+      public void deleteEvent(Evenement e)
+      {static}public static ArrayList<Utilisateur> findInvites(int id)
+      {static}public static Calendrier find(int idC)
+      {static}public static ArrayList<Calendrier> find(Evenement e, int idEv)
+      public boolean save()
+      public boolean delete()
+      {static}public static ArrayList<String> getThemes()
+      public int modifAdmin(String emailNouveau, String email)
+      public int getIdC()
+      public StringBuilder getDescription()
+      public String getCouleur()
+      public String getTheme()
+   }
+
+   abstract class Evenement {
+      {field}private int idEv
+      {field}private int calendrierID
+      {field}private String nomE
+      {field}private String description
+      {field}private String image
+      {field}private String lieu
+      {field}private String couleur
+      {field}private String auteur
+      {field}private boolean visibilite
+      public Evenement(int id, int calID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String couleur, String auteur)
+      public void prevenirVues()
+      public boolean save()
+      {static}public static Evenement find(int idEv)
+      {static}public static Evenement find(String owner, String eventName)
+      {static}public static ArrayList<Evenement> find(int idc, String Email)
+      {static}public static int getHighestID()
+      public boolean delete()
+      public ArrayList<Utilisateur> findInvites()
+      public int getId()
+      public boolean getAdmin()
+      public HashMap<String, String> consult()
+      public boolean modify(int calendrierID, String nomE, String description, String image, Date datedeb, Date datefin, String lieu,String couleur, String auteur)
+      {static}public static boolean participatesInEvent(Utilisateur user, Evenement event)
+      public int transfererPropriete(Utilisateur user)
+      public boolean inEvent(Utilisateur user)
+      public String getNomE()
+      public String getDescription()
+      public String getImage()
+      public Date getDatedeb()
+      public Date getDatefin()
+      public String getLieu()
+      public String getAuteur()
+      public String getCouleur()
+   }
+
+   class EvenementPrive {
+      public EvenementPrive(int id, int calendrierID, String nom, String description, String image, Date datedeb, Date datefin, String lieu, String couleur, String auteur)
+   }
+
+   class EvenementPublic {
+      public EvenementPublic(int id, int calendrierID, String nom, String description, String image, Date datedeb, Date datefin, String lieu,String couleur, String auteur)
+   }
+
+   class Message {
+   }
+
+}
+
+abstract class Observable {
+}
+
+Calendrier -- "*" Evenement
+Calendrier -- "1" StringBuilder
+Evenement --|> Observable
+Evenement -- "2" Date
+Evenement -- "*" Message
+Evenement -- "*" Droit
+EvenementPrive --|> Evenement
+EvenementPublic --|> Evenement
+
+}
+
+@enduml
