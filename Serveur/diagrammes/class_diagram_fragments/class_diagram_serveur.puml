@@ -1,0 +1,115 @@
+@startuml
+skinparam class {
+   BackgroundColor AliceBlue
+   ArrowColor DarkTurquoise
+   BorderColor Turquoise
+}
+
+skinparam stereotypeCBackgroundColor DarkTurquoise
+skinparam stereotypeIBackgroundColor Magenta
+skinparam stereotypeABackgroundColor Yellow
+
+package "serveur.mycalendar.modele" #F0F0F0 {
+
+
+package serveur #E0E0E0 {
+
+   class ApplicationServeur <<(S, #FF7700)>> {
+      {field}{static}private static ApplicationServeur instance
+      {field}{static}public static int PORT_NUMBER
+      {field}{static}public static int NB_BACKLOG
+      {field}{static}public static String URL
+      private ApplicationServeur()
+      {static}public static ApplicationServeur getInstance()
+      public void launchServer()
+      public HashMap<String, String> creationEvenement(String nomCalendrier, String nom, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur, boolean visible)
+      private boolean verifierEvenement(String email, int calendrierID, String nom)
+      private int createEvenement(int calendrierID, String nom, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur, boolean visible)
+      public HashMap<String, String> suppressionEvenement(int idEv)
+      public HashMap<String, String> modificationEvenement(int idEv, int calendrierID, String nomE, String description, String image, String datedeb, String datefin, String lieu, String couleur, String auteur)
+      public HashMap<String, String> consultationEvenement(String idEV)
+      public HashMap<String, String> authentification(String email, String mdp)
+      public HashMap<String, String> inscription(String email, String mdp, String prenom, String nom)
+      public HashMap<String, Object> loadCalendars(String email)
+      public HashMap<String, String> consultCalendar(int idCalendrier)
+      public HashMap<String, String> creationCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur)
+      private boolean verifierCalendrier(String email, String nomCalendrier)
+      private int creerCalendrier(String nomCalendrier, String description, String couleur, String theme, String auteur)
+      public HashMap<String, String>  suppressionCalendrier(String email, int idC, boolean b)
+      private ArrayList<Calendrier> getCalendars(Evenement e)
+      public HashMap<String, String> modificationCalendrier(int id, String nom, String couleur)
+      private void envoiNotifications(ArrayList<Utilisateur> alu)
+      public HashMap<String, String> ajoutAmi(String email1, String email2)
+      public HashMap<String, Object> creerNouveauGroupeAmis(ArrayList<String> amis, String nomGroupe)
+      public HashMap<String, Object> getUtilisateurs(String nom, String prenom)
+      public Calendrier getCalendrier(int id)
+      public HashMap<String, Object> getThemes()
+      public HashMap<String, Object> loadEvents(String auteur, String nomCalendrier)
+      public HashMap<String, String> modifAdminCalend(String nomCalendrier, String email, String emailNouveau)
+      public HashMap<String, String> transfererPropriete(String memberName, String eventOwner, String eventName)
+      {static}public static DateFormat getDateFormat()
+      public ArrayList<GroupeAmi> rechercherGroupe(String nomG)
+      public void verifInvitAmiEvenement(int idG, int idE)
+      public HashMap<String, String> supprimerGroupeAmis(String auteur, int id_Groupe)
+      public HashMap<String, String> supprimerAmis(String user, String amis)
+      public HashMap<String, String> modifierCompte(String email, String nom, String prenom, String mdp)
+      public HashMap<String, String> modifierGroupe(String email, int idG, String nomGroupe, ArrayList<String> users)
+      public void update(Observable o, Object arg)
+   }
+
+   class ConnexionClient {
+      {field}private httpVersion
+      {field}private method
+      public ConnexionClient(Socket socket)
+      public void run()
+      private HashMap<String, String> formateRequest()
+      private String createReponse(HashMap<String, String> donnees)
+      private void sendResponse(String reponse)
+      private void closeAll()
+   }
+
+   class ParseurJson <<(S, #FF7700)>> {
+      {field}{static}private static ParseurJson instance
+      private ParseurJson()
+      {static}public static ParseurJson getInstance()
+      public HashMap<String, String> decode(String json)
+      public String encodeObj(HashMap<String, Object> param)
+      public ArrayList<String> getUsers(HashMap<String, String> users)
+      public String encode(HashMap<String, String> param)
+   }
+
+   class Verification {
+      {static}public static boolean checkMail(String mail)
+      {static}public static boolean checkPassword(String email, String password)
+      {static}public static boolean checkCalendar(String email, int id)
+      {static}public static boolean checkCalendarByName(String email, String name)
+      {static}public static boolean checkEventByName(String email, String nom)
+      {static}public static boolean checkEvent(String email, int id)
+      {static}public static boolean checkEmptyData(ArrayList<String> donnees)
+      {static}public static boolean checkDate(Date deb, Date fin)
+      {static}public static boolean checkFriends(String email, ArrayList<String> u)
+      {static}public static boolean checkGroup(String email, int idG)
+   }
+
+}
+
+interface Observer {
+
+}
+
+interface Runnable {
+}
+
+ApplicationServeur ..|> Observer
+ApplicationServeur -- "1" Socket
+ApplicationServeur -- "1" ServerSocket
+ApplicationServeur -- "1" dateFormat
+ConnexionClient ..|> Runnable
+ConnexionClient -- "1" Socket
+ConnexionClient -- "1" PrintWriter
+ConnexionClient -- "1" BufferedWriter
+ParseurJson -- "1" Gson
+
+}
+
+@enduml

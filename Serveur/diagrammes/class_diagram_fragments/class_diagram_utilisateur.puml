@@ -1,0 +1,103 @@
+@startuml
+skinparam class {
+   BackgroundColor AliceBlue
+   ArrowColor DarkTurquoise
+   BorderColor Turquoise
+}
+
+skinparam stereotypeCBackgroundColor DarkTurquoise
+skinparam stereotypeIBackgroundColor Magenta
+skinparam stereotypeABackgroundColor Yellow
+
+package "serveur.mycalendar.modele" #F0F0F0 {
+
+
+package utilisateur #E0E0E0 {
+
+   class GroupeAmi {
+      {field}private int idG
+      {field}private String email
+      {field}private String nomGroupe
+      {field}private String[] amis
+      public GroupeAmi(int idG, String em, String nomG)
+      public GroupeAmi(ArrayList<String> amis, String nomG)
+      {static}public static ArrayList<GroupeAmi> find(String nomG)
+      public boolean save()
+      {static}public static GroupeAmi find(int idG)
+      {static}public static Boolean delete(int idGroupe)
+      public boolean saveNom()
+      public boolean saveUsers(ArrayList<String> u)
+      public boolean deleteUser(String email)
+      public void setNomGroupe(String nomGroupe)
+   }
+
+   class Invitation {
+      {field}protected int idE
+      public Invitation(int id, String email, String type, String message, Date time, int idE)
+      public boolean save()
+      {static}public static ArrayList<Invitation> find(String Email)
+      public void update(Observable observable, Object o)
+   }
+
+   abstract class Notif {
+      {field}protected int idN
+      {field}protected String email
+      {field}protected String type
+      {field}protected String messageN
+      public Notif(int id, String email, String type, String message, Date time)
+   }
+
+   class NotifiCalendrier {
+      public NotifiCalendrier(int id, String email, String type, String message, Date time)
+      public void update(Observable o, Object arg)
+   }
+
+   class NotifiEvenement {
+      {field}protected int idE
+      public NotifiEvenement(int id, String email, String type, String message, Date time, int idE)
+      public boolean save()
+      {static}public static ArrayList<NotifiEvenement> find(String Email)
+      public void update(Observable observable, Object o)
+   }
+
+   class Utilisateur {
+      {field}private email
+      {field}private nom
+      {field}private tmpPassword
+      {field}private password
+      {field}private prenom
+      public Utilisateur(String email, String nom, String password, String prenom)
+      {static}public static boolean verifierConnexion(String email, String password)
+      {static}public static int verifierInscription(String email, String mdp, String prenom, String nom)
+      {static}public static int ajouterAmi(String email1, String email2)
+      {static}public static ArrayList<Calendrier> findCalendriers(String email)
+      public boolean save()
+      {static}public static Utilisateur find(String nom)
+      {static}public static ArrayList<Utilisateur> find(String nom, String prenom)
+      public String getEmail()
+      public String getNom()
+      public String getPrenom()
+      {static}public static boolean deleteAmis(String user, String amis)
+      {static}public static void invitUtilisateurEvenement(String email, int idEvent)
+      public void setNom(String nom)
+      public void setTmpPassword(String tmp_password)
+      public void setPassword(String password)
+      public void setPrenom(String prenom)
+   }
+
+}
+
+
+interface Observer {
+
+}
+
+Invitation --|> Notif
+Notif ..|> Observer
+Notif --"1" Date
+NotifiCalendrier --|> Notif
+NotifiEvenement --|> Notif
+
+}
+
+@enduml

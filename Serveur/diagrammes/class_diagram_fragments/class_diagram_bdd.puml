@@ -1,0 +1,43 @@
+@startuml
+skinparam class {
+   BackgroundColor AliceBlue
+   ArrowColor DarkTurquoise
+   BorderColor Turquoise
+}
+
+skinparam stereotypeCBackgroundColor DarkTurquoise
+skinparam stereotypeIBackgroundColor Magenta
+skinparam stereotypeABackgroundColor Yellow
+
+package "serveur.mycalendar.modele" #F0F0F0 {
+
+
+package bdd #E0E0E0 {
+
+   class GestionnaireBDD <<(S, #FF7700)>> {
+      {field}{static}private static GestionnaireBDD instance
+      {field}{static}private static String userName
+      {field}{static}private static String password
+      {field}{static}private static String serverName
+      {field}{static}private static String portNumber
+      {field}{static}private static String name
+      {field}{static}private static String url
+      private GestionnaireBDD()
+      {static}public static synchronized GestionnaireBDD getInstance()
+      {static}public static Connection getConnection()
+      public void createConnection()
+      public void closeConnection()
+      public void setNomDB(String nomDb)
+      {static}public static String getName()
+      {static}public static boolean verifierExistenceCalendrier(int idc)
+      {static}public static boolean verifierAjoutAmi(String email1, String email2)
+   }
+
+}
+
+GestionnaireBDD -- "2" Properties
+GestionnaireBDD -- "1" Connection
+
+}
+
+@enduml
