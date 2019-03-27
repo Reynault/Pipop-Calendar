@@ -291,11 +291,15 @@ public class ConnexionClient implements Runnable{
                             int idCalendar = Integer.parseInt(donnees.get("IdCalendar"));
                             String nom = donnees.get("Nom");
                             String couleur = donnees.get("Couleur");
+                            String theme = donnees.get("Theme");
+                            String description = donnees.get("Description");
                             if (Verification.checkCalendar(email, idCalendar)) {
                                 rep = ApplicationServeur.getInstance().modificationCalendrier(
                                         idCalendar,
                                         nom,
-                                        couleur
+                                        couleur,
+                                        theme,
+                                        description
                                 );
                             } else {
                                 MessageCodeException.calendar_not_found(rep);
