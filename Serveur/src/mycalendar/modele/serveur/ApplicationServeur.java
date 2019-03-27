@@ -123,6 +123,7 @@ public class ApplicationServeur implements Observer {
                     }
                 }else{
                     MessageCodeException.invalid_email(res);
+                    System.out.println(auteur);
                     return res;
                 }
             }else{
