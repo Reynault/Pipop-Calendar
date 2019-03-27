@@ -35,7 +35,7 @@
         <div class="popover-inner">
           <div class="list">
             <ul>
-              <li><a class="list-button item-link" href="">Edit</a></li>
+              <li><a class="list-button item-link" href="#" id="modifierCalendrierBouton">Edit</a></li>
               <li><a class="list-button item-link" href="#" id="supprCalendrierBouton">Delete</a></li>
             </ul>
           </div>
@@ -101,17 +101,6 @@
         var $$ = Dom7;
         var self = this;
         var app = self.$app;
-        $.ajax({
-          url: "js/chargerEvenements.js",
-          dataType: "script",
-          cache: true,
-          async: false,
-          success: function(msg) {
-          },
-          error: function(msg) {
-            console.log("Error chargement script de chargement d'événements");
-          }
-        });
         var range = app.range.create({
           el: '#zoom',
         });
@@ -136,6 +125,18 @@
                 '</div>' +
               '</div>' +
             '</div>';
+          },
+          on:{
+            dayClick: function(calendar, dayEl, year, month, day){
+                console.log(dayEl);
+                localStorage.setItem("daySave",day);
+                localStorage.setItem("monthSave",month);
+                localStorage.setItem("yearSave",year);
+                dayElem = dayEl;
+                yearSave = year;
+                monthSave = month;
+                daySave = day;
+            }
           },
           renderMonth: function (d, offset) {
             var calendar = this;
@@ -261,7 +262,7 @@
                         if (date.from.getTime() == date.to.getTime()) {
                           range = "From " + ev.from.toLocaleTimeString('en-GB', timeFormat) + " to " + ev.to.toLocaleTimeString('en-GB', timeFormat);
                         }
-                        eventCards += "<div class=\"card\" id=\"evenement_card"+ev.idEvent+"\">\n <div class=\"popover\" id=\"evenement_settings" + ev.idEvent + "\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton" + ev.idEvent + "\">Delete</a></li></ul></div></div></div>             <div class=\"card-header text-color-white bg-color-" + ev.color + "\">" + ev.title + "<i class=\"f7-icons popover-open\" data-popover=\"#evenement_settings" + ev.idEvent + "\">more_vertical_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
+                        eventCards += "<div class=\"card\" id=\"evenement_card"+ev.idEvent+"\">\n <div class=\"popover\" id=\"evenement_settings" + ev.idEvent + "\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\" id=\"editEventBouton"+ev.idEvent+"\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton" + ev.idEvent + "\">Delete</a></li></ul></div></div></div>             <div class=\"card-header text-color-white bg-color-" + ev.color + "\">" + ev.title + "<i class=\"f7-icons popover-open\" data-popover=\"#evenement_settings" + ev.idEvent + "\">more_vertical_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
                       }
                     });
                     dayDate = new calendar.DateHandleClass(dayDate);
@@ -297,28 +298,64 @@
                 dayDate = new calendar.DateHandleClass(dayDate);
                 var dayYear = dayDate.getFullYear();
                 var dayMonth = dayDate.getMonth();
-                rowHtml += ("<div data-popup=\".popup-" + dayYear + "-" + dayMonth + "-" + dayNumber + "\" data-year=\"" + dayYear + "\" data-month=\"" + dayMonth + "\" data-day=\"" + dayNumber + "\" class=\"" + popupClass + " calendar-day" + addClass + "\" data-date=\"" + dayYear + "-" + dayMonth + "-" + dayNumber + "\">\n            <span class=\"calendar-day-number\">" + dayNumber + eventsHtml + popup + "</span>\n          </div>").trim();
+                rowHtml += ("<div  data-popup=\".popup-" + dayYear + "-" + dayMonth + "-" + dayNumber + "\" data-year=\"" + dayYear + "\" data-month=\"" + dayMonth + "\" data-day=\"" + dayNumber + "\" class=\"" + popupClass + " calendar-day" + addClass + "\" data-date=\"" + dayYear + "-" + dayMonth + "-" + dayNumber + "\">\n            <span class=\"calendar-day-number\">" + dayNumber + eventsHtml + popup + "</span>\n          </div>").trim();
               };
 
               for (var col = 1; col <= cols; col += 1) loop( col );
               monthHtml += "<div class=\"calendar-row\">" + rowHtml + "</div>";
             }
-            monthHtml = "<div class=\"calendar-month\" data-year=\"" + year + "\" data-month=\"" + month + "\">" + monthHtml + "</div>";
+            monthHtml = "<div data-tap-disabled=\"true\" class=\"calendar-month\" data-year=\"" + year + "\" data-month=\"" + month + "\">" + monthHtml + "</div>";
             return monthHtml;
           }
         });
       },
+      pageAfterOut(){
+        $.ajax({
+          url: "js/chargerCalendriers.js",
+          dataType: "script",
+          cache: true,
+          async: false,
+          success: function(msg) {
+          },
+          error: function(msg) {
+            console.log("Error chargement script de chargement d'événements");
+          }
+        });
+      },
       pageAfterIn(){
+        $.ajax({
+          url: "js/chargerEvenements.js",
+          dataType: "script",
+          cache: true,
+          async: false,
+          success: function(msg) {
+          },
+          error: function(msg) {
+            console.log("Error chargement script de chargement d'événements");
+          }
+        });
         var self = this;
-        var app = self.$app;
+        var appSelf = self.$app;
         console.log(eventFromServer);
         var titre = localStorage.getItem('nomCalendrierCourant');
         $(".titreCalendrier").text(titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase());
-        var calendarInline = app.calendar.get();
-        console.log(calendarInline);
+        var calendarInline = appSelf.calendar.get();
+        console.log("Calendrier code : "+ calendarInline);
         calendarInline.params.events = eventFromServer;
-
         calendarInline.update();
+        if(localStorage.getItem("eventWasOpen")==1){
+           localStorage.setItem("eventWasOpen",0);
+           console.log("POPU Class : "+".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave"));
+            console.log("Popup code : "+appSelf.popup.get(".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave")));//.open();
+            var t = appSelf.popup.create({
+              el: $(".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave")),
+              on: {
+                close: function(){
+                  localStorage.setItem("eventWasOpen",0);
+                },
+              },
+            }).open();
+        }
         $.ajax({
           url: "js/supprimerEvenement.js",
           dataType: "script",
@@ -329,6 +366,28 @@
             console.log("Error chargement script de suppression d'evenement");
           },
         });
+        $.ajax({
+          url: "js/routeCalendrierEditeur.js",
+          dataType: "script",
+          cache: true,
+          success:function(msg) {
+          },
+          error:function(msg) {
+            console.log("Error chargement script de suppression d'evenement");
+          },
+        });
+        $.ajax({
+          url: "js/routeEvenementEditeur.js",
+          dataType: "script",
+          cache: true,
+          success:function(msg) {
+          },
+          error:function(msg) {
+            console.log("Error chargement script de suppression d'evenement");
+          },
+        });
+
+        localStorage.setItem("eventWasOpen",0);
       },
       pageBeforeRemove() {
         var self = this;

@@ -20,6 +20,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+        localStorage.setItem("eventWasOpen",0);
     },
 
     // deviceready Event Handler

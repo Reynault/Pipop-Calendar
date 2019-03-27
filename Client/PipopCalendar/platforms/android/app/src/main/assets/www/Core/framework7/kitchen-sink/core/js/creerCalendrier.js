@@ -29,7 +29,7 @@ $(document).ready(function(){
   function creerCalendrier(nom, description, email){
       var smartSelectCouleur = app.smartSelect.get('#couleurSelect');
       var smartSelectTheme = app.smartSelect.get('#themeSelect');
-      var arr = {"Request":"CreateCalendar","Nom":nom, "Description": description,"Couleur":smartSelectCouleur.getValue(), "Theme":smartSelectTheme.getValue(), "Auteur":email, "Mdp":localStorage.getItem("mdpUtilisateur")};
+      var arr = {"Request":"CreateCalendar","Nom":nom, "Description": description,"Couleur":smartSelectCouleur.getValue(), "Theme":smartSelectTheme.getValue(), "Email":email, "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({

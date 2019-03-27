@@ -34,6 +34,25 @@ var mainView = app.views.create('.view-main', {
       name: 'preloaderTheme'
     },
     {
+      path: '/event-form-edit/:idE',
+      componentUrl: './pages/event-form-edit.html',
+      name: 'event-form-edit',
+      on:{
+        pageAfterIn: function (e, page) {
+          $.ajax({
+            url: "js/chargerEvenement.js",
+            dataType: "script",
+            cache: true,
+            success:function(msg) {
+            },
+            error:function(msg) {
+              console.log("Error chargement script de chargement d'événement");
+            },
+          })
+        }
+      }
+    },
+    {
       path: '/calendar-form/',
       componentUrl: './pages/calendar-form.html',
       name: 'calendar-form',
@@ -53,7 +72,7 @@ var mainView = app.views.create('.view-main', {
           },
           pageAfterOut: function(e,page){
               $.ajax({
-                url: "js/chargerCalendrier.js",
+                url: "js/chargerCalendriers.js",
                 dataType: "script",
                 cache: true,
                 success:function(msg) {
@@ -66,13 +85,13 @@ var mainView = app.views.create('.view-main', {
       }
     },
     {
-      path: '/calendar-form-edit/',
+      path: '/calendar-form-edit/:idC',
       componentUrl: './pages/calendar-form-edit.html',
       name: 'calendar-form-edit',
       on: {
-          pageAfterOut: function(e,page){
+          pageAfterIn: function(e,page){
               $.ajax({
-                url: "js/modifierCalendrier.js",
+                url: "js/chargerCalendrier.js",
                 dataType: "script",
                 cache: true,
                 success:function(msg) {
@@ -81,7 +100,7 @@ var mainView = app.views.create('.view-main', {
                   console.log("Error chargement script de chargement de calendrier");
                 }
               });
-          }
+          },
       }
     },
     {
@@ -99,17 +118,7 @@ var mainView = app.views.create('.view-main', {
              error:function(msg) {
                console.log("Error chargement script de suppression de calendrier");
              },
-           });
-           $.ajax({
-             url: "js/modifierCalendrier.js",
-             dataType: "script",
-             cache: true,
-             success:function(msg) {
-             },
-             error:function(msg) {
-               console.log("Error chargement script de modification de calendrier");
-             },
-           });
+           })
          }
       }
     },

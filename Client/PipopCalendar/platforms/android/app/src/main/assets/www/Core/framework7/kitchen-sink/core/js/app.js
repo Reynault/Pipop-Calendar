@@ -11,7 +11,7 @@ var $ptrContent = $$('.ptr-content');
 $ptrContent.on('ptr:refresh', function (e) {
   // Emulate 2s loading
   setTimeout(function () {
-    chargerCalendrier(localStorage.getItem("emailUtilisateur"));
+    chargerCalendriers(localStorage.getItem("emailUtilisateur"));
     app.ptr.done(); // or e.detail();
   }, 2000);
 });

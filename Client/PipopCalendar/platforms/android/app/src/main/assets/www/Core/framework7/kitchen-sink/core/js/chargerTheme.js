@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 
   function chargerTheme(){
-      var arr = {"Request":"GetTheme", "Mdp":localStorage.getItem("mdpUtilisateur")};
+      var arr = {"Request":"GetTheme","Email": localStorage.getItem("emailUtilisateur"), "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({

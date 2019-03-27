@@ -1,14 +1,14 @@
 <template>
-  <div class="page" data-name="event-form">
+  <div class="page" data-name="event-form-edit">
     <div class="navbar">
       <div class="navbar-inner sliding">
         <div class="left">
-          <a href="#" class="link back">
+          <a href="#" id="modifierEvBackBouton" class="link back">
             <i class="f7-icons">arrow_left</i>
             <span class="ios-only">Back</span>
           </a>
         </div>
-        <div class="title">New event (modify event)</div>
+        <div class="title">Modify Event</div>
       </div>
     </div>
     <div class="fab fab-extended fab-left-bottom">
@@ -105,7 +105,7 @@
         <div class="list no-hairlines">
           <ul>
             <li>
-              <a href="#" id="creerEvenementBouton" class="item-link list-button button button-outline button-large" >Create</a>
+              <a href="#" id="modifierEvenementBouton" class="item-link list-button button button-outline button-large" >Modify</a>
             </li>
           </ul>
         </div>
@@ -148,6 +148,16 @@
             },
             error:function(msg) {
               console.log("Error chargement script de l'enregistreur de nom de calendrier");
+            },
+         });
+        $.ajax({
+            url: "js/modifierEvenement.js",
+            dataType: "script",
+            cache: true,
+            success:function(msg) {
+            },
+            error:function(msg) {
+              console.log("Error chargement script de modification d'événements");
             },
          });
         var addZero = function(i){ return i < 10 ? '0' + i : i; }
@@ -280,6 +290,10 @@
           searchbar: true,
           searchbarPlaceholder: 'Search theme',
         });
+      },
+      pageAfterOut(){
+        app.calendar.get().update();
+        localStorage.setItem("eventWasOpen",1);
       },
     },
     pageBeforeRemove() {

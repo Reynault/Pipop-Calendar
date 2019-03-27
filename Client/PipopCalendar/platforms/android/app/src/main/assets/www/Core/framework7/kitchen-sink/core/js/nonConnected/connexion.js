@@ -22,6 +22,8 @@ $(document).ready(function(){
             }
          );
     }else{
+
+      app.preloader.show();
       connexion($("#emailInput").val(), $("#mdpInput").val());
     }
     e.preventDefault();
@@ -33,13 +35,12 @@ $(document).ready(function(){
       var hash = crypMdp.getHash("HEX");
       var arr = {"Request":"SignIn","Email":email, "Mdp":hash};
       console.log("JSON : "+JSON.stringify(arr));
-      app.preloader.show('multi');
       $.ajax({
           url: adresse,
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: false,
+          timeout:5000,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
@@ -79,7 +80,7 @@ $(document).ready(function(){
               localStorage.setItem("mdpUtilisateur","");
               window.plugins.toast.showWithOptions(
                   {
-                    message: ""+obj["Message"],
+                    message: "No network connection or server error",
                     duration: 1500, // ms
                     position: "bottom",
                     addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)

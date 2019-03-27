@@ -1,8 +1,17 @@
-console.log("CHARGER CALENDRIER : "+localStorage.getItem("idCalendrierCourant"));
-chargerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getItem("emailUtilisateur"));
+$(document).ready(function(){
 
-  function chargerCalendrier(idC, email){
-      var arr = {"Request":"ConsultCalendar","ID":idC, "Email":email,"Mdp":localStorage.getItem("mdpUtilisateur")};
+  chargerCalendriers(localStorage.getItem("emailUtilisateur"));
+
+  $("body").on('click', '.calend', function(){
+    localStorage.setItem("nomCalendrierCourant", $(this).text());
+    localStorage.setItem("idCalendrierCourant", $(this).attr("id"));
+    console.log("Calendrier Courant : "+localStorage.getItem("nomCalendrierCourant"));
+  });
+
+});
+
+  function chargerCalendriers(email){
+      var arr = {"Request":"LoadCalendars","Email":email, "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -10,21 +19,28 @@ chargerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getIt
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: false,
+          async: true,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
-              console.log(data);
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
-                //$("#nomEvInput").parent().parent().empty();
-                $("#nomCalendrierForm").val(""+obj["Nom"]);
-                app.input.checkEmptyState("#nomCalendrierForm");
-                $("#descriptionCalendrierForm").val(""+obj["Description"]);
-                app.input.checkEmptyState("#descriptionCalendrierForm");
-                //Set The Theme
-                $("#couleurSelect option[value=\""+obj["Couleur"]+"\"]").attr('selected',true);
-                $("#themeSelect option[value=\""+obj["Theme"]+"\"]").attr('selected',true);
+                $("#calendrierContainer").empty();
+                 var nbCalendriers = Object.keys(obj.Data).length;
+                 var y = 0;
+                 for(var i = 0; i<nbCalendriers; i++){
+                   if(i%2==0){
+                     var p = $("#calendrierContainer").append("<p id='"+ y +"Calendrier' class='row'>");
+                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] + "' id='"+obj["Data"][y]["ID"]+"'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+y+"Calendrier");
+
+                   }else{
+                     $("<a href='/calendar-view/' class='calend col-50 button button-large button-fill color-"+ obj["Data"][i]["Couleur"] +  "' id='"+obj["Data"][y]["ID"]+"'>"+ obj["Data"][y]["Nom"]+"</a>").appendTo("#"+ (y-1) +"Calendrier");
+                   }
+                   y++;
+                 }
               }else{
+                $("#calendrierContainer").empty();
+                var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
+                $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>No Calendar Found</p></div>").appendTo("#0Calendrier");
                 window.plugins.toast.showWithOptions(
                 {
                    message: ""+obj["Message"],
@@ -45,8 +61,11 @@ chargerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getIt
           },
           error: function(jqXHR, textStatus, errorThrown) {
               app.preloader.hide();
+              $("#calendrierContainer").empty();
+              var p = $("#calendrierContainer").append("<p id='0Calendrier' class='row'>");
+              $("<div class='block-title block-title-medium block-strong' style='margin-left: auto; margin-right: auto;'><p>Check your network connexion</p></div>").appendTo("#0Calendrier");
               window.plugins.toast.showWithOptions({
-                 message: "No network connection or server error",
+                 message: "No network connexion or server error",
                  duration: 1500, // ms
                  position: "bottom",
                  addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)

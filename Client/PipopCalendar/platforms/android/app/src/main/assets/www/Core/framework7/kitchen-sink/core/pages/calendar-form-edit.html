@@ -78,7 +78,7 @@
         <div class="list no-hairlines">
           <ul>
             <li>
-              <a href="#" id="creationCalendrierBouton" class="item-link list-button button button-outline button-large" >Modify</a>
+              <a href="#" id="modifierCalendrierFormBouton" class="item-link list-button button button-outline button-large" >Modify</a>
             </li>
           </ul>
         </div>
@@ -114,15 +114,27 @@
         var self = this;
         var app = self.$app;
         $.ajax({
+            url: "js/modifierCalendrier.js",
+            dataType: "script",
+            cache: true,
+            success:function(msg) {
+              console.log("Chargement reussis");
+            },
+            error:function(msg) {
+              console.log("Error chargement script de modification de calendrier");
+            },
+        });
+        $.ajax({
             url: "js/chargerTheme.js",
             dataType: "script",
             cache: true,
             success:function(msg) {
             },
             error:function(msg) {
-              console.log("Error chargement script de l'enregistreur de nom de calendrier");
+              console.log("Error chargement script de chargement de themes");
             },
          });
+
         var themeSelect = app.smartSelect.create({
           el: '#themeSelect',
           valueEl: '.item-text',

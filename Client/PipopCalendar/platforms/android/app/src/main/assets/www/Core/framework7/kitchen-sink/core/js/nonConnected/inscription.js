@@ -50,8 +50,7 @@ $(document).ready(function(){
           type: 'POST',
           data: JSON.stringify(arr),
           dataType: 'text',
-          timeout: 512,
-          async: false,
+          timeout: 5000,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               let obj = JSON.parse(data);
@@ -89,7 +88,7 @@ $(document).ready(function(){
           },
           error: function(jqXHR, textStatus, errorThrown) {
             window.plugins.toast.showWithOptions({
-              message: ""+obj["Message"],
+              message: "No network connection or server error",
               duration: 1500, // ms
               position: "bottom",
               addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)

@@ -1,8 +1,8 @@
-console.log("CHARGER CALENDRIER : "+localStorage.getItem("idCalendrierCourant"));
-chargerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getItem("emailUtilisateur"));
+console.log("CHARGER EVENEMENT"+localStorage.getItem("idEvenementCourant"));
+chargerEvenement(localStorage.getItem("idEvenementCourant"),localStorage.getItem("emailUtilisateur"));
 
-  function chargerCalendrier(idC, email){
-      var arr = {"Request":"ConsultCalendar","ID":idC, "Email":email,"Mdp":localStorage.getItem("mdpUtilisateur")};
+  function chargerEvenement(idE, email){
+      var arr = {"Request":"ConsultEvent","IdEvent":idE, "Email":email,"Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -17,13 +17,15 @@ chargerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getIt
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
                 //$("#nomEvInput").parent().parent().empty();
-                $("#nomCalendrierForm").val(""+obj["Nom"]);
-                app.input.checkEmptyState("#nomCalendrierForm");
-                $("#descriptionCalendrierForm").val(""+obj["Description"]);
-                app.input.checkEmptyState("#descriptionCalendrierForm");
-                //Set The Theme
-                $("#couleurSelect option[value=\""+obj["Couleur"]+"\"]").attr('selected',true);
-                $("#themeSelect option[value=\""+obj["Theme"]+"\"]").attr('selected',true);
+                $("#nomEvInput").val(""+obj["nomE"]);
+                app.input.checkEmptyState("#nomEvInput");
+                $("#descEvInput").val(""+obj["description"]);
+                app.input.checkEmptyState("#descEvInput");
+                $("#lieuEvInput").val(""+obj["lieu"]);
+                app.input.checkEmptyState("#lieuEvInput");
+                $("#dateStart").val(new Date(obj["date"]));
+                $("#dateEnd").val(new Date(obj["datefin"]));
+                $("#colorSelectTheme option[value=\""+obj["couleur"]+"\"]").attr('selected',true);
               }else{
                 window.plugins.toast.showWithOptions(
                 {

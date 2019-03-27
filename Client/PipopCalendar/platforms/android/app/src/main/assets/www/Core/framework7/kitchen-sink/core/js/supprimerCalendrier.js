@@ -23,6 +23,16 @@ $(document).ready(function(){
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
                 app.views.main.router.back( "user-home.html" , {reloadPrevious: true, ignoreCache: true, reload: true} );
+                $.ajax({
+                  url: "js/chargerCalendriers.js",
+                  dataType: "script",
+                  cache: true,
+                  success:function(msg) {
+                  },
+                  error:function(msg) {
+                    console.log("Error chargement script de chargement d'événement");
+                  },
+                });
               }else{
                 window.plugins.toast.showWithOptions(
                 {
