@@ -40,7 +40,7 @@ var mainView = app.views.create('.view-main', {
       on:{
         pageAfterIn: function (e, page) {
           $.ajax({
-            url: "js/chargerEvenement.js",
+            url: "js/Evenement/Charger/chargerEvenement.js",
             dataType: "script",
             cache: true,
             success:function(msg) {
@@ -58,9 +58,8 @@ var mainView = app.views.create('.view-main', {
       name: 'calendar-form',
       on: {
           pageAfterIn: function (e, page) {
-            console.log("Chargement formulaire");
             $.ajax({
-              url: "js/creerCalendrier.js",
+              url: "js/Calendrier/Creer/creerCalendrier.js",
               dataType: "script",
               cache: true,
               success:function(msg) {
@@ -72,7 +71,7 @@ var mainView = app.views.create('.view-main', {
           },
           pageAfterOut: function(e,page){
               $.ajax({
-                url: "js/chargerCalendriers.js",
+                url: "js/Calendrier/Charger/chargerCalendriers.js",
                 dataType: "script",
                 cache: true,
                 success:function(msg) {
@@ -91,7 +90,7 @@ var mainView = app.views.create('.view-main', {
       on: {
           pageAfterIn: function(e,page){
               $.ajax({
-                url: "js/chargerCalendrier.js",
+                url: "js/Calendrier/Charger/chargerCalendrier.js",
                 dataType: "script",
                 cache: true,
                 success:function(msg) {
@@ -110,7 +109,7 @@ var mainView = app.views.create('.view-main', {
       on:{
         pageAfterIn: function (e, page) {
            $.ajax({
-             url: "js/supprimerCalendrier.js",
+             url: "js/Calendrier/Supprimer/supprimerCalendrier.js",
              dataType: "script",
              cache: true,
              success:function(msg) {
@@ -129,7 +128,7 @@ var mainView = app.views.create('.view-main', {
      on:{
        pageAfterIn: function (e, page) {
          $.ajax({
-           url: "js/creerEvenement.js",
+           url: "js/Evenement/Creer/creerEvenement.js",
            dataType: "script",
            cache: true,
            success:function(msg) {

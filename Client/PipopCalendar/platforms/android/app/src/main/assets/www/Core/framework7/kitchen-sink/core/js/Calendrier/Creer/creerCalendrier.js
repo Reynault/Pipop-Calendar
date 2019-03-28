@@ -39,7 +39,6 @@ $(document).ready(function(){
           dataType: 'text',
           async: true,
           success: function(data, textStatus, jqXHR) {
-          console.log(data);
               app.preloader.hide();
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
@@ -78,9 +77,6 @@ $(document).ready(function(){
                 }
           },
           error: function(jqXHR, textStatus, errorThrown) {
-              console.log("ERREUR : "+jqXHR);
-              console.log("ERREUR : "+textStatus);
-              console.log("ERREUR : "+errorThrown);
               app.preloader.hide();
               window.plugins.toast.showWithOptions(
                   {

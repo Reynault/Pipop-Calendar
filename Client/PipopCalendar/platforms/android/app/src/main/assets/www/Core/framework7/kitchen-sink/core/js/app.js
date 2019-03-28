@@ -34,4 +34,4 @@ function onBackKeyDown() {
   }
 }
 
-var adresse = 'http://10.0.2.2:3307';//'http://a85b6f81.ngrok.io';
+var adresse = 'http://tomgalanx.ovh:3307';//'http://10.0.2.2:3307';//'http://a85b6f81.ngrok.io';

@@ -25,7 +25,6 @@ $("#modifierCalendrierFormBouton").click(function(e){
   function modifierCalendrier(idc, nomc, descr){
       var smartSelectCouleur = app.smartSelect.get('#couleurSelect');
       var smartSelectTheme = app.smartSelect.get('#themeSelect');
-      console.log("ModifierCalendrier");
       // Ne pas oublier de crypter les données
       // Ne pas oublier de vérifier les données
       var arr = {"Request":"ModifyCalendar", "IdCalendar": idc, "Nom": nomc, "Couleur": smartSelectCouleur.getValue(), "Theme":smartSelectTheme.getValue(), "Description": descr,"Email":localStorage.getItem("emailUtilisateur"), "Mdp":localStorage.getItem("mdpUtilisateur")};

@@ -44,7 +44,7 @@
               </div>
             </li>
             <li>
-              <a class="item-link smart-select" id="couleurSelect" data-open-in="popup" data-searchbar="true" data-searchbar-placeholder="Search color">
+              <a class="item-link smart-select" id="couleurSelect">
                 <select name="color">
                   {{#each colors}}
                     <option value="{{this[0]}}" data-option-class="color-white bg-color-{{this[0]}} text-color-white">{{this[1]}}</option>
@@ -115,7 +115,7 @@
         var app = self.$app;
 
         $.ajax({
-            url: "js/chargerTheme.js",
+            url: "js/Theme/Charger/chargerTheme.js",
             dataType: "script",
             cache: true,
             success:function(msg) {
@@ -135,7 +135,6 @@
 
         var colorSelect = app.smartSelect.create({
           el: '#couleurSelect',
-          valueEl:'.item-text',
           openIn: 'popup',
           searchbar: true,
           searchbarPlaceholder: 'Search color',
@@ -144,11 +143,10 @@
       },
       pageAfterIn(){
         $.ajax({
-            url: "js/modifierCalendrier.js",
+            url: "js/Calendrier/Modifier/modifierCalendrier.js",
             dataType: "script",
             cache: true,
             success:function(msg) {
-              console.log("Chargement reussis");
             },
             error:function(msg) {
               console.log("Error chargement script de modification de calendrier");

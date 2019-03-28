@@ -1,8 +1,8 @@
-console.log("CHARGER EVENEMENT"+localStorage.getItem("idEvenementCourant"));
-chargerEvenement(localStorage.getItem("idEvenementCourant"),localStorage.getItem("emailUtilisateur"));
+var eventFromServer = [];
+chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
 
-  function chargerEvenement(idE, email){
-      var arr = {"Request":"ConsultEvent","IdEvent":idE, "Email":email,"Mdp":localStorage.getItem("mdpUtilisateur")};
+  function chargerEvenements(email, calendrier){
+      var arr = {"Request":"LoadEvents","Email":email,"CalendarName":calendrier, "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -13,19 +13,21 @@ chargerEvenement(localStorage.getItem("idEvenementCourant"),localStorage.getItem
           async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
-              console.log(data);
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
-                //$("#nomEvInput").parent().parent().empty();
-                $("#nomEvInput").val(""+obj["nomE"]);
-                app.input.checkEmptyState("#nomEvInput");
-                $("#descEvInput").val(""+obj["description"]);
-                app.input.checkEmptyState("#descEvInput");
-                $("#lieuEvInput").val(""+obj["lieu"]);
-                app.input.checkEmptyState("#lieuEvInput");
-                $("#dateStart").val(new Date(obj["date"]));
-                $("#dateEnd").val(new Date(obj["datefin"]));
-                $("#colorSelectTheme option[value=\""+obj["couleur"]+"\"]").attr('selected',true);
+                var nbEvents = Object.keys(obj.Data).length;
+                var objData = obj["Data"];
+                for(var i=0; i < nbEvents; i++){
+                  var t = {
+                    from: new Date(objData[i]["Date"]),
+                    to: new Date(objData[i]["DateFin"]),
+                    color: objData[i]["EventColor"],
+                    title: ''+objData[i]["EventName"],
+                    description: ''+objData[i]["Description"],
+                    idEvent: ''+objData[i]["EventID"]
+                  };
+                  eventFromServer.push(t);
+                }
               }else{
                 window.plugins.toast.showWithOptions(
                 {

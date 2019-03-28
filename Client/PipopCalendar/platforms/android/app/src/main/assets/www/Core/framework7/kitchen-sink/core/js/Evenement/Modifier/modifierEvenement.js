@@ -1,11 +1,11 @@
 $(document).ready(function(){
 
-  $("#creerEvenementBouton").click(function(e){
+  $("#modifierEvenementBouton").click(function(e){
       app.input.checkEmptyState("#nomEvInput");
       app.input.checkEmptyState("#lieuEvInput");
       if(!$("#nomEvInput") && !$("#lieuEvInput")){
 	        window.plugins.toast.showWithOptions({
-             message: "Name or place of event cannot be empty",
+             message: "Name or place of the event cannot be empty",
               duration: 1500, // ms
               position: "bottom",
               addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)
@@ -38,15 +38,15 @@ $(document).ready(function(){
           });
         }else{
           let check = $('#public').is(':checked');
-          creerEvenement( localStorage.getItem("nomCalendrierCourant"), $("#nomEvInput").val(), $("#descEvInput").val(), $("#dateStart").val(), $("#dateEnd").val(), $("#lieuEvInput").val(),
+          modifierEvenement( localStorage.getItem("idCalendrierCourant"), $("#nomEvInput").val(), $("#descEvInput").val(), $("#dateStart").val(), $("#dateEnd").val(), $("#lieuEvInput").val(),
           localStorage.getItem("emailUtilisateur"), check);
-     }
- }
+        }
+      }
   });
 
-  function creerEvenement(nomCal, nomEv, descEv, dateEv, dateFin, lieuEv, auteurEv, visibiliteEv){
+  function modifierEvenement(nomCal, nomEv, descEv, dateEv, dateFin, lieuEv, auteurEv, visibiliteEv){
       var smartSelectCouleurTheme = app.smartSelect.get('#couleurSelectTheme');
-      var arr = {"Request":"AddEvent", "CalendarName": nomCal, "EventName": nomEv, "EventDescription": descEv,
+      var arr = {"Request":"ModifyEvent", "IdCalendar": nomCal,"IdEvent": localStorage.getItem("idEvenementCourant").substring(0,2), "EventName": nomEv, "EventDescription": descEv,
                "EventDate": dateEv, "EventDateFin": dateFin, "EventLocation": lieuEv, "EventVisibility": String(visibiliteEv), "Email": auteurEv, "EventColor": smartSelectCouleurTheme.getValue(),"Mdp":localStorage.getItem("mdpUtilisateur")};
       $.ajax({
           url: adresse,
@@ -61,15 +61,15 @@ $(document).ready(function(){
                 app.views.main.router.back( "calendar-view.html" , {reloadPrevious: true, ignoreCache: true, reload: true} );
                 var calendarInline = app.calendar.get();
                 $.ajax({
-                          url: "js/chargerEvenements.js",
-                          dataType: "script",
-                          cache: true,
-                          async:false,
-                          success:function(msg) {
-                          },
-                          error:function(msg) {
-                            console.log("Error chargement script de chargement d'événements");
-                          }
+                  url: "js/Evenement/Charger/chargerEvenements.js",
+                  dataType: "script",
+                  cache: true,
+                  async:false,
+                  success:function(msg) {
+                  },
+                  error:function(msg) {
+                    console.log("Error chargement script de chargement d'événements");
+                  }
                 });
                 calendarInline.params.events = eventFromServer;
                 calendarInline.update();

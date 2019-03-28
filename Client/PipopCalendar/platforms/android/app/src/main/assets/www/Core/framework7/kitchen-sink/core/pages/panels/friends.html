@@ -36,6 +36,18 @@
                   </div>
                 </div>
               </li>
+              <li>
+                <div class="item-content">
+                  <div class="item-media">
+                    <i class="f7-icons">person</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">
+                      Jean-Michel
+                    </div>
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
 
@@ -52,7 +64,7 @@
               </div>
               <div class="title">Groups</div>
               <div class="right">
-                <a href="#" class="link">
+                <a href="#" class="link" id="ajouterUtilisateurBouton">
                   <i class="f7-icons">add</i>
                   <span class="ios-only">New</span>
                 </a>
@@ -141,7 +153,16 @@
             title: 'User ' + i
           });
         }
-
+        $.ajax({
+          url: "js/Utilisateur/Charger/chargerUtilisateur.js",
+          dataType: "script",
+          cache: true,
+          success:function(msg) {
+          },
+          error:function(msg) {
+            console.log("Error chargement script de chargement des utilisateurs");
+          },
+        })
         var virtualList = app.virtualList.create({
           // List Element
           el: '#users_list',
@@ -169,7 +190,10 @@
             '</li>',
           // Item height
         });
-      }
+      },
+      pageAfterIn(){
+
+      },
     }
   }
 </script>

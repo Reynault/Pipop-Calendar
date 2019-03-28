@@ -44,7 +44,6 @@ $(document).ready(function(){
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
-              console.log("BUG : data : "+obj["Message"]);
               if(obj["Result"]==0){
 //                app.views.main.router.navigate("/user-home/");
                 localStorage.setItem("emailUtilisateur",$("#emailInput").val());

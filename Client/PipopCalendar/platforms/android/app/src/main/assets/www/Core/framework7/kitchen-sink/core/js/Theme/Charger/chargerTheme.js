@@ -1,8 +1,10 @@
-var eventFromServer = [];
-chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
+$(document).ready(function(){
+  chargerTheme();
+});
 
-  function chargerEvenements(email, calendrier){
-      var arr = {"Request":"LoadEvents","Email":email,"CalendarName":calendrier, "Mdp":localStorage.getItem("mdpUtilisateur")};
+
+  function chargerTheme(){
+      var arr = {"Request":"GetTheme","Email": localStorage.getItem("emailUtilisateur"), "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -13,22 +15,14 @@ chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem
           async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
-              console.log(data);
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
-                var nbEvents = Object.keys(obj.Data).length;
-                var objData = obj["Data"];
-                for(var i=0; i < nbEvents; i++){
-                  var t = {
-                    from: new Date(objData[i]["Date"]),
-                    to: new Date(objData[i]["DateFin"]),
-                    color: objData[i]["EventColor"],
-                    title: ''+objData[i]["EventName"],
-                    description: ''+objData[i]["Description"],
-                    idEvent: ''+objData[i]["EventID"]
-                  };
-                  eventFromServer.push(t);
-                }
+                 var nbTheme = Object.keys(obj.Data).length;
+                 for(var i = 0; i<nbTheme; i++){
+                    var titre = obj["Data"][i];
+                    var titreFormat = titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase();
+                    var p = $("#themeSelectOption").append("<option value='"+obj["Data"][i]+"'>"+ titreFormat +"</option>");
+                 }
               }else{
                 window.plugins.toast.showWithOptions(
                 {
@@ -44,14 +38,13 @@ chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem
                      horizontalPadding: 22, // iOS default 16, Android default 50
                      verticalPadding: 20 // iOS default 12, Android default 30
                    }
-                  }
-                 );
+                  });
               }
           },
           error: function(jqXHR, textStatus, errorThrown) {
               app.preloader.hide();
               window.plugins.toast.showWithOptions({
-                 message: "No network connection or server error",
+                 message: "No network connexion or server error",
                  duration: 1500, // ms
                  position: "bottom",
                  addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)

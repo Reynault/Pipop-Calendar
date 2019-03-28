@@ -1,15 +1,8 @@
-$(document).ready(function(){
-  $("#supprCalendrierBouton").click(function(e){
-    supprimerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getItem("emailUtilisateur"));
-  });
-    $$("#calendar_settings").on('click', function(e){
-      app.popover.get("#calendar_settings").close(true);
-   });
-});
+var eventFromServer = [];
+chargerEvenements(localStorage.getItem("emailUtilisateur"), localStorage.getItem("nomCalendrierCourant"));
 
-  function supprimerCalendrier(id, email){
-      app.popover.get("#calendar_settings").close(true);
-      var arr = {"Request":"DeleteCalendar","Email":email, "IDCalendar": id, "SuppEv":"true", "Mdp":localStorage.getItem("mdpUtilisateur")};
+  function chargerEvenements(email, calendrier){
+      var arr = {"Request":"GetUsers","Email":email,"CalendarName":calendrier, "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -17,22 +10,24 @@ $(document).ready(function(){
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: true,
+          async: false,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
-                app.views.main.router.back( "user-home.html" , {reloadPrevious: true, ignoreCache: true, reload: true} );
-                $.ajax({
-                  url: "js/chargerCalendriers.js",
-                  dataType: "script",
-                  cache: true,
-                  success:function(msg) {
-                  },
-                  error:function(msg) {
-                    console.log("Error chargement script de chargement d'événement");
-                  },
-                });
+                var nbEvents = Object.keys(obj.Data).length;
+                var objData = obj["Data"];
+                for(var i=0; i < nbEvents; i++){
+                  var t = {
+                    from: new Date(objData[i]["Date"]),
+                    to: new Date(objData[i]["DateFin"]),
+                    color: objData[i]["EventColor"],
+                    title: ''+objData[i]["EventName"],
+                    description: ''+objData[i]["Description"],
+                    idEvent: ''+objData[i]["EventID"]
+                  };
+                  eventFromServer.push(t);
+                }
               }else{
                 window.plugins.toast.showWithOptions(
                 {
@@ -55,7 +50,7 @@ $(document).ready(function(){
           error: function(jqXHR, textStatus, errorThrown) {
               app.preloader.hide();
               window.plugins.toast.showWithOptions({
-                 message: "No network connexion or server error",
+                 message: "No network connection or server error",
                  duration: 1500, // ms
                  position: "bottom",
                  addPixelsY: -40,  // (optional) added a negative value to move it up a bit (default 0)

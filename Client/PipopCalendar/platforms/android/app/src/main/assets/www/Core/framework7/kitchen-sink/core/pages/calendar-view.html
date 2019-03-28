@@ -181,7 +181,7 @@
                 currentValues.push(new calendar.DateHandleClass(value[i]).setHours(0, 0, 0, 0));
               }
             }
-
+            var i = 0;
             for (var row = 1; row <= rows; row += 1) {
               var rowHtml = '';
               var loop = function ( col ) {
@@ -259,10 +259,15 @@
                           eventDots.push(color);
                         }
                         var range = "From " + ev.from.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric' }) + " to " + ev.to.toLocaleDateString('en-GB', { hour: 'numeric', minute: 'numeric' });
+                        var testDate = new Date(date.to.getTime()-date.from.getTime());
                         if (date.from.getTime() == date.to.getTime()) {
                           range = "From " + ev.from.toLocaleTimeString('en-GB', timeFormat) + " to " + ev.to.toLocaleTimeString('en-GB', timeFormat);
                         }
-                        eventCards += "<div class=\"card\" id=\"evenement_card"+ev.idEvent+"\">\n <div class=\"popover\" id=\"evenement_settings" + ev.idEvent + "\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\" id=\"editEventBouton"+ev.idEvent+"\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton" + ev.idEvent + "\">Delete</a></li></ul></div></div></div>             <div class=\"card-header text-color-white bg-color-" + ev.color + "\">" + ev.title + "<i class=\"f7-icons popover-open\" data-popover=\"#evenement_settings" + ev.idEvent + "\">more_vertical_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
+                        if(testDate.getDay() > 1){
+                          eventCards += "<div class=\"card\" id=\"evenement_card"+ev.idEvent+"\">\n <div class=\"popover\" id=\"evenement_settings" + ev.idEvent + "\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\" id=\"editEventBouton"+ev.idEvent+"\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton" + ev.idEvent + "\">Delete</a></li></ul></div></div></div>             <div class=\"card-header text-color-white bg-color-" + ev.color + "\">" + ev.title + "<i class=\"f7-icons popover-open\" data-popover=\"#evenement_settings" + ev.idEvent + "\">more_vertical_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
+                        }else{
+                          eventCards += "<div class=\"card\" id=\"evenement_card"+ev.idEvent+"_"+i+"\">\n <div class=\"popover\" id=\"evenement_settings" + ev.idEvent +"_"+ i + "\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\" id=\"editEventBouton"+ev.idEvent+"_"+i+"\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton" + ev.idEvent +"_"+ i + "\">Delete</a></li></ul></div></div></div>             <div class=\"card-header text-color-white bg-color-" + ev.color + "\">" + ev.title + "<i class=\"f7-icons popover-open\" data-popover=\"#evenement_settings" + ev.idEvent +"_"+i+ "\">more_vertical_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";                            i++;
+                        }
                       }
                     });
                     dayDate = new calendar.DateHandleClass(dayDate);
@@ -311,7 +316,7 @@
       },
       pageAfterOut(){
         $.ajax({
-          url: "js/chargerCalendriers.js",
+          url: "js/Calendrier/Charger/chargerCalendriers.js",
           dataType: "script",
           cache: true,
           async: false,
@@ -324,7 +329,7 @@
       },
       pageAfterIn(){
         $.ajax({
-          url: "js/chargerEvenements.js",
+          url: "js/Evenement/Charger/chargerEvenements.js",
           dataType: "script",
           cache: true,
           async: false,
@@ -336,7 +341,6 @@
         });
         var self = this;
         var appSelf = self.$app;
-        console.log(eventFromServer);
         var titre = localStorage.getItem('nomCalendrierCourant');
         $(".titreCalendrier").text(titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase());
         var calendarInline = appSelf.calendar.get();
@@ -344,7 +348,7 @@
         calendarInline.params.events = eventFromServer;
         calendarInline.update();
         $.ajax({
-          url: "js/supprimerEvenement.js",
+          url: "js/Evenement/Supprimer/supprimerEvenement.js",
           dataType: "script",
           cache: true,
           success:function(msg) {
@@ -354,7 +358,7 @@
           },
         });
         $.ajax({
-          url: "js/routeCalendrierEditeur.js",
+          url: "js/Calendrier/Route/routeCalendrierEditeur.js",
           dataType: "script",
           cache: true,
           success:function(msg) {
@@ -364,7 +368,7 @@
           },
         });
         $.ajax({
-          url: "js/routeEvenementEditeur.js",
+          url: "js/Evenement/Route/routeEvenementEditeur.js",
           dataType: "script",
           cache: true,
           success:function(msg) {
@@ -375,6 +379,7 @@
         });
         if(localStorage.getItem("eventWasOpen")==1){
            localStorage.setItem("eventWasOpen",0);
+           console.log("POPUP : "+ $(".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave")).html());
            var t = appSelf.popup.create({
              el: $(".popup-"+ localStorage.getItem("yearSave")+"-"+localStorage.getItem("monthSave")+"-"+ localStorage.getItem("daySave")),
              on: {
@@ -383,8 +388,10 @@
                },
              },
            }).open();
-           calendarInline.update();
-
+           console.log("EDIT BOUTON :" + $("a[id^=editEventBouton]").html());
+          /* $("a[id^=editEventBouton]").click(function(){
+              console.log("CLick");
+           });*/
         }
         localStorage.setItem("eventWasOpen",0);
       },

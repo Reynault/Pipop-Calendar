@@ -1,10 +1,15 @@
 $(document).ready(function(){
-  chargerTheme();
+  $("#supprCalendrierBouton").click(function(e){
+    supprimerCalendrier(localStorage.getItem("idCalendrierCourant"),localStorage.getItem("emailUtilisateur"));
+  });
+    $$("#calendar_settings").on('click', function(e){
+      app.popover.get("#calendar_settings").close(true);
+   });
 });
 
-
-  function chargerTheme(){
-      var arr = {"Request":"GetTheme","Email": localStorage.getItem("emailUtilisateur"), "Mdp":localStorage.getItem("mdpUtilisateur")};
+  function supprimerCalendrier(id, email){
+      app.popover.get("#calendar_settings").close(true);
+      var arr = {"Request":"DeleteCalendar","Email":email, "IDCalendar": id, "SuppEv":"true", "Mdp":localStorage.getItem("mdpUtilisateur")};
       console.log("JSON : "+JSON.stringify(arr));
       app.preloader.show();
       $.ajax({
@@ -12,18 +17,22 @@ $(document).ready(function(){
           type: 'GET',
           data: JSON.stringify(arr),
           dataType: 'text',
-          async: false,
+          async: true,
           success: function(data, textStatus, jqXHR) {
               app.preloader.hide();
               var obj = JSON.parse(data);
               if(obj["Result"]==0){
-                 var nbTheme = Object.keys(obj.Data).length;
-                 console.log(obj["Data"]);
-                 for(var i = 0; i<nbTheme; i++){
-                    var titre = obj["Data"][i];
-                    var titreFormat = titre.substr(0,1).toUpperCase()+	titre.substr(1,titre.length).toLowerCase();
-                    var p = $("#themeSelectOption").append("<option value='"+obj["Data"][i]+"'>"+ titreFormat +"</option>");
-                 }
+                app.views.main.router.back( "user-home.html" , {reloadPrevious: true, ignoreCache: true, reload: true} );
+                $.ajax({
+                  url: "js/Calendrier/Charger/chargerCalendriers.js",
+                  dataType: "script",
+                  cache: true,
+                  success:function(msg) {
+                  },
+                  error:function(msg) {
+                    console.log("Error chargement script de chargement d'événement");
+                  },
+                });
               }else{
                 window.plugins.toast.showWithOptions(
                 {
@@ -39,7 +48,8 @@ $(document).ready(function(){
                      horizontalPadding: 22, // iOS default 16, Android default 50
                      verticalPadding: 20 // iOS default 12, Android default 30
                    }
-                  });
+                  }
+                 );
               }
           },
           error: function(jqXHR, textStatus, errorThrown) {

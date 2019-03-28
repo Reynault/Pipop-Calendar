@@ -21,18 +21,6 @@ $(document).ready(function(){
                         verticalPadding: 16 // iOS default 12, Android default 30
                       }
                 },
-                // implement the success callback
-                function(result) {
-                  if (result && result.event) {
-                    console.log("The toast was tapped or got hidden, see the value of result.event");
-                    console.log("Event: " + result.event); // "touch" when the toast was touched by the user or "hide" when the toast geot hidden
-                    console.log("Message: " + result.message); // will be equal to the message you passed in
-
-                    if (result.event === 'hide') {
-                      console.log("The toast has been shown");
-                    }
-                  }
-                }
              );
         }else{
             inscription($("#emailInscripInput").val(), $("#mdpInscripInput").val(), $("#nomInscripInput").val(), $("#prenomInscripInput").val());

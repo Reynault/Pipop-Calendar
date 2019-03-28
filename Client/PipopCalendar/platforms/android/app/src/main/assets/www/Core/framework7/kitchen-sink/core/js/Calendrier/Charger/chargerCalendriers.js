@@ -5,7 +5,6 @@ $(document).ready(function(){
   $("body").on('click', '.calend', function(){
     localStorage.setItem("nomCalendrierCourant", $(this).text());
     localStorage.setItem("idCalendrierCourant", $(this).attr("id"));
-    console.log("Calendrier Courant : "+localStorage.getItem("nomCalendrierCourant"));
   });
 
 });
