@@ -509,12 +509,12 @@ public class ApplicationServeur implements Observer {
             verif.add(nomCalendrier);
             if(Verification.checkEmptyData(verif)) {
                 if(Verification.checkMail(auteur)) {
-                    if (!this.verifierCalendrier(auteur, nomCalendrier)) { // On vérifie que le calendrier n'existe pas déjà
+                    /*if (!this.verifierCalendrier(auteur, nomCalendrier)) { // On vérifie que le calendrier n'existe pas déjà
                         MessageCodeException.calendar_already_exist(res);
                         //res.put("Result", MessageCodeException.C_ALREADY_EXIST);
                         //res.put("Message", MessageCodeException.M_CALENDAR_ALREADY_EXIST);
                         return res;
-                    }
+                    }*/
                     id = this.creerCalendrier(nomCalendrier, description, couleur, theme, auteur);
                     if (id < 0) { // On crée le calendrier
                         MessageCodeException.bdd_calendar_error(res);
