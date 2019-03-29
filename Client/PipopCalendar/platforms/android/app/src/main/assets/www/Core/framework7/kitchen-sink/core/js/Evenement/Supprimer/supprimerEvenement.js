@@ -33,6 +33,8 @@ $(document).ready(function(e){
                     console.log("Error chargement script de chargement d'événements");
                   }
                 });
+                calendarInline.params.events = eventFromServer;
+                calendarInline.update();
                 //mainView.router.navigate("/calendar-view/",{ ignoreCache:true, reloadCurrent:true});
                 window.plugins.toast.showWithOptions({
                   message: ""+obj["Message"],
@@ -47,8 +49,6 @@ $(document).ready(function(e){
                     horizontalPadding: 22, // iOS default 16, Android default 50
                     verticalPadding: 20 // iOS default 12, Android default 30
                   }
-                  calendarInline.params.events = eventFromServer;
-                  calendarInline.update();
                 });
               }else{
                 window.plugins.toast.showWithOptions(

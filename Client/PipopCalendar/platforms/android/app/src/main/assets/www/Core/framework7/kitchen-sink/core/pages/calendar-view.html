@@ -263,10 +263,11 @@
                         if (date.from.getTime() == date.to.getTime()) {
                           range = "From " + ev.from.toLocaleTimeString('en-GB', timeFormat) + " to " + ev.to.toLocaleTimeString('en-GB', timeFormat);
                         }
-                        if(testDate.getDay() > 1){
+                        if(testDate.getDay() <= 1){
                           eventCards += "<div class=\"card\" id=\"evenement_card"+ev.idEvent+"\">\n <div class=\"popover\" id=\"evenement_settings" + ev.idEvent + "\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\" id=\"editEventBouton"+ev.idEvent+"\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton" + ev.idEvent + "\">Delete</a></li></ul></div></div></div>             <div class=\"card-header text-color-white bg-color-" + ev.color + "\">" + ev.title + "<i class=\"f7-icons popover-open\" data-popover=\"#evenement_settings" + ev.idEvent + "\">more_vertical_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";
                         }else{
                           eventCards += "<div class=\"card\" id=\"evenement_card"+ev.idEvent+"_"+i+"\">\n <div class=\"popover\" id=\"evenement_settings" + ev.idEvent +"_"+ i + "\"><div class=\"popover-inner\"><div class=\"list\"><ul><li><a class=\"list-button item-link\" href=\"#\" id=\"editEventBouton"+ev.idEvent+"_"+i+"\">Edit</a></li><li><a class=\"list-button item-link\" href=\"#\" id=\"supprEventBouton" + ev.idEvent +"_"+ i + "\">Delete</a></li></ul></div></div></div>             <div class=\"card-header text-color-white bg-color-" + ev.color + "\">" + ev.title + "<i class=\"f7-icons popover-open\" data-popover=\"#evenement_settings" + ev.idEvent +"_"+i+ "\">more_vertical_fill</i></div>\n              <div class=\"card-content card-content-padding\">" + ev.description + "</div>\n              <div class=\"card-footer\">" + range + "</div>\n              </div>";                            i++;
+                          i++;
                         }
                       }
                     });
